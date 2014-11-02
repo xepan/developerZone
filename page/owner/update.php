@@ -11,7 +11,7 @@ class page_developerZone_page_owner_update extends page_componentBase_page_updat
 		// Code To run before installing
 		
 		$this->update();
-		
+		$this->add('View_Info')->set('Component Updated');
 		// Code to run after installation
 	}
 }
