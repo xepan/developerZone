@@ -4,6 +4,8 @@ class page_developerZone_page_owner_main extends page_componentBase_page_owner_m
 
 	function init(){
 		parent::init();
+		$this->h1->setHTML('<i class="fa fa-wrench"></i> '.$this->component_name .'<small> Helper utility to create new applications </small>');
+
 		if(!$this->api->isAjaxOutput()){
 			$this->toolbar->addButton( 'Developer Home' )->js( 'click', $this->js()->univ()->redirect( $this->api->url('developerZone_page_owner_main') ) );
 			$this->toolbar->addButton( 'Dashboard' )->js( 'click', $this->js()->univ()->redirect( $this->api->url('owner_dashboard') ) );

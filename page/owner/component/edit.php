@@ -20,6 +20,7 @@ class page_developerZone_page_owner_component_edit extends page_developerZone_pa
 		if($crud->isEditing('edit'))
 			$tools_model->isInstalling = true ; // To avoid copying files before save
 		$crud->setModel($tools_model);
+		$crud->add('Controller_FormBeautifier');
 
 		$crud2 = $plugins_tab->add('CRUD');
 		$plug_model = $component->ref('Plugins');
@@ -27,6 +28,7 @@ class page_developerZone_page_owner_component_edit extends page_developerZone_pa
 			$plug_model->isInstalling = true ;// To avoid copying files before save
 		
 		$crud2->setModel($plug_model);
+		$crud2->add('Controller_FormBeautifier');
 
 	}
 }
