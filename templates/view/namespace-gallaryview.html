@@ -1,27 +1,27 @@
-<?show_tag_selector_to_user?>
+{show_tag_selector_to_user}
 <div id="filters" class="btn-group">
   <button data-filter="*" class="btn btn-default">show all</button>
-  <?$filter_button?>
+  {$filter_button}
 </div>
-<?/show_tag_selector_to_user?>
-<div id="<?$_name?>">
-	<?$Content?>
+{/show_tag_selector_to_user}
+<div id="{$_name}">
+	{$Content}
 </div>
 
 <script type="text/javascript">
 	$('#filters').on( 'click', 'button', function( event ) {
   		var filtr = $(this).attr('data-filter');
-  	$('#<?$_name?>').isotope({ filter: filtr });
+  	$('#{$_name}').isotope({ filter: filtr });
 });
 
 </script>
 
 <style type="text/css">
-#<?$_name?> .item{
+#{$_name} .item{
 	position: relative;
 }
 
-#<?$_name?> .item:hover{
+#{$_name} .item:hover{
 	position: relative;
 	width: 140%;
 }
@@ -37,7 +37,7 @@
 	color: white;
 }
 
-#<?$_name?> .item .description{
+#{$_name} .item .description{
 	
 }
 
