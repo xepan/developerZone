@@ -7,7 +7,7 @@ class page_developerZone_page_owner_main extends page_componentBase_page_owner_m
 
 		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-wrench"></i> '.$this->component_name .'<small> Helper utility to create new applications </small>');
 
-		$developer_m=$this->app->top_menu->addMenu($this->component_name);
+		$developer_m=$this->app->top_menu->addMenu(array($this->component_name,'swatch'=>'red'));
 		$developer_m->addItem(array('Dashboard','icon'=>'gauge-1'),'developerZone_page_owner_dashboard');
 		$developer_m->addItem(array('New Component','icon'=>'plus'),'developerZone_page_owner_component_new');
 
