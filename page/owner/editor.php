@@ -27,7 +27,17 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			->addClass('editor-document')
 			->js(true)->editor();
 
-		$tools_col->add('View')->set('Process')->addClass('editortool');
+		$tools_col->add('View')
+					->set('Process')
+					->addClass('editortool createNew')
+					->setAttr(
+					array(
+						'data-inports'=>'{}',
+						'data-outports'=>'{}',
+						'data-type'=>'Process'
+						)
+				);
+
 		$tools_col->add('View')->set('inPort')->addClass('editortool');
 		$tools_col->add('View')->set('outPort')->addClass('editortool');
 	}
@@ -47,7 +57,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			->_load('editortool')
 			->_load('entityinstance')
 			->_load('editor')
-			->load('jPlumbInit')
+			->_load('jPlumbInit')
 			;
 		return parent::defaultTemplate();
 	}

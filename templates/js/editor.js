@@ -5,7 +5,7 @@ jQuery.widget("ui.editor",{
 			nodes:[],
 			connections:[]
 		},
-		includePlugins:['Model']
+		includePlugins:['Model','Process']
 	},
 
 	_create: function(){
@@ -27,6 +27,7 @@ jQuery.widget("ui.editor",{
 			
 			drop: function(event,ui){
 				if(!ui.draggable.hasClass('createNew')) return;
+
 				dropped = ui.draggable;
 				var new_node = new window[dropped.data('type')]();
 				new_node.init(dropped,self.element,ui);

@@ -1,6 +1,6 @@
-Model_Count= 1;
+Process_Count= 1;
 
-Model = function (params){
+Process = function (params){
 	this.editor= undefined;
 	this.parent= undefined;
 	this.element=undefined;
@@ -26,7 +26,7 @@ Model = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div id="Model_'+Model_Count+'">');
+			this.element = $('<div id="Model_'+Model_Count+'" style="background-color: lightblue">');
 			Model_Count++;
 
 
@@ -43,7 +43,6 @@ Model = function (params){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
 				jsPlumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
-			      parent: new_outport
 			    });
 			})
 
@@ -51,8 +50,7 @@ Model = function (params){
 		            containment: 'parent',
 		            stop:function(e){
 		            	// console.log($(this).find('._jsPlumb_endpoint_anchor'));
-			   //  	   	$('._jsPlumb_endpoint').each(function(i,e){ 
-			   //  	   		console.log($(e));
+			   //  	   	$(this).find('._jsPlumb_endpoint_anchor').each(function(i,e){ 
 		    //                 if($(e).hasClass("connect"))
 		    //                     jsPlumb.repaint($(e).parent());
 		    //                 else
@@ -60,7 +58,13 @@ Model = function (params){
 						// });			
 						jsPlumb.repaintEverything();							
 		            }
-		        });
+		        })
+				.resizable({
+
+				})
+				.droppable({
+					greedy: true
+				});
 		}
 		this.element.width('100px');
 		this.element.height('100px');
