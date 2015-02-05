@@ -22,6 +22,11 @@ class Model_Method extends \SQL_Model{
 
 	}
 
+	function getStructure(){
+		$code=array();
+		return array('name'=>$this['name'],'parameters'=>array('a','b'),'code'=>$code);
+	}
+
 	function generateCode(){
 		$arguments="";
 		if($this['params'])

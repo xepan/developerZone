@@ -18,6 +18,10 @@ class Model_Attribute extends \SQL_Model{
 
 	}
 
+	function getStructure(){
+		return array('access_specifier'=>$this['attribute_type'],'attribute'=>$this['name'],'value'=>$this['value']);
+	}
+
 	function generateCode(){
 		$str = $this['attribute_type']. ' $'. $this['name'];
 			if($this['value']){
