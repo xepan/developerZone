@@ -1,13 +1,14 @@
 jQuery.widget("ui.editor",{
 	
+	options:{
+		logic:{},
+	},
+
 	_create: function(){
 		var self = this;
-		$(self.element).css('border','2px solid blue');
-		$(self.element).droppable({
-				drop: function(event,ui){
-					$('<div>').html($(ui.helper.context.outerHTML).html()).appendTo(self.element).entityinstance();	
-				}
-			});
+		self.setupEditor();
+		self.loadDesign();
+		self.render();
 	}
 	
 });

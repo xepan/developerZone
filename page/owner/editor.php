@@ -12,7 +12,14 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 
 		$entities_model = $this->add('developerZone/Model_Entity');
 		foreach ($entities_model as $id => $ent) {
-			$entities_col->add('View')->set($ent['name'])->addClass('entity');
+			$en = $entities_col->add('View')->set($ent['name'])->addClass('entity');
+			$en->setAttr(
+					array(
+						'data-inPorts'=>$ent['instance_inports'],
+						'data-outPorts'=>$ent['instance_outports'],
+						'data-type'=>$ent['type']
+						)
+				);
 		}
 
 		$editor_col->add('View')->setStyle(array('width'=>'100%','height'=>'500px'))->set('sdf')->js(true)->editor();
