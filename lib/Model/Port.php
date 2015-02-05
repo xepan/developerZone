@@ -12,8 +12,16 @@ class Model_Port extends \SQL_Model{
 
 		$this->addField('name');
 
-		$this->addField('type')->enum(array('DATA-IN','DATA-OUT','FLOW-IN','FLOW-OUT'));
+		$this->addField('type')->enum(array('DATA-IN','DATA-OUT','FLOW-IN','FLOW-OUT','internal'));
 
 		$this->add('dynamic_model/Controller_AutoCreator');
+	}
+
+	function getVariableName($for_node){
+		return $this->api->normalizeName($for_node['name']).'_'.$this->api->normalizeName($this['name']);
+	}
+
+	function hasMultiBranchOutput(){
+		
 	}
 }

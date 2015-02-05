@@ -5,6 +5,9 @@ class page_developerZone_page_test extends \Page {
 	function init(){
 		parent::init();
 
+		$this->add('developerZone/Model_Node')->load(5)->previousNodes();
+		exit;
+
 		$this->add('developerZone/Model_Port');
 		$this->add('developerZone/Model_NodeConnections');
 

@@ -19,16 +19,60 @@ class Model_Node extends \SQL_Model{
 		$this->addField('action')->enum(array('Block','Add','MethodCall','FunctionCall','Statement'));
 		$this->addField('inputs');
 		$this->addField('outputs');
+
 		$this->addField('is_processed')->type('boolean')->defaultValue(true);
 
-		$this->addExpression('connections_in')->set(function($m,$q){
-			return $m->add('developerZone/Model_CodeFlowConnections')->addCondition('destination_codeflow_id',$q->getField('id'))->count();
-		});
+		// $this->addExpression('connections_in')->set(function($m,$q){
+		// 	return $m->add('developerZone/Model_NodeConnections')->addCondition('destination_codeflow_id',$q->getField('id'))->count();
+		// });
 
-		$this->hasMany('developerZone/CodeFlowConnections');
+		$this->hasMany('developerZone/NodeConnections');
 		$this->hasMany('developerZone/Port');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
+
+	}
+
+	function dependsOn(){
+		
+	}
+
+	function parent(){
+		return $this['parent_block_id'];
+	}
+
+	function previousNodes(){
+		$me = $this->add('developerZone/Model_Node');
+		$ports_j = $me->join('developerZone_method_node_ports.node_id');
+		$ports_j->addField('node_port_id','id');
+		$ports_j->addField('node_port_type','type');
+		$me->addCondition('id',$this->id);
+		$me->addCondition('node_port_type','IN');
+		$port_ids_rows = $me->getRows();
+
+		$port_ids = array();
+		foreach ($port_ids_rows as $pi) {
+			$port_ids[] = $pi['node_port_id'];
+		}
+		
+		$previous_nodes = $this->add('developerZone/Model_Node');
+		$ports_j = $previous_nodes->join('developerZone_method_node_ports.node_id');
+		$ports_j->addField('node_port_id','id');
+		$ports_j->addField('node_port_type','type');
+		
+		$port_conn_j = $ports_j->join('developerZone_method_nodes_connections.from_port_id');
+		$port_conn_j->addField('to_port_id');
+
+		$previous_nodes->addCondition('to_port_id',$port_ids);
+
+		if($previous_nodes->count()->getOne() == 0 ) return false;
+
+		return $previous_nodes;
+
+		echo "<pre>";
+		print_r($p_n_ids);
+		echo "</pre>";
+
 
 	}
 
