@@ -5,7 +5,7 @@ jQuery.widget("ui.editor",{
 		$(self.element).css('border','2px solid blue');
 		$(self.element).droppable({
 				drop: function(event,ui){
-					$('<div>').html('Added').appendTo(self.element).entityinstance();
+					$('<div>').html($(ui.helper.context.outerHTML).html()).appendTo(self.element).entityinstance();	
 				}
 			});
 	}
