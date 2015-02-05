@@ -22,7 +22,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 				);
 		}
 
-		$editor_col->add('View')
+		$this->api->layout->add('View')
 			->setStyle(array('width'=>'100%','height'=>'500px'))
 			->addClass('editor-document')
 			->js(true)->editor();

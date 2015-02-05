@@ -22,7 +22,7 @@ jQuery.widget("ui.editor",{
 		// Setup Plugins
 		//Make Editor droppable
 		$(self.element).css('border','2px solid blue');
-		$(self.element).css('position','relative');
+		// $(self.element).css('position','relative');
 		$(self.element).droppable({
 			
 			drop: function(event,ui){
@@ -32,6 +32,7 @@ jQuery.widget("ui.editor",{
 				new_node.init(dropped,self.element,ui);
 				self.options.logic.nodes.push(new_node);
 				new_node.render();
+				jsPlumb.repaintEverything();
 			}
 
 		});
