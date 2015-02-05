@@ -30,7 +30,7 @@ jQuery.widget("ui.editor",{
 
 				dropped = ui.draggable;
 				var new_node = new window[dropped.data('type')]();
-				new_node.init(dropped,self.element,ui);
+				new_node.init(dropped,self.element,ui,self);
 				self.options.logic.nodes.push(new_node);
 				new_node.render();
 				jsPlumb.repaintEverything();

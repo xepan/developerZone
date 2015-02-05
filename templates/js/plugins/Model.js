@@ -14,9 +14,11 @@ Model = function (params){
 		y:0
 	};
 
-	this.init = function(dropped,parent_element,ui){
+	this.init = function(dropped,parent_element,ui,editor){
 		var self = this;
 		self.parent=parent_element;
+		self.editor=editor;
+
 		var inports=dropped.data('inports');
 		var outports=dropped.data('outports');
 		self.options.ports.inPorts = inports;

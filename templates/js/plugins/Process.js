@@ -14,9 +14,11 @@ Process = function (params){
 		y:0
 	};
 
-	this.init = function(dropped,parent_element,ui){
+	this.init = function(dropped,parent_element,ui,editor){
 		var self = this;
 		self.parent=parent_element;
+		self.editor=editor;
+
 		var inports=dropped.data('inports');
 		var outports=dropped.data('outports');
 		self.options.ports.inPorts = inports;
@@ -63,7 +65,17 @@ Process = function (params){
 
 				})
 				.droppable({
-					greedy: true
+					greedy: true,
+					drop: function(event,ui){
+						if(!ui.draggable.hasClass('createNew')) return; 
+						
+						dropped = ui.draggable;
+						var new_node = new window[dropped.data('type')]();
+						new_node.init(dropped,self.element,ui);
+						self.editor.options.logic.nodes.push(new_node);
+						new_node.render();
+						jsPlumb.repaintEverything();
+					}
 				});
 		}
 		this.element.width('100px');
