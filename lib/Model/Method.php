@@ -16,7 +16,7 @@ class Model_Method extends \SQL_Model{
 		$this->addField('params');
 		$this->addField('properties');
 
-		$this->hasMany('developerZone/CodeFlow');
+		$this->hasMany('developerZone/Node');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 
@@ -26,20 +26,26 @@ class Model_Method extends \SQL_Model{
 		$arguments="";
 		if($this['params'])
 			$arguments = implode(",", $this['params']);
+
 		$method_name = $this['method_type']. " function ". $this['name']. "($arguments)";
 		$method_block = $this->add('developerZone/Code');
 		$method_block->hasBlock();
 		$method_block->addBlockStarter($method_name);
 
-		$code_flow = $this->ref('developerZone/CodeFlow');
 		// $code_flow->_dsql()->set('is_processed',0)->do_update();
+
+		$this->add('developerZone/Model_CodeFlow')->addCondition('developerZone_entity_methods_id',$this->id)->_dsql()->set('is_processed',0)->do_update();
 
 		$code ="";
 
-		$code_flow->addCondition('parent_block_id',null);
+		$code_flow = $this->add('developerZone/Model_CodeFlow');
+		$code_flow->addCondition('parent_block_id',0);
 		$code_flow->addCondition('connections_in',0);
+		$code_flow->addCondition('action','<>',array('methodCall'));
+		$code_flow->addCondition('developerZone_entity_methods_id',$this->id);
 
 		foreach ($code_flow as $cf) {
+			// echo "Rooted " . $cf['name'] ." for " . $cf['id'] ."<br/>";
 			$code .= $cf->geterateCode();
 		}
 

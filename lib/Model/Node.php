@@ -2,8 +2,8 @@
 
 namespace developerZone;
 
-class Model_CodeFlow extends \SQL_Model{
-	public $table = "developerZone_code_flows";
+class Model_Node extends \SQL_Model{
+	public $table = "developerZone_method_nodes";
 	public $compiled_code =" // Compiled Code !!! :)";
 	public $scope_variables = array();
 
@@ -26,12 +26,14 @@ class Model_CodeFlow extends \SQL_Model{
 		});
 
 		$this->hasMany('developerZone/CodeFlowConnections');
+		$this->hasMany('developerZone/Port');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 
 	}
 
 	function geterateCode(){
+		// echo "working on ". $this['name']. "<br/>";
 		switch ($this['action']) {
 			case 'Block':
 				return $this->add('developerZone/Code_Block')->load($this->id)->set('is_processed',true)->save()->generateCode();
@@ -39,6 +41,10 @@ class Model_CodeFlow extends \SQL_Model{
 			
 			case 'Add':
 				return $this->add('developerZone/Code_Add')->load($this->id)->set('is_processed',true)->save()->generateCode();
+				break;
+
+			case 'Variable':
+				return $this->add('developerZone/Code_Variable')->load($this->id)->set('is_processed',true)->save()->generateCode();
 				break;
 			
 
@@ -50,9 +56,9 @@ class Model_CodeFlow extends \SQL_Model{
 		return "";
 	}
 
-	function generateVariableName(){
+	function generateVariableName($prefix=""){
 		$variables = $this->api->recall('code_variables',array());
-		$to_find = $this->api->normalizeName(strtolower($this['name']));
+		$to_find = $this->api->normalizeName(strtolower($prefix.$this['name']));
 		$variables[$this->id] = $to_find.'_'.$this->id;
 		$this->api->memorize('code_variables',$variables);
 		return $to_find;
@@ -83,7 +89,9 @@ class Model_CodeFlow extends \SQL_Model{
 	}
 
 	function getConnectedDestinationPorts(){
-
+		$connections = $this->add('developerZone/Model_CodeFlowConnections');
+		$connections->addCondition('source_code_flow_id',$this->id);
+		return $connections;
 	}
 
 	function getConnectedSourcePorts(){

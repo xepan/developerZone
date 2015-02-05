@@ -28,7 +28,7 @@ class Model_Entity extends \SQL_Model{
 			return $m->refSQL('component_id')->fieldQuery('namespace');
 		});
 
-		$this->hasMany('developerZone/CodeFlow');
+		$this->hasMany('developerZone/Node');
 
 		$this->hasMany('developerZone/Attribute');
 		$this->hasMany('developerZone/Event');
