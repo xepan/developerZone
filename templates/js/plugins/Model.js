@@ -45,7 +45,7 @@ Model = function (params){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
 				jsPlumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
-			      parent: new_outport
+			      parent: new_outport,
 			    });
 			})
 
