@@ -1,32 +1,37 @@
 jQuery.widget("ui.editor",{
 	
 	options:{
-		logic:{},
+		logic:{
+			nodes:[],
+			connections:[]
+		},
 		includePlugins:['Model']
 	},
 
 	_create: function(){
 		var self = this;
+		self.loadPlugins();
 		self.setupEditor();
 		self.loadDesign();
 		self.render();
+		console.log(self);
 	},
 
 	setupEditor: function(){
 		var self = this;
 		// Setup Plugins
-		self.loadPlugins();
 		//Make Editor droppable
 		$(self.element).css('border','2px solid blue');
+		$(self.element).css('position','relative');
 		$(self.element).droppable({
 			
 			drop: function(event,ui){
-				if(!ui.draggable.hasClass('newInstance')){
-					// console.log(ui.draggable.data("type"));
-					//Update Logic
-					$('<div class="newInstance">').html($(ui.helper.context.outerHTML).html()).appendTo(self.element);
-				}
-
+				if(!ui.draggable.hasClass('createNew')) return;
+				dropped = ui.draggable;
+				var new_node = new window[dropped.data('type')]();
+				new_node.init(dropped,self.element,ui);
+				self.options.logic.nodes.push(new_node);
+				new_node.render();
 			}
 
 		});
