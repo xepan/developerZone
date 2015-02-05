@@ -5,6 +5,9 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 	function init(){
 		parent::init();
 
+		$btn = $this->app->layout->add('Button')->set('SAVE');
+		$btn->js('click')->univ()->saveCode();
+
 		$cols = $this->app->layout->add('Columns');
 		$entities_col = $cols->addColumn(2);
 		$editor_col = $cols->addColumn(8);
@@ -58,6 +61,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			->_load('entityinstance')
 			->_load('editor')
 			->_load('jPlumbInit')
+			->_load('saveCode')
 			;
 		return parent::defaultTemplate();
 	}
