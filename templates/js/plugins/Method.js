@@ -41,8 +41,40 @@ Method = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div data-type="Method" class="entity-method entity-container" style="background-color:#fff8dc"><div class="label label-success">'+self.options.name+'</div>');
+			this.element = $('<div data-type="Method" class="entity-method entity-container" style="background-color:#fff8dc">');
 			
+			var topbar =$('<div class="topbar" style="background-color:blue;"></div>').appendTo(this.element);
+			var maxmize =$('<div class="topbar-maxmize"> + </div>').appendTo(topbar);
+			var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(topbar);
+			// var minimize =$('<div class="topbar-minimize" > - </div>').appendTo(topbar);
+					
+			$(name).click(function(e){
+				$(this).attr('contenteditable',"true");
+				$(this).focus();
+				e.preventDefault();
+			}).blur(function(e){
+				$(this).attr('contenteditable',"false");
+				e.preventDefault();
+				self.options.name = $(this).html();		
+			});
+
+			$(maxmize).click(function(e){
+				if($(this).closest('.topbar').hasClass('open')){
+					$(this).closest('.topbar').removeClass('open').addClass('closed');
+					$(this).closest('.topbar').animate({height:"30px"});
+				}
+				else{
+					$(this).closest('.topbar').removeClass('closed').addClass('open');
+					$(this).closest('.topbar').animate({height: $(this).closest('.entity-container').height()});
+				}
+			});
+
+			// $(minimize).click(function(e){
+				
+			// 	$(this).closest('.entity-container').animate( { height: $(this).height()});
+			// });
+
+
 			if(self.options.uuid == undefined){
 				$(this.element).uniqueId();
 				self.options.uuid = $(this.element).attr('id');
@@ -56,15 +88,6 @@ Method = function (params){
 			// this.element.css('position','absolute');
 
 			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
-
-			$(this.element).find('div').click(function(e){
-				$(this).attr('contenteditable',"true");
-				$(this).focus();
-				e.preventDefault();
-			}).blur(function(e){
-				$(this).attr('contenteditable',"false");
-				e.preventDefault();
-			});
 
 			$.each(self.options.Ports.In,function(index ,port){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
