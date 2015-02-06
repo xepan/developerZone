@@ -75,7 +75,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			->addClass('editor-document')
 			->js(true)
 			->_load('editor')
-			->editor($json);
+			->editor();
 
 		$this->js(true)->univ()->makeTree();
 	}

@@ -5,52 +5,53 @@ Process = function (params){
 	this.parent= undefined;
 	this.element=undefined;
 	this.options = {
+		name: undefined,
 		uuid:undefined,
-		process : {
-			tool_type:"Process",
-			Ports: {
-				In: {},
-				Out: {}
-			},
-			Nodeskey: [],
-			Connections: []
-		}
+		type:'Process',
+		Ports: {
+			In: [],
+			Out: []
+		},
+		Nodes: [],
+		// Connections: [],
+		x:0,
+		y:0
 	};
 
-	this.init = function(dropped,parent_element,ui,editor){
+	this.init = function(dropped,parent_element,ui,editor, options){
 		var self = this;
 		self.parent=parent_element;
 		self.editor=editor;
-		$(self).uniqueId();
-		
-		self.options.uuid = $(self).attr('id');
-		var inports=dropped.data('inports');
-		var outports=dropped.data('outports');
-		self.options.ports.inPorts = inports;
-		self.options.ports.outPorts = outports;
-		
-
+		if(options != undefined)
+			this.options = options;
 	}
 
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			Process_Count++;
-			this.element = $('<div data-type="Process" count="'+Process_Count+'" style="background-color: lightblue">');
-			$(this.element).uniqueId();
+			this.element = $('<div data-type="Process" style="background-color: lightblue">');
+			
+			if(self.options.uuid == undefined){
+				$(this.element).uniqueId();
+				self.options.uuid = $(this.element).attr('id');
+			}else{
+				$(this.element).attr('id',self.options.uuid);
+			}
+
+			this.element.data('obj',this);
 
 			this.element.appendTo(self.parent);
 			//Push into editor.options.methods.entity.nodes.node
 			//First get the parent uuid and name
 
-			$.each(self.options.process.Ports.In,function(port_type ,label){
+			$.each(self.options.Ports.In,function(port_type ,label){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
 				jsPlumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
-			$.each(self.options.ports.outPorts.Out,function(port_type ,label){
+			$.each(self.options.Ports.Out,function(port_type ,label){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
 				jsPlumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
@@ -83,7 +84,7 @@ Process = function (params){
 						new_node.init(dropped,self.element,ui,self.editor);
 						new_node.render();
 
-						self.editor.options.logic.nodes.push(new_node);
+						self.options.Nodes.push(new_node.options);
 						jsPlumb.repaintEverything();
 					}
 				});

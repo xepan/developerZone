@@ -5,17 +5,19 @@
 	
 	//Connector Called
 	jsPlumb.bind("connection", function(info) {
+		method_uuid = $('#'+info.sourceId).closest('.enitity-method').attr('id');
 		editor = $('.editor-document').data('uiEditor');
-		editor.options.logic.connections.push(info);
+		editor.options.entity.Method[method_uuid].Connections.push(info);
 	});
 
 	//connections detached
 	jsPlumb.bind("connectionDetached",function(info,originalEvent){
 		editor = $('.editor-document').data('uiEditor');
-		connections = editor.options.logic.connections;
+		method_uuid = $('#'+info.sourceId).closest('.enitity-method').attr('id');
+		connections = editor.options.entity.Method[method_uuid].Connections;
 		$.each(connections, function(index, obj) {
 			if(obj.sourceId === info.sourceId && obj.targetId === info.targetId)
-				editor.options.logic.connections.splice(index,1);
+				editor.options.entity.Method[method_uuid].Connections.splice(index,1);
 		});
 		//Remove Detached Connection form the editor.options.connections
 	});
