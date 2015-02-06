@@ -29,7 +29,7 @@ Process = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div data-type="Process" style="background-color: lightblue">');
+			this.element = $('<div data-type="Process" class="entity-process entity-container" style="background-color: lightblue">');
 			
 			if(self.options.uuid == undefined){
 				$(this.element).uniqueId();

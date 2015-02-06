@@ -40,7 +40,7 @@ Method = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div data-type="Method" class="enitity-method enitity-container" style="background-color:#fff8dc"><span class="label label-success">'+self.options.name+'</span>');
+			this.element = $('<div data-type="Method" class="entity-method entity-container" style="background-color:#fff8dc"><span class="label label-success">'+self.options.name+'</span>');
 			
 			if(self.options.uuid == undefined){
 				$(this.element).uniqueId();

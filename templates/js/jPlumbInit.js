@@ -5,7 +5,7 @@
 	
 	//Connector Called
 	jsPlumb.bind("connection", function(info) {
-		method_uuid = $('#'+info.sourceId).closest('.enitity-method').attr('id');
+		method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
 		editor = $('.editor-document').data('uiEditor');
 		editor.options.entity.Method[method_uuid].Connections.push(info);
 		source_id = $('#'+info.sourceId).parent().attr('id');
@@ -13,7 +13,9 @@
 		from_index = undefined;
 		to_index = undefined;
 		
-		node_array = $;
+		parent_obj = $('#'+info.sourceId).closest('.entity-container').data("obj");
+		node_array = parent_obj.options.Nodes;
+		// console.log(node_array);
 
 		$.each(node_array, function(index, obj){
 			if(obj.uuid === source_id)
@@ -24,13 +26,14 @@
 
 		if(from_index > to_index){
 			editor.moveNode(node_array,from_index,to_index);
+			// console.log(editor);
 		}
 	});
 
 	//connections detached
 	jsPlumb.bind("connectionDetached",function(info,originalEvent){
 		editor = $('.editor-document').data('uiEditor');
-		method_uuid = $('#'+info.sourceId).closest('.enitity-method').attr('id');
+		method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
 		connections = editor.options.entity.Method[method_uuid].Connections;
 		$.each(connections, function(index, obj) {
 			if(obj.sourceId === info.sourceId && obj.targetId === info.targetId)
