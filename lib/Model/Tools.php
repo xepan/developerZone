@@ -16,6 +16,7 @@ class Model_Tools extends \SQL_Model{
 		$this->addField('js_plugin');
 		$this->addField('special_php_handler');
 		$this->addField('icon');
+		$this->addField('order');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 

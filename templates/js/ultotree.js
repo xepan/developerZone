@@ -18,6 +18,6 @@ $.each({
             parent_li.append(sub_ul);
         });
         // Hide all lists except the outermost.
-        $('ul ul').hide();
+        $('.maketree ul ul').hide();
     }
 }, $.univ._import);
