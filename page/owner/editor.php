@@ -43,6 +43,11 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 
 		$tools_col->add('View')->set('inPort')->addClass('editortool');
 		$tools_col->add('View')->set('outPort')->addClass('editortool');
+
+		foreach ($this->add('developerZone/Model_PHPFunctions') as $func) {
+			$tools_col->add('View')->set($func['name'])->addClass('editortool');
+		}
+
 	}
 
 	function defaultTemplate(){
