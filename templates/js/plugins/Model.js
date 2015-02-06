@@ -42,6 +42,7 @@ Model = function (params){
 			}
 
 			this.element.appendTo(self.parent);
+			// this.element.css('position','absolute');
 
 			$.each(self.options.Ports.In,function(index ,port){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);

@@ -39,7 +39,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 				);
 		}
 
-		$entities_col->addClass('maketree');
+		$entities_col->addClass('maketree entities');
 
 
 		$ul=$tools_col->add('View')->setElement('ul');
@@ -65,7 +65,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 				;
 			if(!$tool['icon']) $tool_view->set($tool['name']);
 		}
-		$tools_col->addClass('maketree');
+		$tools_col->addClass('maketree tools');
 
 		$cont= $this->add('developerZone/Controller_CodeStructure',array('entity'=>$entity_model));
 		$json = $cont->getStructure();
@@ -93,7 +93,6 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			->_load('entity')
 			->_load('jquery.jsPlumb-1.7.2-min')
 			->_load('editortool')
-			->_load('entityinstance')
 			->_load('jPlumbInit')
 			->_load('saveCode')
 			->_load('ultotree')

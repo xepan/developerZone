@@ -40,7 +40,7 @@ Method = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div data-type="Method" class="enitity-method" style="background-color:#fff8dc"><span class="label label-success">'+self.options.name+'</span>');
+			this.element = $('<div data-type="Method" class="enitity-method enitity-container" style="background-color:#fff8dc"><span class="label label-success">'+self.options.name+'</span>');
 			
 			if(self.options.uuid == undefined){
 				$(this.element).uniqueId();
@@ -52,6 +52,7 @@ Method = function (params){
 			this.element.data('obj',this);
 			this.element.appendTo(self.parent);
 			self.editor.options.entity.Method[self.options.uuid] = self.options ;
+			// this.element.css('position','absolute');
 
 
 			$.each(self.options.Ports.In,function(index ,port){
