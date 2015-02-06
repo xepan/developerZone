@@ -11,6 +11,7 @@ class Model_PHPFunctions extends \SQL_Model{
 		$this->addField('category');
 		$this->addField('name');
 		$this->addField('template');
+		$this->addField('is_multiBranch')->type('boolean');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 
