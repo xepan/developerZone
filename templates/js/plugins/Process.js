@@ -5,12 +5,16 @@ Process = function (params){
 	this.parent= undefined;
 	this.element=undefined;
 	this.options = {
-		ports:{
-			inPorts:[],
-			outPorts:[]
-		},
-		x:0,
-		y:0
+		uuid:undefined,
+		process : {
+			tool_type:"Process",
+			Ports: {
+				In: {},
+				Out: {}
+			},
+			Nodeskey: [],
+			Connections: []
+		}
 	};
 
 	this.init = function(dropped,parent_element,ui,editor){
@@ -19,10 +23,13 @@ Process = function (params){
 		self.editor=editor;
 		$(self).uniqueId();
 		
+		self.options.uuid = $(self).attr('id');
 		var inports=dropped.data('inports');
 		var outports=dropped.data('outports');
 		self.options.ports.inPorts = inports;
 		self.options.ports.outPorts = outports;
+		
+
 	}
 
 	this.render = function(){
@@ -33,15 +40,17 @@ Process = function (params){
 			$(this.element).uniqueId();
 
 			this.element.appendTo(self.parent);
+			//Push into editor.options.methods.entity.nodes.node
+			//First get the parent uuid and name
 
-			$.each(self.options.ports.inPorts,function(port_type ,label){
+			$.each(self.options.process.Ports.In,function(port_type ,label){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
 				jsPlumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
-			$.each(self.options.ports.outPorts,function(port_type ,label){
+			$.each(self.options.ports.outPorts.Out,function(port_type ,label){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
 				jsPlumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
@@ -71,9 +80,10 @@ Process = function (params){
 						
 						dropped = ui.draggable;
 						var new_node = new window[dropped.data('type')]();
-						new_node.init(dropped,self.element,ui);
-						self.editor.options.logic.nodes.push(new_node);
+						new_node.init(dropped,self.element,ui,self.editor);
 						new_node.render();
+
+						self.editor.options.logic.nodes.push(new_node);
 						jsPlumb.repaintEverything();
 					}
 				});
