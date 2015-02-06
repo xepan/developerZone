@@ -4,6 +4,7 @@ Process = function (params){
 	this.editor= undefined;
 	this.parent= undefined;
 	this.element=undefined;
+	this.jsplumb = undefined;
 	this.options = {
 		name: undefined,
 		uuid:undefined,
@@ -38,23 +39,24 @@ Process = function (params){
 				$(this.element).attr('id',self.options.uuid);
 			}
 
-			this.element.data('obj',this);
+			this.element.data('options',this);
 
 			this.element.appendTo(self.parent);
 			// this.element.css('position','absolute');
 			//Push into editor.options.methods.entity.nodes.node
 			//First get the parent uuid and name
+			self.jsplumb=$.univ().newjsPlumb($(this.element).attr('id'));
 
 			$.each(self.options.Ports.In,function(port_type ,label){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;" class="enitity-process enitity-container">').appendTo(self.element);
-				jsPlumb.makeTarget(new_inport, {
+				self.jsplumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
 			$.each(self.options.Ports.Out,function(port_type ,label){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
-				jsPlumb.makeSource(new_outport, {
+				self.jsplumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
 			    });
 			})
@@ -69,7 +71,7 @@ Process = function (params){
 		    //                 else
 		    //                     jsPlumb.repaint($(e));
 						// });			
-						jsPlumb.repaintEverything();							
+						// jsPlumb.repaintEverything();							
 		            }
 		        })
 				.resizable({
@@ -86,7 +88,7 @@ Process = function (params){
 						new_node.render();
 
 						self.options.Nodes.push(new_node.options);
-						jsPlumb.repaintEverything();
+						// self.jsplumb.repaintEverything();
 					}
 				});
 		}

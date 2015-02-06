@@ -1,6 +1,7 @@
 jQuery.widget("ui.editor",{
 	
 	options:{
+		jsplumb: undefined,
 		entity:{
 			"name":"entity_name",
 			"class":"Default_name",
@@ -36,6 +37,7 @@ jQuery.widget("ui.editor",{
 		//Make Editor droppable
 		$(self.element).css('border','2px solid blue');
 		// $(self.element).css('position','absolute');
+		self.options.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 		$(self.element).droppable({
 			
 			drop: function(event,ui){
@@ -51,6 +53,9 @@ jQuery.widget("ui.editor",{
 			}
 
 		});
+
+		$(this.element).data('options',self.options);
+
 	},
 
 	loadPlugins: function(){

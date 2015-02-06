@@ -4,6 +4,7 @@ Method = function (params){
 	this.editor= undefined;
 	this.parent= undefined;
 	this.element=undefined;
+	this.jsplumb=undefined;
 	this.options = {
 		name: undefined,
 		uuid:undefined,
@@ -49,22 +50,23 @@ Method = function (params){
 				$(this.element).attr('id',self.options.uuid);
 			}
 
-			this.element.data('obj',this);
+			this.element.data('options',this);
 			this.element.appendTo(self.parent);
 			self.editor.options.entity.Method[self.options.uuid] = self.options ;
 			// this.element.css('position','absolute');
 
+			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 
 			$.each(self.options.Ports.In,function(index ,port){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
-				jsPlumb.makeTarget(new_inport, {
+				self.jsplumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
 			$.each(self.options.Ports.Out,function(index ,port){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
-				jsPlumb.makeSource(new_outport, {
+				self.jsplumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
 			    });
 			})
@@ -80,7 +82,7 @@ Method = function (params){
 		    //                 else
 		    //                     jsPlumb.repaint($(e));
 						// });			
-						jsPlumb.repaintEverything();							
+						// jsPlumb.repaintEverything();							
 		            }
 		        })
 				.resizable({
@@ -98,7 +100,7 @@ Method = function (params){
 						new_node.render();
 
 						self.options.Nodes.push(new_node.options);
-						jsPlumb.repaintEverything();
+						// self.jsplumb.repaintEverything();
 					}
 				});
 		}

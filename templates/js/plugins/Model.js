@@ -4,6 +4,7 @@ Model = function (params){
 	this.editor= undefined;
 	this.parent= undefined;
 	this.element=undefined;
+	this.jsplumb = undefined;
 
 	this.options = {
 		name: undefined,
@@ -43,17 +44,18 @@ Model = function (params){
 
 			this.element.appendTo(self.parent);
 			// this.element.css('position','absolute');
+			self.jsplumb = $.univ().getjsPlumb(self.parent.attr('id'));
 
 			$.each(self.options.Ports.In,function(index ,port){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
-				jsPlumb.makeTarget(new_inport, {
+				self.jsplumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
 			$.each(self.options.Ports.Out,function(index ,port){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
-				jsPlumb.makeSource(new_outport, {
+				self.jsplumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
 			      parent: new_outport,
 			    });
@@ -61,8 +63,9 @@ Model = function (params){
 
 			this.element.draggable({
 		            containment: 'parent',
-		            stop:function(e){
+		            drag:function(e){
 		            	// console.log($(this).find('._jsPlumb_endpoint_anchor'));
+		            	self.jsplumb.repaintEverything();
 			   //  	   	$('._jsPlumb_endpoint').each(function(i,e){ 
 			   //  	   		console.log($(e));
 		    //                 if($(e).hasClass("connect"))
@@ -70,7 +73,7 @@ Model = function (params){
 		    //                 else
 		    //                     jsPlumb.repaint($(e));
 						// });			
-						jsPlumb.repaintEverything();							
+						// jsPlumb.repaintEverything();							
 		            }
 		        });
 		}
