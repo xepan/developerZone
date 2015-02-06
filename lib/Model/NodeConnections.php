@@ -16,4 +16,8 @@ class Model_NodeConnections extends \SQL_Model{
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
+
+	function port($type){
+		return $this->ref($tyep.'_port_id');
+	}
 }

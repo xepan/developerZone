@@ -13,7 +13,7 @@ class Model_Node extends \SQL_Model{
 		$this->hasOne('developerZone/Method');
 		$this->hasOne('developerZone/Entity');
 
-		$this->addField('parent_block_id');
+		$this->addField('parent_node_id');
 		$this->addField('reference_obj');
 		$this->addField('name');
 		$this->addField('action')->enum(array('Block','Add','MethodCall','FunctionCall','Statement'));
@@ -41,145 +41,58 @@ class Model_Node extends \SQL_Model{
 	}
 
 	function parent(){
-		return $this['parent_block_id'];
+		return $this['parent_node_id']?:false;
 	}
 
-	function previousNodes(){
-		$me = $this->add('developerZone/Model_Node');
-		$ports_j = $me->join('developerZone_method_node_ports.node_id');
-		$ports_j->addField('node_port_id','id');
-		$ports_j->addField('node_port_type','type');
-		$me->addCondition('id',$this->id);
-		$me->addCondition('node_port_type','IN');
-		$port_ids_rows = $me->getRows();
+	function previousNodes($skip_blocks=true,$return_id_array=false){
 
-		$port_ids = array();
-		foreach ($port_ids_rows as $pi) {
-			$port_ids[] = $pi['node_port_id'];
+		$previous_nodes_id=array();
+
+		foreach ($this->ports('IN') as $p_in) {
+			foreach ($p_in->previousPorts($skip_blocks,true) as $p_in_pp) {
+					$previous_nodes_id[] = $p_in_pp['node_id'];
+				}
+			}
 		}
-		
+
+		if($return_id_array) return $previous_nodes_id;
+
 		$previous_nodes = $this->add('developerZone/Model_Node');
-		$ports_j = $previous_nodes->join('developerZone_method_node_ports.node_id');
-		$ports_j->addField('node_port_id','id');
-		$ports_j->addField('node_port_type','type');
-		
-		$port_conn_j = $ports_j->join('developerZone_method_nodes_connections.from_port_id');
-		$port_conn_j->addField('to_port_id');
-
-		$previous_nodes->addCondition('to_port_id',$port_ids);
-
-		if($previous_nodes->count()->getOne() == 0 ) return false;
-
+		$previous_nodes->addCondition('id',$previous_nodes_id);
 		return $previous_nodes;
-
-		echo "<pre>";
-		print_r($p_n_ids);
-		echo "</pre>";
-
 	}
 
-	function nextNodes(){
-		$me = $this->add('developerZone/Model_Node');
-		$ports_j = $me->join('developerZone_method_node_ports.node_id');
-		$ports_j->addField('node_port_id','id');
-		$ports_j->addField('node_port_type','type');
-		$me->addCondition('id',$this->id);
-		$me->addCondition('node_port_type','OUT');
-		$port_ids_rows = $me->getRows();
+	function nextNodes($skip_blocks=true,$return_id_array=false){
+		$next_nodes_id=array();
 
-		$port_ids = array();
-		foreach ($port_ids_rows as $pi) {
-			$port_ids[] = $pi['node_port_id'];
+		foreach ($this->ports('OUT') as $p_out) {
+			foreach ($p_out->nextPorts($skip_blocks,true) as $p_out_pp) {
+					$next_nodes_id[] = $p_out_pp['node_id'];
+				}
+			}
 		}
-		
+
+		if($return_id_array) return $next_nodes_id;
+
 		$next_nodes = $this->add('developerZone/Model_Node');
-		$ports_j = $next_nodes->join('developerZone_method_node_ports.node_id');
-		$ports_j->addField('node_port_id','id');
-		$ports_j->addField('node_port_type','type');
-		
-		$port_conn_j = $ports_j->join('developerZone_method_nodes_connections.from_port_id');
-		$port_conn_j->addField('from_port_id');
-
-		$next_nodes->addCondition('from_port_id',$port_ids);
-
-		if($next_nodes->count()->getOne() == 0 ) return false;
-
+		$next_nodes->addCondition('id',$next_nodes_id);
 		return $next_nodes;
-
-		echo "<pre>";
-		print_r($p_n_ids);
-		echo "</pre>";
 
 	}
 
 	function getBranch(){
-		// return branch from which this node belongs
+		// return branch :from which: this node belongs
 
 	}
 
-	function geterateCode(){
-		// echo "working on ". $this['name']. "<br/>";
-		switch ($this['action']) {
-			case 'Block':
-				return $this->add('developerZone/Code_Block')->load($this->id)->set('is_processed',true)->save()->generateCode();
-				break;
-			
-			case 'Add':
-				return $this->add('developerZone/Code_Add')->load($this->id)->set('is_processed',true)->save()->generateCode();
-				break;
+	function ports($type=false){
+		$p=$this->ref('developerZone/Port');
+		if($type) $p->addCondition('type',$type);
 
-			case 'Variable':
-				return $this->add('developerZone/Code_Variable')->load($this->id)->set('is_processed',true)->save()->generateCode();
-				break;
-			
-
-			default:
-				# code...
-				break;
-		}
-
-		return "";
+		return $p;
 	}
 
-	function generateVariableName($prefix=""){
-		$variables = $this->api->recall('code_variables',array());
-		$to_find = $this->api->normalizeName(strtolower($prefix.$this['name']));
-		$variables[$this->id] = $to_find.'_'.$this->id;
-		$this->api->memorize('code_variables',$variables);
-		return $to_find;
-	}
-
-	function getVariableName($id){
-		$variables = $this->api->recall('code_variables',array());
-		return $variables[$id];		
-	}
-
-	function loadNext1($under_block=null){
-
-		$code_flow = $this->add('developerZone/Model_CodeFlow');
-		$code_flow->addCondition('developerZone_entity_methods_id',$this['developerZone_entity_methods_id']);
-		$code_flow->addCondition('is_processed',false);
-
-		if($under_block)
-			$code_flow->addCondition('parent_block_id',$under_block);
-
-		$code_flow->tryLoadAny();
-
-		if(!$code_flow->loaded()){
-			return false;
-		}
-
-		return $code_flow;
-
-	}
-
-	function getConnectedDestinationPorts(){
-		$connections = $this->add('developerZone/Model_CodeFlowConnections');
-		$connections->addCondition('source_code_flow_id',$this->id);
-		return $connections;
-	}
-
-	function getConnectedSourcePorts(){
-
+	function type(){
+		return $this['action'];
 	}
 }

@@ -14,8 +14,28 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$tools_col = $cols->addColumn(2);
 
 		$entities_model = $this->add('developerZone/Model_Entity');
+		
+		$ul=$entities_col->add('View')->setElement('ul');
+		
+		$uls=array();
+		$li= $ul->add('View')->setElement('li');
+		$li->add('Text')->set('Models');
+		$uls['Model'] = $li->add('View')->setElement('ul');
+
+		$li= $ul->add('View')->setElement('li');
+		$li->add('Text')->set('Pages');
+		$uls['page'] = $li->add('View')->setElement('ul');
+
+		$li= $ul->add('View')->setElement('li');
+		$li->add('Text')->set('Views');
+		$uls['View'] = $li->add('View')->setElement('ul');
+		
 		foreach ($entities_model as $id => $ent) {
-			$en = $entities_col->add('View')->set($ent['name'])->addClass('entity')->addClass('createNew');
+			if(!isset($uls[$ent['type']])) continue;
+			
+			$add_to = $uls[$ent['type']];
+			$add_to = $add_to->add('View')->setElement('li');
+			$en = $add_to->add('View')->set($ent['name'])->addClass('entity')->addClass('createNew');
 			$en->setAttr(
 					array(
 						'data-inports'=>$ent['instance_inports'],
@@ -25,38 +45,26 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 				);
 		}
 
+		$entities_col->addClass('maketree');
+		$ul->js(true)->univ()->makeTree();
+
 		$this->api->layout->add('View')
 			->setStyle(array('width'=>'100%','height'=>'500px'))
 			->addClass('editor-document')
 			->js(true)->editor();
 
-		$tools_col->add('View')
-					->set('Process')
-					->addClass('editortool createNew')
-					->setAttr(
+
+		foreach ($this->add('developerZone/Model_Tools') as $tool) {
+			$tools_col->add('View')->set($tool['name'])
+				->setAttr(
 					array(
 						'data-inports'=>'{}',
 						'data-outports'=>'{}',
-						'data-type'=>'Process'
-						)
-				);
-
-		$tools_col->add('View')
-					->set('Method')
-					->addClass('editortool createNew')
-					->setAttr(
-					array(
-						'data-inports'=>'{}',
-						'data-outports'=>'{}',
-						'data-type'=>'Method'
-						)
-					);
-
-		$tools_col->add('View')->set('inPort')->addClass('editortool');
-		$tools_col->add('View')->set('outPort')->addClass('editortool');
-
-		foreach ($this->add('developerZone/Model_PHPFunctions') as $func) {
-			$tools_col->add('View')->set($func['name'])->addClass('editortool');
+						'data-type'=>$tool['js_plugin']
+						))
+				->addClass('editortool createNew')
+				->addClass($tool['icon']);
+				;
 		}
 
 	}
@@ -78,6 +86,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			->_load('editor')
 			->_load('jPlumbInit')
 			->_load('saveCode')
+			->_load('ultotree')
 			;
 		return parent::defaultTemplate();
 	}
