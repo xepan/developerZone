@@ -6,6 +6,7 @@ Model = function (params){
 	this.element=undefined;
 
 	this.options = {
+		uuid:undefined,
 		ports:{
 			inPorts:[],
 			outPorts:[]
@@ -18,7 +19,9 @@ Model = function (params){
 		var self = this;
 		self.parent=parent_element;
 		self.editor=editor;
+		$(self).uniqueId();
 
+		self.options.uuid = $(self).attr('id');
 		var inports=dropped.data('inports');
 		var outports=dropped.data('outports');
 		self.options.ports.inPorts = inports;
