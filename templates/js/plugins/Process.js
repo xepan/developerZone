@@ -41,11 +41,12 @@ Process = function (params){
 			this.element.data('obj',this);
 
 			this.element.appendTo(self.parent);
+			// this.element.css('position','absolute');
 			//Push into editor.options.methods.entity.nodes.node
 			//First get the parent uuid and name
 
 			$.each(self.options.Ports.In,function(port_type ,label){
-				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
+				var new_inport = $('<div style="width:20px; height:20px; background-color:red;" class="enitity-process enitity-container">').appendTo(self.element);
 				jsPlumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });

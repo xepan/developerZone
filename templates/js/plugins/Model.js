@@ -19,7 +19,6 @@ Model = function (params){
 		var self = this;
 		self.parent=parent_element;
 		self.editor=editor;
-		$(self).uniqueId();
 
 		self.options.uuid = $(self).attr('id');
 		var inports=dropped.data('inports');
@@ -35,6 +34,7 @@ Model = function (params){
 			this.element = $('<div data-type="Model" count="'+Model_Count+'">');
 			$(this.element).uniqueId();
 			this.element.appendTo(self.parent);
+			// this.element.css('position','absolute');
 
 			$.each(self.options.ports.inPorts,function(port_type ,label){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);

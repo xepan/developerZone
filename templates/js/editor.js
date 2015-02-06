@@ -1,5 +1,3 @@
-editor_droppable_common_options = undefined;
-
 jQuery.widget("ui.editor",{
 	
 	options:{
@@ -37,8 +35,8 @@ jQuery.widget("ui.editor",{
 		// Setup Plugins
 		//Make Editor droppable
 		$(self.element).css('border','2px solid blue');
-		// $(self.element).css('position','relative');
-		$(self.element).droppable(editor_droppable_common_options = {
+		// $(self.element).css('position','absolute');
+		$(self.element).droppable({
 			
 			drop: function(event,ui){
 				if(!ui.draggable.hasClass('createNew')) return;
