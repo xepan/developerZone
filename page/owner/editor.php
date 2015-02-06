@@ -41,6 +41,17 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 						)
 				);
 
+		$tools_col->add('View')
+					->set('Method')
+					->addClass('editortool createNew')
+					->setAttr(
+					array(
+						'data-inports'=>'{}',
+						'data-outports'=>'{}',
+						'data-type'=>'Method'
+						)
+					);
+
 		$tools_col->add('View')->set('inPort')->addClass('editortool');
 		$tools_col->add('View')->set('outPort')->addClass('editortool');
 

@@ -1,4 +1,4 @@
-Model_Count= 1;
+Model_Count= 0;
 
 Model = function (params){
 	this.editor= undefined;
@@ -28,10 +28,9 @@ Model = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div id="Model_'+Model_Count+'">');
 			Model_Count++;
-
-
+			this.element = $('<div data-type="Model" count="'+Model_Count+'">');
+			$(this.element).uniqueId();
 			this.element.appendTo(self.parent);
 
 			$.each(self.options.ports.inPorts,function(port_type ,label){

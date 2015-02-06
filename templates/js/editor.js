@@ -1,15 +1,29 @@
 jQuery.widget("ui.editor",{
 	
 	options:{
-		logic:{
-			nodes:[],
-			connections:[]
+		entity:{
+			"name":"entity_name",
+			"class":"Default_name"
 		},
-		includePlugins:['Model','Process']
+
+		attributes:{
+			attribute:{
+				'type': "Dumy_table",
+				'name': "Dumy_table_name",
+				'accessMode' : "Dumy_accessMode"
+			}
+		},
+
+		methods:{
+			
+		},
+
+		includePlugins:['Model','Process','Method']
 	},
 
 	_create: function(){
 		var self = this;
+		$(self).uniqueId();
 		self.loadPlugins();
 		self.setupEditor();
 		self.loadDesign();
@@ -32,8 +46,11 @@ jQuery.widget("ui.editor",{
 				var new_node = new window[dropped.data('type')]();
 				new_node.init(dropped,self.element,ui,self);
 				self.options.logic.nodes.push(new_node);
+				
+				$(new_node).attr('parent_uuid',self.id);
 				new_node.render();
 				jsPlumb.repaintEverything();
+
 			}
 
 		});

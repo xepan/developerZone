@@ -1,6 +1,6 @@
-Process_Count= 0;
+Method_Count= 0;
 
-Process = function (params){
+Method = function (params){
 	this.editor= undefined;
 	this.parent= undefined;
 	this.element=undefined;
@@ -18,7 +18,6 @@ Process = function (params){
 		self.parent=parent_element;
 		self.editor=editor;
 		$(self).uniqueId();
-		
 		var inports=dropped.data('inports');
 		var outports=dropped.data('outports');
 		self.options.ports.inPorts = inports;
@@ -28,8 +27,8 @@ Process = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			Process_Count++;
-			this.element = $('<div data-type="Process" count="'+Process_Count+'" style="background-color: lightblue">');
+			Method_Count++;
+			this.element = $('<div data-type="Method" count="'+Method_Count+'" style="background-color:#fff8dc">');
 			$(this.element).uniqueId();
 
 			this.element.appendTo(self.parent);
@@ -73,6 +72,7 @@ Process = function (params){
 						var new_node = new window[dropped.data('type')]();
 						new_node.init(dropped,self.element,ui);
 						self.editor.options.logic.nodes.push(new_node);
+						$(new_node).attr('parent_uuid',self.id);
 						new_node.render();
 						jsPlumb.repaintEverything();
 					}
