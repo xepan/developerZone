@@ -14,7 +14,7 @@ jQuery.widget("ui.editor",{
 		self.setupEditor();
 		self.loadDesign();
 		self.render();
-		console.log(self);
+		// console.log(self);
 	},
 
 	setupEditor: function(){
