@@ -6,26 +6,26 @@ Model = function (params){
 	this.element=undefined;
 
 	this.options = {
+		name: undefined,
 		uuid:undefined,
-		ports:{
-			inPorts:[],
-			outPorts:[]
+		type:'Model',
+		Ports: {
+			In: ['InPort'],
+			Out: ['Outport']
 		},
+		Nodes: [],
+		Connections: [],
 		x:0,
 		y:0
 	};
 
-	this.init = function(dropped,parent_element,ui,editor){
+	this.init = function(dropped,parent_element,ui,editor,options){
 		var self = this;
 		self.parent=parent_element;
 		self.editor=editor;
-		$(self).uniqueId();
 
-		self.options.uuid = $(self).attr('id');
-		var inports=dropped.data('inports');
-		var outports=dropped.data('outports');
-		self.options.ports.inPorts = inports;
-		self.options.ports.outPorts = outports;
+		if(options != undefined)
+			self.options=options;
 	}
 
 	this.render = function(){
@@ -33,17 +33,24 @@ Model = function (params){
 		if(this.element == undefined){
 			Model_Count++;
 			this.element = $('<div data-type="Model" count="'+Model_Count+'">');
-			$(this.element).uniqueId();
+			
+			if(self.options.uuid == undefined){
+				$(this.element).uniqueId();
+				self.options.uuid = $(this.element).attr('id');
+			}else{
+				$(this.element).attr('id',self.options.uuid);
+			}
+
 			this.element.appendTo(self.parent);
 
-			$.each(self.options.ports.inPorts,function(port_type ,label){
+			$.each(self.options.Ports.In,function(index ,port){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
 				jsPlumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
-			$.each(self.options.ports.outPorts,function(port_type ,label){
+			$.each(self.options.Ports.Out,function(index ,port){
 				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
 				jsPlumb.makeSource(new_outport, {
 			      anchor: 'Continuous',

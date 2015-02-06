@@ -29,7 +29,7 @@ jQuery.widget("ui.editor",{
 		self.setupEditor();
 		self.loadDesign();
 		self.render();
-		console.log(self.options);
+		// console.log(self.options);
 	},
 
 	setupEditor: function(){
@@ -71,8 +71,12 @@ jQuery.widget("ui.editor",{
 
 	},
 
-	search: function(uuid){
-		
+	moveNode: function(node_array,from_index,to_index){
+  	  	var self = this;
+  	  	
+  	  	var element = node_array[from_index]
+    	node_array.splice(from_index, 1);
+    	node_array.splice(to_index, 0, element);
 	}
 	
 });
