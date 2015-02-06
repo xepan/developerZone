@@ -11,8 +11,8 @@ Model = function (params){
 		uuid:undefined,
 		type:'Model',
 		Ports: {
-			In: ['InPort'],
-			Out: ['Outport']
+			In: ["SD"],
+			Out: ["OS"]
 		},
 		Nodes: [],
 		Connections: [],
@@ -47,14 +47,14 @@ Model = function (params){
 			self.jsplumb = $.univ().getjsPlumb(self.parent.attr('id'));
 
 			$.each(self.options.Ports.In,function(index ,port){
-				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
+				var new_inport = $('<div style="width:20px; height:20px; background-color:green;">').appendTo(self.element);
 				self.jsplumb.makeTarget(new_inport, {
 			      anchor: 'Continuous'
 			    });
 			})
 
 			$.each(self.options.Ports.Out,function(index ,port){
-				var new_outport = $('<div style="width:20px; height:20px; background-color:blue;">').appendTo(self.element);
+				var new_outport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);
 				self.jsplumb.makeSource(new_outport, {
 			      anchor: 'Continuous',
 			      parent: new_outport,
@@ -63,7 +63,7 @@ Model = function (params){
 
 			this.element.draggable({
 		            containment: 'parent',
-		            drag:function(e){
+		            stop:function(e){
 		            	// console.log($(this).find('._jsPlumb_endpoint_anchor'));
 		            	self.jsplumb.repaintEverything();
 			   //  	   	$('._jsPlumb_endpoint').each(function(i,e){ 
@@ -75,6 +75,16 @@ Model = function (params){
 						// });			
 						// jsPlumb.repaintEverything();							
 		            }
+		        }).resizable({
+		        	alsoResize: '#'+$(this).attr('id')+' *'
+		        });
+
+		        this.element.dblclick(function(e){
+		        	if($(this).hasClass('selected')){
+			        	$(this).removeClass('selected');
+		        	}else{
+			        	$(this).addClass('selected');
+		        	}
 		        });
 		}
 		this.element.width('100px');

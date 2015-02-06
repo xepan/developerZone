@@ -41,7 +41,7 @@ Method = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div data-type="Method" class="entity-method entity-container" style="background-color:#fff8dc"><span class="label label-success">'+self.options.name+'</span>');
+			this.element = $('<div data-type="Method" class="entity-method entity-container" style="background-color:#fff8dc"><div class="label label-success">'+self.options.name+'</div>');
 			
 			if(self.options.uuid == undefined){
 				$(this.element).uniqueId();
@@ -56,6 +56,15 @@ Method = function (params){
 			// this.element.css('position','absolute');
 
 			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
+
+			$(this.element).find('div').click(function(e){
+				$(this).attr('contenteditable',"true");
+				$(this).focus();
+				e.preventDefault();
+			}).blur(function(e){
+				$(this).attr('contenteditable',"false");
+				e.preventDefault();
+			});
 
 			$.each(self.options.Ports.In,function(index ,port){
 				var new_inport = $('<div style="width:20px; height:20px; background-color:red;">').appendTo(self.element);

@@ -101,7 +101,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 	}
 
 	function render(){
-
+		$this->api->jquery->addStaticStyleSheet('editor');
 		$this->js(true)->_selector('.entity')->entity();
 		$this->js(true)->_selector('.editortool')->editortool();
 

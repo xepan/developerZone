@@ -36,7 +36,7 @@ jQuery.widget("ui.editor",{
 		// Setup Plugins
 		//Make Editor droppable
 		$(self.element).css('border','2px solid blue');
-		// $(self.element).css('position','absolute');
+		$(self.element).css('position','relative');
 		self.options.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 		$(self.element).droppable({
 			
