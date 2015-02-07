@@ -87,7 +87,9 @@ CodeBlock = function (params){
 				.appendTo(draggable_div);
 			// this.element.appendTo(self.parent);
 
-			if(self.options.type == 'Method') this.element.addClass('entity-method');
+			if(self.options.type == 'Method'){
+				this.element.addClass('entity-method');	
+			} 
 			
 			var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(this.element);
 
@@ -161,10 +163,11 @@ CodeBlock = function (params){
 			this.element.dblclick(function(){
 				if(self.show_content){
 					self.show_content=false;
-					console.log(self.jsplumb.getAllConnections());
-					$.each(self.jsplumb.getAllConnections(), function(idx, connection) {
-				        connnection.setVisible(false);
-				    });
+					// console.log(self.jsplumb.getAllConnections());
+					$(this).find('.node').each(function(index,n){
+						self.jsplumb.hide(n);
+						$(n).hide();
+					});
 				}else{
 					self.show_content=true;
 					$(this).find('.node').each(function(index,n){

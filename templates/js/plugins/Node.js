@@ -120,7 +120,7 @@ Node = function (params){
 
 
         	var container_id = $(self.parent).closest('.entity-container').parent().attr('id');
-        	console.log(container_id);
+        	// console.log(container_id);
 			self.jsplumb = jsPlumbs[container_id];
 			
 			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
