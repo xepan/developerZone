@@ -108,7 +108,6 @@ CodeBlock = function (params){
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 
-			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 
 			$.each(self.options.Ports.In,function(index ,port_options){
 				p = new Port();
@@ -120,10 +119,11 @@ CodeBlock = function (params){
 				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
-			this.element.draggable({
-	            containment: 'parent',
-				})
-				.droppable({
+
+			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
+			self.jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
+			
+			this.element.droppable({
 					greedy: true,
 					drop: function(event,ui){
 						if(!ui.draggable.hasClass('createNew')) return; 

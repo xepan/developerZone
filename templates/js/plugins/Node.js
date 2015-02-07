@@ -119,18 +119,21 @@ Node = function (params){
 			})
 
 
+        	jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
+			
+			jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 
-			this.element.draggable({
-	            containment: 'parent',
-	            stop: function(event,ui){
-	            	// console.log(ui);
-	            	jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
-	            	jsplumb.repaintEverything();
-	            }
-			})/*
-			.resizable({
+			this.element.resizable({
 
-			})*/;
+			})
+			.droppable({
+				accept: ".port",
+				greedy: true,
+				stop: function(event){
+					alert('run');
+				}
+			})
+			;
 		}
 	}
 }

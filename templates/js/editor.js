@@ -33,7 +33,7 @@ jQuery.widget("ui.editor",{
 		$(self.element).css('position','relative');
 		self.options.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 		$(self.element).droppable({
-			accept: ".for-editor",
+			accept: ".for-editor, .port",
 			drop: function(event,ui){
 				if(!ui.draggable.hasClass('createNew')) return;
 

@@ -98,7 +98,7 @@ Port = function (params){
 		// console.log('Adding Source endpoint at ' + self.element.attr('id'));
 		var startpointOptions = { isSource:true, container:$('#'+container_id)};
 		var startpointOptions = {	
-						anchors: ["Continuous", { faces:[ "bottom", "right" ] } ],
+						anchors: ["Continuous", { faces:[ "right","bottom" ] } ],
 						maxConnections:-1, 
 						isSource:true, 
 						// isTarget:true, 
@@ -126,7 +126,7 @@ Port = function (params){
 		// console.log('Adding Target endpoint at ' + self.element.attr('id'));
 		var endpointOptions = { isTarget:true,container:$('#' + container_id)};
 		var endpointOptions = {	
-						anchors: ["Continuous", { faces:[ "top", "left" ] } ],
+						anchors: ["Continuous", { faces:["left","top" ] } ],
 						maxConnections:-1, 
 						// isSource:true, 
 						isTarget:true, 

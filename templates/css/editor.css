@@ -79,10 +79,14 @@
 	background-color: red;
 }
 
-.node{
+.node {
 	width:300px;
 	min-height:200px;
 	background-color:#fff8dc;
+	position: absolute !important;
+}
+
+.entity-container {
 	position: absolute !important;
 }
 
