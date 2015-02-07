@@ -29,14 +29,18 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			
 			$add_to = $uls[$ent['type']];
 			$add_to = $add_to->add('View')->setElement('li');
-			$en = $add_to->add('View')->set($ent['name'])->addClass('entity')->addClass('createNew');
+			$en = $add_to->add('View')->set($ent['name']);
 			$en->setAttr(
 					array(
 						'data-inports'=>$ent['instance_inports'],
 						'data-outports'=>$ent['instance_outports'],
-						'data-type'=>$ent['type']
+						'data-name'=>$ent['name'],
+						'data-type'=>$ent['type'],
+						'data-js_widget'=>$ent['js_widget'],
+						'data-can_add_ports'=>false
 						)
 				);
+			$en->addClass('entity')->addClass('createNew');
 		}
 
 		$entities_col->addClass('maketree entities');
@@ -56,14 +60,18 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			$tool_view = $add_to->add('View')
 				->setAttr(
 					array(
-						'data-inports'=>'{}',
-						'data-outports'=>'{}',
-						'data-type'=>$tool['js_plugin']
+						'data-inports'=>$tool['instance_inports'],
+						'data-outports'=>$tool['instance_outports'],
+						'data-name'=>$tool['name'],
+						'data-type'=>$tool['type'],
+						'data-js_widget'=>$tool['js_widget'],
+						'data-can_add_ports'=>$tool['can_add_ports']
 						))
 				->addClass('editortool createNew')
 				->addClass($tool['icon']);
 				;
 			if(!$tool['icon']) $tool_view->set($tool['name']);
+			if($tool['is_for_editor']) $tool_view->addClass('for-editor');
 		}
 		$tools_col->addClass('maketree tools');
 
@@ -71,7 +79,6 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$json = $cont->getStructure();
 
 		$this->api->layout->add('View')
-			->setStyle(array('width'=>'100%','height'=>'500px'))
 			->addClass('editor-document')
 			->js(true)
 			->_load('editor')

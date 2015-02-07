@@ -10,10 +10,14 @@ class Model_Tools extends \SQL_Model{
 
 		$this->addField('category');
 		$this->addField('name');
+		$this->addField('type');
 		$this->addField('template');
-		$this->addField('ports');
+		$this->addField('instance_inports');
+		$this->addField('instance_outports');
 		$this->addField('is_output_multibranch')->type('boolean');
-		$this->addField('js_plugin');
+		$this->addField('is_for_editor')->type('boolean')->defaultValue(false);
+		$this->addField('can_add_ports')->type('boolean')->defaultValue(false);
+		$this->addField('js_widget');
 		$this->addField('special_php_handler');
 		$this->addField('icon');
 		$this->addField('order');

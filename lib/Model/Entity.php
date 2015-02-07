@@ -21,8 +21,9 @@ class Model_Entity extends \SQL_Model{
 		$this->addField('parent_class');
 		$this->addField('is_class')->type('boolean');
 		$this->addField('is_framework_class')->type('boolean');
-		$this->addField('instance_inports');
-		$this->addField('instance_outports');
+		$this->addField('instance_inports')->type('text');
+		$this->addField('instance_outports')->type('text');
+		$this->addField('js_widget')->defaultValue('Node');
 
 		$this->addExpression('namespace')->set(function($m,$q){
 			return $m->refSQL('component_id')->fieldQuery('namespace');

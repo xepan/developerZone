@@ -18,7 +18,7 @@ jQuery.widget("ui.editor",{
 		},
 
 
-		includePlugins:['Model','Process','Method']
+		includePlugins:['CodeBlock','Node','Port']
 	},
 
 	_create: function(){
@@ -39,15 +39,13 @@ jQuery.widget("ui.editor",{
 		$(self.element).css('position','relative');
 		self.options.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 		$(self.element).droppable({
-			
+			accept: ".for-editor",
 			drop: function(event,ui){
 				if(!ui.draggable.hasClass('createNew')) return;
 
 				dropped = ui.draggable;
-				var new_node = new window[dropped.data('type')]();
-
-				new_node.init(dropped,self.element,ui,self);
-				new_node.render();
+				var new_node = new window[dropped.data('js_widget')]();
+				new_node.createNew(dropped,self.element,self);
 
 				// self.options.entity[dropped.data('type')] = new_node.options;
 			}
