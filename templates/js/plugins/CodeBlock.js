@@ -82,7 +82,10 @@ CodeBlock = function (params){
 		var self = this;
 		if(this.element == undefined){
 			
-			this.element = $('<div data-type="'+self.options.type+'" class="entity-container" >');
+			draggable_div =$('<div class="entity-container-draggable">').appendTo(self.parent);
+			this.element = $('<div data-type="'+self.options.type+'" class="entity-container" >')
+				.appendTo(draggable_div);
+			// this.element.appendTo(self.parent);
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
@@ -106,11 +109,13 @@ CodeBlock = function (params){
 			}
 
 			this.element.data('options',self.options);
-			this.element.appendTo(self.parent);
 
-			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
-			var container_id = $(self.parent).closest('.entity-container').attr('id');
-			jsplumb = jsPlumbs[container_id];
+			draggable_div.attr('id','dd_'+self.options.uuid);
+
+			var container_id = 'dd_'+self.options.uuid;
+			
+			$.univ().newjsPlumb(container_id);
+			self.jsplumb = jsPlumbs[container_id];
 
 			$.each(self.options.Ports.In,function(index ,port_options){
 				p = new Port();
@@ -123,9 +128,24 @@ CodeBlock = function (params){
 			})
 
 
-			jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
+			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 			
-			this.element.droppable({
+			draggable_div
+			.draggable(
+			{
+				containment: 'parent',
+				drag: function(event,ui){
+					self.jsplumb.repaintEverything();
+				}
+			}).resizable({
+					resize: function(event, ui){
+						$(this).children('.entity-container').width($(this).width());
+						$(this).children('.entity-container').height($(this).height());
+					}
+				});
+
+			this.element
+			.droppable({
 					greedy: true,
 					drop: function(event,ui){
 						if(!ui.draggable.hasClass('createNew')) return; 
@@ -136,11 +156,6 @@ CodeBlock = function (params){
 						new_node.createNew(dropped,self.element,self.editor);
 						if(!self.show_content) self.element.dblclick();
 					}
-				});
-
-			this.element
-				.resizable({
-					
 				});
 
 			this.element.dblclick(function(){

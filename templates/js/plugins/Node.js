@@ -119,12 +119,20 @@ Node = function (params){
 			})
 
 
-        	var container_id = $(self.parent).closest('.entity-container').attr('id');
-			jsplumb = jsPlumbs[container_id];
+        	var container_id = $(self.parent).closest('.entity-container').parent().attr('id');
+        	console.log(container_id);
+			self.jsplumb = jsPlumbs[container_id];
 			
-			jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
+			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 
-			this.element.resizable({
+			this.element
+			.draggable({
+				containment: 'parent',
+				drag: function(event,ui){
+					self.jsplumb.repaintEverything();
+				}
+			})
+			.resizable({
 				handles: "se",
 				containment: self.parent
 			})
@@ -143,7 +151,7 @@ Node = function (params){
 							y:0
 						};
 					self.options.Ports[ui.draggable.data('type')].push(new_port);
-					jsplumb.repaint($(self.element));
+					self.jsplumb.repaintEverything();
 				}
 			})
 			;

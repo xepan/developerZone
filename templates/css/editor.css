@@ -37,6 +37,11 @@
 	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
 }
 
+.entity-method .entity-container-draggable:parent {
+	width: 100%;
+	height: 500px;
+}
+
 .port{
 	position: relative;
 	margin:0 0 5px 0;
