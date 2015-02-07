@@ -130,8 +130,19 @@ Node = function (params){
 			.droppable({
 				accept: ".port",
 				greedy: true,
-				stop: function(event){
-					alert('run');
+				drop: function(event,ui){
+					var new_port = {
+							uuid:undefined,
+							type: ui.draggable.data('type'),
+							name:'New Port',
+							// caption: undefined,
+							mandatory: undefined,
+							is_singlaton: undefined,
+							x:0,
+							y:0
+						};
+					self.options.Ports[ui.draggable.data('type')].push(new_port);
+					jsplumb.repaint($(self.element));
 				}
 			})
 			;

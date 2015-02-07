@@ -97,7 +97,6 @@
 	margin-top:10px;
 }
 
-._jsPlumb_endpoint{
-	margin-left: 2px;
-	margin-right: 2px;
+.editortool{
+	z-index: 1000;
 }

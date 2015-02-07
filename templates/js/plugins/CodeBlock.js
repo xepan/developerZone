@@ -87,7 +87,7 @@ CodeBlock = function (params){
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
 			var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(this.element);
-					
+
 			$(name).click(function(e){
 				$(this).attr('contenteditable',"true");
 				$(this).focus();
@@ -123,6 +123,7 @@ CodeBlock = function (params){
 			})
 
 
+			jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 			
 			this.element.droppable({
 					greedy: true,
@@ -135,9 +136,11 @@ CodeBlock = function (params){
 						new_node.createNew(dropped,self.element,self.editor);
 						if(!self.show_content) self.element.dblclick();
 					}
-				})
-				.resizable({
+				});
 
+			this.element
+				.resizable({
+					
 				});
 
 			this.element.dblclick(function(){
