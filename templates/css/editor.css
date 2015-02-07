@@ -49,10 +49,12 @@
 
 .port .name{
 	font-size: 10px;
-	margin-left:auto;
-	margin-right:auto;
-	margin-top:auto;
-	margin-bottom:auto;
+	margin: 0 auto 0 auto;
+}
+
+.node .name{
+	margin-top:30%;
+	text-align: center;
 }
 
 .port .move-handler,.caption{
