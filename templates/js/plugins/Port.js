@@ -88,7 +88,7 @@ Port = function (params){
 		var self=this;
 
 		var container_id = $(self.parent).closest('.entity-container').attr('id');
-		jsplumb = $.univ().getjsPlumb(container_id);
+		jsplumb = jsPlumbs[container_id];
 
 		// jsplumb = jsPlumbs[$(self.parent).closest('.entity-container').attr('id')];
 		
@@ -121,7 +121,7 @@ Port = function (params){
 		var self=this;
 
 		var container_id = $(self.parent).closest('.entity-container').attr('id');
-		jsplumb = $.univ().getjsPlumb(container_id);
+		jsplumb = jsPlumbs[container_id];
 
 		// console.log('Adding Target endpoint at ' + self.element.attr('id'));
 		var endpointOptions = { isTarget:true,container:$('#' + container_id)};

@@ -108,6 +108,9 @@ CodeBlock = function (params){
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 
+			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
+			var container_id = $(self.parent).closest('.entity-container').attr('id');
+			jsplumb = jsPlumbs[container_id];
 
 			$.each(self.options.Ports.In,function(index ,port_options){
 				p = new Port();
@@ -120,8 +123,6 @@ CodeBlock = function (params){
 			})
 
 
-			self.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
-			self.jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 			
 			this.element.droppable({
 					greedy: true,
@@ -142,6 +143,7 @@ CodeBlock = function (params){
 			this.element.dblclick(function(){
 				if(self.show_content){
 					self.show_content=false;
+					console.log(self.jsplumb.getAllConnections());
 					$.each(self.jsplumb.getAllConnections(), function(idx, connection) {
 				        connnection.setVisible(false);
 				    });

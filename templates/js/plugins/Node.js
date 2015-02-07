@@ -119,7 +119,8 @@ Node = function (params){
 			})
 
 
-        	jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
+        	var container_id = $(self.parent).closest('.entity-container').attr('id');
+			jsplumb = jsPlumbs[container_id];
 			
 			jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 
