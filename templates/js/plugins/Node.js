@@ -60,7 +60,7 @@ Node = function (params){
 		var self = this;
 		if(this.element == undefined){
 			
-			this.element = $('<div data-type="'+self.options.type+'" class="node" style="background-color:#fff8dc">');
+			this.element = $('<div data-type="'+self.options.type+'" class="node">');
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
