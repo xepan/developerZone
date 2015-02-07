@@ -53,8 +53,8 @@
 }
 
 .node .name{
-	margin-top:30%;
 	text-align: center;
+	margin-top: 40px;
 }
 
 .port .move-handler,.caption{
@@ -100,4 +100,20 @@
 ._jsPlumb_endpoint{
 	margin-left: 2px;
 	margin-right: 2px;
+}
+
+.ui-resizable-se{
+	width: 0;
+	height: 0;
+	border-width: 0 0 10px 10px;
+	border-style: solid;
+	border-color: transparent transparent #007bff transparent;
+}
+
+.node:hover .ui-resizable-se{
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 0 20px 20px;
+	border-color: transparent transparent #007bff transparent;
 }
