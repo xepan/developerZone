@@ -122,7 +122,8 @@ Node = function (params){
 
 			this.element.draggable({
 	            containment: 'parent',
-	            stop: function(){
+	            stop: function(event,ui){
+	            	console.log(ui);
 	            	jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
 	            	jsplumb.repaintEverything();
 	            }
