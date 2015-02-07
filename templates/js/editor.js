@@ -22,7 +22,7 @@ jQuery.widget("ui.editor",{
 			self.loadDesign();
 			self.render();
 		});
-		// console.log(self.options);
+		console.log(self.options);
 	},
 
 	setupEditor: function(){
@@ -64,8 +64,9 @@ jQuery.widget("ui.editor",{
 		$.each(self.options.entity.Method,function(id, method_options){
 			var new_node = new CodeBlock();
 			new_node.createNew(undefined,self.element,self,method_options);
+			$(this).xunique(new_node.options.uuid);
 			// load its nodes
-			// self.loadNodes(new_node,method_options.Nodes);
+			self.loadNodes(new_node,method_options.Nodes);
 			// create connections
 		});
 	},
@@ -74,7 +75,8 @@ jQuery.widget("ui.editor",{
 		var self=this;
 		$.each(node_array,function(index,node){
 			var new_node = new window[node.js_widget]();						
-			new_node.createNew(undefined,parent.element,parent.editor,node.options);
+			new_node.createNew(undefined,parent.element,parent.editor,node);
+			$(this).xunique(new_node.uuid);
 			self.loadNodes(new_node,node.Nodes);
 		});
 	},
@@ -92,3 +94,12 @@ jQuery.widget("ui.editor",{
 	}
 	
 });
+
+xunique_given_max=1;
+jQuery.fn.xunique = function(given_value) {
+        if(given_value != undefined){
+        	if(given_value > xunique_given_max) xunique_given_max = given_value+1;
+        }else{
+        	return xunique_given_max++;
+        }
+};

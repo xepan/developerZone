@@ -3,6 +3,7 @@ CodeBlock = function (params){
 	this.parent= undefined;
 	this.element=undefined;
 	this.jsplumb=undefined;
+	this.show_content=true;
 	
 	this.options = {
 		name: "Process",
@@ -44,7 +45,7 @@ CodeBlock = function (params){
 			var flow_in = {
 							uuid:undefined,
 							type: 'FLOW-IN',
-							name:'FLOW-IN',
+							name:'Flow In',
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
@@ -98,7 +99,7 @@ CodeBlock = function (params){
 			});
 
 			if(self.options.uuid == undefined){
-				$(this.element).uniqueId();
+				$(this.element).attr('id',$(this).xunique());
 				self.options.uuid = $(this.element).attr('id');
 			}else{
 				$(this.element).attr('id',self.options.uuid);
@@ -131,11 +132,28 @@ CodeBlock = function (params){
 
 						var new_node = new window[dropped.data('js_widget')]();						
 						new_node.createNew(dropped,self.element,self.editor);
+						if(!self.show_content) self.element.dblclick();
 					}
 				})
 				.resizable({
 
 				});
+
+			this.element.dblclick(function(){
+				if(self.show_content){
+					self.show_content=false;
+					$.each(self.jsplumb.getAllConnections(), function(idx, connection) {
+				        connnection.setVisible(false);
+				    });
+				}else{
+					self.show_content=true;
+					$(this).find('.node').each(function(index,n){
+						self.jsplumb.show(n);
+						$(n).show();
+					});
+				}
+			})
+
 		}
 	}
 }

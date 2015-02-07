@@ -35,6 +35,7 @@ Port = function (params){
 			$(self.parent).data('options').Ports[self.options.type].push(self.options);
 		}
 		
+
 		self.render();
 
 		if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
@@ -63,11 +64,13 @@ Port = function (params){
 			// 	e.preventDefault();
 			// 	self.options.caption = $(this).html();		
 			// });
-
+			// console.log(self.options);
 			if(self.options.uuid == undefined){
-				$(this.element).uniqueId();
+				// console.log('UUID giving');
+				$(this.element).attr('id',$(this).xunique());
 				self.options.uuid = $(this.element).attr('id');
 			}else{
+				// console.log('UUID NOT giving');
 				$(this.element).attr('id',self.options.uuid);
 			}
 
@@ -84,27 +87,28 @@ Port = function (params){
 	this.makeSource = function(){
 		var self=this;
 
-		jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
+		var container_id = $(self.parent).closest('.entity-container').attr('id');
+		jsplumb = $.univ().getjsPlumb(container_id);
 
 		// jsplumb = jsPlumbs[$(self.parent).closest('.entity-container').attr('id')];
 		
 		// console.log(jsPlumbs);
 		// console.log($(self.parent).closest('.entity-container').attr('id'));
 		// console.log(jsplumb);
-
-		jsplumb.makeSource(self.element.attr('id'),{
-			anchor: "Continuous",
-			parent: self.element.attr('id')
-		})
+		// console.log('Adding Source endpoint at ' + self.element.attr('id'));
+		var startpointOptions = { isSource:true, container:$('#'+container_id)};
+		jsplumb.addEndpoint(self.element.attr('id'), startpointOptions);
 	}
 
 	this.makeTarget = function(){
 		var self=this;
-		jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
 
-		jsplumb.makeTarget(self.element.attr('id'),{
-			anchor: "Continuous",
-		})
+		var container_id = $(self.parent).closest('.entity-container').attr('id');
+		jsplumb = $.univ().getjsPlumb(container_id);
+
+		// console.log('Adding Target endpoint at ' + self.element.attr('id'));
+		var endpointOptions = { isTarget:true,container:$('#' + container_id)};
+		jsplumb.addEndpoint(self.element.attr('id'), endpointOptions);
 	}
 
 

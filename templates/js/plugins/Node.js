@@ -41,11 +41,28 @@ Node = function (params){
 							y:0
 						};
 
-			$.each(dropped.data('inports'), function (index, port){
+			// default flow in port
+			var flow_in = {
+							uuid:undefined,
+							type: 'FLOW-IN',
+							name:'Flow In',
+							// caption: undefined,
+							mandatory: undefined,
+							is_singlaton: undefined,
+							x:0,
+							y:0
+						};
+			self.options.Ports['In'].push(flow_in);
+
+			var inp = jQuery.extend(true, {}, dropped.data('inports'));
+			console.log(inp);
+			var outp = jQuery.extend(true, {}, dropped.data('outports'));
+
+			$.each(inp, function (index, port){
 				self.options.Ports.In.push(port);
 			});
 
-			$.each(dropped.data('outports'), function (index, port){
+			$.each(outp, function (index, port){
 				self.options.Ports.Out.push(port);
 			});
 		}
@@ -77,32 +94,30 @@ Node = function (params){
 			});
 
 			if(self.options.uuid == undefined){
-				$(this.element).uniqueId();
+				console.log('UUID not found');
+				$(this.element).attr('id',$(this).xunique());
 				self.options.uuid = $(this.element).attr('id');
 			}else{
+				console.log('UUID found');
 				$(this.element).attr('id',self.options.uuid);
 			}
 
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 			
-			// default flow in port
-			p = new Port();
-			p.createNew(dropped,self.element,self.editor,{type:'FLOW-IN',name:'Flow In'});
 
 			$.each(self.options.Ports.In,function(index ,port_options){
 				// createNew Port by providing options
 				p = new Port();
-				p.createNew(dropped,self.element,self.editor,port_options);
+				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
 			$.each(self.options.Ports.Out,function(index ,port_options){
 				// createNew Port by providing options
 				p = new Port();
-				p.createNew(dropped,self.element,self.editor,port_options);
+				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
-			self.options.Ports['In'].push(p.options);
 
 
 			this.element.draggable({
@@ -111,10 +126,10 @@ Node = function (params){
 	            	jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
 	            	jsplumb.repaintEverything();
 	            }
-			})
+			})/*
 			.resizable({
 
-			});
+			})*/;
 		}
 	}
 }
