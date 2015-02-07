@@ -55,7 +55,7 @@ Node = function (params){
 			self.options.Ports['In'].push(flow_in);
 
 			var inp = jQuery.extend(true, {}, dropped.data('inports'));
-			console.log(inp);
+			// console.log(inp);
 			var outp = jQuery.extend(true, {}, dropped.data('outports'));
 
 			$.each(inp, function (index, port){
@@ -94,11 +94,11 @@ Node = function (params){
 			});
 
 			if(self.options.uuid == undefined){
-				console.log('UUID not found');
+				// console.log('UUID not found');
 				$(this.element).attr('id',$(this).xunique());
 				self.options.uuid = $(this.element).attr('id');
 			}else{
-				console.log('UUID found');
+				// console.log('UUID found');
 				$(this.element).attr('id',self.options.uuid);
 			}
 
@@ -123,7 +123,7 @@ Node = function (params){
 			this.element.draggable({
 	            containment: 'parent',
 	            stop: function(event,ui){
-	            	console.log(ui);
+	            	// console.log(ui);
 	            	jsplumb = $.univ().getjsPlumb($(self.parent).closest('.entity-container').attr('id'));
 	            	jsplumb.repaintEverything();
 	            }
