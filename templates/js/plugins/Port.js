@@ -26,7 +26,7 @@ Port = function (params){
 							uuid:undefined,
 							type: dropped.data('type'),
 							name: undefined,
-							caption: undefined,
+							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
 							x:0,
@@ -37,7 +37,7 @@ Port = function (params){
 		
 		self.render();
 
-		if(self.options.type=="DATA-IN")
+		if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN")
 			self.makeTarget();
 		else
 			self.makeSource();
@@ -53,17 +53,17 @@ Port = function (params){
 			
 			var handler = $('<div class="move-handler">x</div>').appendTo(this.element);
 			var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(this.element);
-			var caption = $('<div class="caption" >'+self.options.caption+'</div>').appendTo(this.element);
+			// var caption = $('<div class="caption" >'+self.options.caption+'</div>').appendTo(this.element);
 					
-			$(caption).click(function(e){
-				$(this).attr('contenteditable',"true");
-				$(this).focus();
-				e.preventDefault();
-			}).blur(function(e){
-				$(this).attr('contenteditable',"false");
-				e.preventDefault();
-				self.options.caption = $(this).html();		
-			});
+			// $(caption).click(function(e){
+			// 	$(this).attr('contenteditable',"true");
+			// 	$(this).focus();
+			// 	e.preventDefault();
+			// }).blur(function(e){
+			// 	$(this).attr('contenteditable',"false");
+			// 	e.preventDefault();
+			// 	self.options.caption = $(this).html();		
+			// });
 
 			if(self.options.uuid == undefined){
 				$(this.element).uniqueId();
@@ -72,7 +72,7 @@ Port = function (params){
 				$(this.element).attr('id',self.options.uuid);
 			}
 
-			this.element.data('options',this);
+			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 
 			this.element.draggable({

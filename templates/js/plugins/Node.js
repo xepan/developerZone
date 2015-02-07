@@ -7,6 +7,7 @@ Node = function (params){
 		name: undefined,
 		uuid:undefined,
 		type:'Method',
+		js_widget:'Node',
 		Ports: {
 			In: [],
 			Out: []
@@ -29,6 +30,7 @@ Node = function (params){
 							uuid:undefined,
 							name: dropped.data('name'),
 							type: dropped.data('type'),
+							js_widget: dropped.data('js_widget'),
 							Ports: {
 								In: [],
 								Out: []
@@ -81,7 +83,7 @@ Node = function (params){
 				$(this.element).attr('id',self.options.uuid);
 			}
 
-			this.element.data('options',this);
+			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 
 			$.each(self.options.Ports.In,function(index ,port_options){
@@ -95,6 +97,11 @@ Node = function (params){
 				p = new Port();
 				p.createNew(dropped,self.element,self.editor,port_options);
 			})
+
+			// default flow in port
+			p = new Port();
+			p.createNew(dropped,self.element,self.editor,{type:'FLOW-IN',caption:'Flow In'});
+			self.options.Ports['In'].push(p.options);
 
 
 			this.element.draggable({

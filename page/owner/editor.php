@@ -6,7 +6,8 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		parent::init();
 
 		$entity_model =$this->add('developerZone/Model_Entity');
-		$entity_model->load($_GET['entity_id']);
+		$entity_model->load($this->api->stickyGET('entity_id'));
+		$this->api->memorize('entity_id',$_GET['entity_id']);
 
 		$btn = $this->app->layout->add('Button')->set('SAVE');
 		$btn->js('click')->univ()->saveCode();
@@ -75,14 +76,21 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		}
 		$tools_col->addClass('maketree tools');
 
-		$cont= $this->add('developerZone/Controller_CodeStructure',array('entity'=>$entity_model));
-		$json = $cont->getStructure();
+		$code_structure = $this->add('developerZone/Model_Entity')->load($_GET['entity_id'])->get('code_structure');
+		$code_structure = json_decode($code_structure,true);
+
+		// if(!count($code_structure)) 
+		// 	$code_structure=null;
+		// else
+			$code_structure = array('entity'=>$code_structure);
 
 		$this->api->layout->add('View')
 			->addClass('editor-document')
 			->js(true)
 			->_load('editor')
-			->editor();
+			->editor($code_structure);
+
+
 
 		$this->js(true)->univ()->makeTree();
 	}

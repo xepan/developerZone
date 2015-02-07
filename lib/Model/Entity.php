@@ -25,6 +25,8 @@ class Model_Entity extends \SQL_Model{
 		$this->addField('instance_outports')->type('text');
 		$this->addField('js_widget')->defaultValue('Node');
 
+		$this->addField('code_structure')->type('text');
+
 		$this->addExpression('namespace')->set(function($m,$q){
 			return $m->refSQL('component_id')->fieldQuery('namespace');
 		});

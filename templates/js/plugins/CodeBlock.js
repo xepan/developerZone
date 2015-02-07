@@ -41,24 +41,39 @@ CodeBlock = function (params){
 							y:0
 						};
 
+			var flow_in = {
+							uuid:undefined,
+							type: 'FLOW-IN',
+							name:'FLOW-IN',
+							// caption: undefined,
+							mandatory: undefined,
+							is_singlaton: undefined,
+							x:0,
+							y:0
+						};
+			self.options.Ports['In'].push(flow_in);
+
 			// Create dropped data ports from data('inports/outports')
+			if(self.parent.hasClass('editor-document'))
+				self.options.type='Method'; // Otherwise I m already Process
+			
+			if(self.options.type == 'Method'){
+				var dropped_name = prompt("Please enter name");
+					if(dropped_name == null) return;
+				self.options.name = dropped_name;
+			}else{
+				$(parent_element).data('options').Nodes.push(self.options);
+			}
 
 		}
-
-		if(self.parent.hasClass('editor-document'))
-			self.options.type='Method'; // Otherwise I m already Process
 
 		self.render();
-		
+
 		if(self.options.type == 'Method'){
 			self.editor.options.entity.Method[self.options.uuid] = self.options ;
-			var dropped_name = prompt("Please enter name");
-				if(dropped_name == null) return;
-			self.options.name = dropped_name;
-			self.element.find('.name').text(dropped_name);
-		}else{
-			$(parent_element).data('options').Nodes.push(self.options);
+			self.element.find('.name').text(self.options.name);
 		}
+		
 	}
 
 	
@@ -96,14 +111,13 @@ CodeBlock = function (params){
 
 			$.each(self.options.Ports.In,function(index ,port_options){
 				p = new Port();
-				p.createNew(dropped,self.element,self.editor,port_options);
+				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
 			$.each(self.options.Ports.Out,function(index ,port_options){
 				p = new Port();
-				p.createNew(dropped,self.element,self.editor,port_options);
+				p.createNew(undefined,self.element,self.editor,port_options);
 			})
-
 
 			this.element.draggable({
 	            containment: 'parent',
@@ -114,7 +128,7 @@ CodeBlock = function (params){
 						if(!ui.draggable.hasClass('createNew')) return; 
 						
 						dropped = ui.draggable;
-						
+
 						var new_node = new window[dropped.data('js_widget')]();						
 						new_node.createNew(dropped,self.element,self.editor);
 					}
