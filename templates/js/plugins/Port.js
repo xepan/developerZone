@@ -87,7 +87,7 @@ Port = function (params){
 	this.makeSource = function(){
 		var self=this;
 
-		var container_id = $(self.parent).closest('.entity-container').parent().attr('id');
+		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
 
 		jsplumb = jsPlumbs[container_id];
 
@@ -121,7 +121,7 @@ Port = function (params){
 	this.makeTarget = function(){
 		var self=this;
 
-		var container_id = $(self.parent).closest('.entity-container').parent().attr('id');
+		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
 		// console.log(container_id);
 		jsplumb = jsPlumbs[container_id];
 

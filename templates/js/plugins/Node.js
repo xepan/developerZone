@@ -119,7 +119,7 @@ Node = function (params){
 			})
 
 
-        	var container_id = $(self.parent).closest('.entity-container').parent().attr('id');
+        	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
         	// console.log(container_id);
 			self.jsplumb = jsPlumbs[container_id];
 			

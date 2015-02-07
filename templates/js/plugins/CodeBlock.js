@@ -115,9 +115,14 @@ CodeBlock = function (params){
 			draggable_div.attr('id','dd_'+self.options.uuid);
 
 			var container_id = 'dd_'+self.options.uuid;
-			
-			$.univ().newjsPlumb(container_id);
-			self.jsplumb = jsPlumbs[container_id];
+			if(self.options.type == 'Method'){
+				$.univ().newjsPlumb(container_id);
+				self.jsplumb = jsPlumbs[container_id];
+			}else{
+				var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+	        	// console.log(container_id);
+				self.jsplumb = jsPlumbs[container_id];
+			}
 
 			$.each(self.options.Ports.In,function(index ,port_options){
 				p = new Port();
