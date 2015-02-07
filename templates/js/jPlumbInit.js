@@ -16,15 +16,27 @@ $.each({
 		x.bind("connection", function(info) {
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
 			editor = $('.editor-document').data('uiEditor');
-			editor.options.entity.Method[z].Connections.push(info);
-			source_id = $('#'+info.sourceId).parent().attr('id');
-			target_id = $('#'+info.targetId).parent().attr('id');
+
+			//Find parent of sourceId which is codeblock or method
+			parent_id = $('#'+info.sourceId).closest('.entity-method').attr('id');
+			connection ={
+						sourceId: info.sourceId,
+						targetId: info.targetId
+					};
+
+			$.each(editor.options.entity.Method,function(index,obj){
+				if(obj.uuid === parent_id){
+					editor.options.entity.Method[index].Connections.push(connection);
+				}
+			});
+
+
 			from_index = undefined;
 			to_index = undefined;
-			
-			parent_obj = $('#'+info.sourceId).closest('.entity-container').data("options");
-			node_array = parent_obj.options.Nodes;
-			// console.log(node_array);
+			source_id = $('#'+info.sourceId).parent().attr('id');
+			target_id = $('#'+info.targetId).parent().attr('id');
+			parent_obj_options = $('#'+info.sourceId).closest('.entity-container').data("options");
+			var node_array = parent_obj_options.Nodes;
 
 			$.each(node_array, function(index, obj){
 				if(obj.uuid === source_id)
@@ -44,11 +56,17 @@ $.each({
 		x.bind("connectionDetached",function(info,originalEvent){
 			editor = $('.editor-document').data('uiEditor');
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
-			connections = editor.options.entity.Method[method_uuid].Connections;
-			$.each(connections, function(index, obj) {
-				if(obj.sourceId === info.sourceId && obj.targetId === info.targetId)
-					editor.options.entity.Method[method_uuid].Connections.splice(index,1);
+			$.each(editor.options.entity.Method,function(index,obj){
+				if(obj.uuid === method_uuid){
+					connections = editor.options.entity.Method[index].Connections;
+					$.each(connections, function(key, obj) {
+						if(obj.sourceId === info.sourceId && obj.targetId === info.targetId)
+							editor.options.entity.Method[key].Connections.splice(key,1);
+					});
+				}
+
 			});
+
 			//Remove Detached Connection form the editor.options.connections
 		});
 

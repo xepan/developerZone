@@ -22,7 +22,7 @@ jQuery.widget("ui.editor",{
 			self.loadDesign();
 			self.render();
 		});
-		console.log(self.options);
+		// console.log(self.options);
 	},
 
 	setupEditor: function(){
