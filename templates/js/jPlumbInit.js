@@ -1,8 +1,8 @@
 	jsPlumbs = [];
 
-	jsPlumb.Defaults.PaintStyle = { strokeStyle:"#F09E30", lineWidth:2, dashstyle: '3 3', };
-	jsPlumb.Defaults.EndpointStyle = { radius:7, fillStyle:"#F09E30" };
-	jsPlumb.importDefaults({Connector : [ "Bezier", { curviness:50 } ]});
+	// jsPlumb.Defaults.PaintStyle = { strokeStyle:"#F09E30", lineWidth:2, dashstyle: '3 3', };
+	// jsPlumb.Defaults.EndpointStyle = { radius:7, fillStyle:"#F09E30" };
+	// jsPlumb.importDefaults({Connector : [ "Bezier", { curviness:50 } ]});
 	
 $.each({
 
@@ -16,7 +16,7 @@ $.each({
 		x.bind("connection", function(info) {
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
 			editor = $('.editor-document').data('uiEditor');
-			editor.options.entity.Method[method_uuid].Connections.push(info);
+			editor.options.entity.Method[z].Connections.push(info);
 			source_id = $('#'+info.sourceId).parent().attr('id');
 			target_id = $('#'+info.targetId).parent().attr('id');
 			from_index = undefined;

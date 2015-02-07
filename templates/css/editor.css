@@ -42,15 +42,17 @@
 	margin:0 0 5px 0;
 	width: 0;
 	height: 0;
-	border-top: 10px solid transparent;
+	border-/*top: 10px solid transparent;
 	border-left: 20px solid blue;
-	border-bottom: 10px solid transparent;
+	border-bo*/ttom: 10px solid transparent;
 }
 
 .port .name{
 	font-size: 10px;
-	margin-left:-20px;
-	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:auto;
+	margin-bottom:auto;
 }
 
 .port .move-handler,.caption{
@@ -58,18 +60,18 @@
 }
 
 .port.In, .port.DATA-IN {
-	border-left: 20px solid #00cc66; 
+	/*border-left: 20px solid #00cc66; */
 	left:0;
 	top:0;
 	clear:all;
-	margin-left:-10px;
+	/*margin-left:-10px;*/
 }
 
 .port.Out, .port.DATA-OUT {
 	clear: right;
-	border-left: 20px solid #1c2933;
+	/*border-left: 20px solid #1c2933;*/
 	float: right;
-	margin-right: -15px;
+	/*margin-right: -15px;*/
 }
 
 .port.Error {
@@ -85,3 +87,11 @@
 }
 
 
+.port-label{
+	margin-top:10px;
+}
+
+._jsPlumb_endpoint{
+	margin-left: 2px;
+	margin-right: 2px;
+}

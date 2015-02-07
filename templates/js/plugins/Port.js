@@ -50,9 +50,9 @@ Port = function (params){
 		var self = this;
 		if(this.element == undefined){
 			
-			this.element = $('<div data-type="'+self.options.type+'" class="port '+self.options.type+' '+ $(self.parent).closest('.entity-container').attr('id')+'">');
+			this.element = $('<div>');// data-type="'+self.options.type+'" class="port '+self.options.type+' '+ $(self.parent).closest('.entity-container').attr('id')+'">');
+			// var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(this.element);
 			
-			var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(this.element);
 			// var caption = $('<div class="caption" >'+self.options.caption+'</div>').appendTo(this.element);
 					
 			// $(caption).click(function(e){
@@ -97,7 +97,24 @@ Port = function (params){
 		// console.log(jsplumb);
 		// console.log('Adding Source endpoint at ' + self.element.attr('id'));
 		var startpointOptions = { isSource:true, container:$('#'+container_id)};
-		jsplumb.addEndpoint(self.element.attr('id'), startpointOptions);
+		var startpointOptions = {	
+						anchors: ["Continuous", { faces:[ "bottom", "right" ] } ],
+						maxConnections:-1, 
+						isSource:true, 
+						// isTarget:true, 
+						endpoint:["Dot", {radius:5, cssClass:"port DATA-IN"}], 
+						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						paintStyle:{fillStyle:"black"},
+						connectorStyle : {  lineWidth: 2, strokeStyle:"#222222" },
+						connector : ["Straight"],
+						setDragAllowedWhenFull:true,
+						connectorOverlays:[ 
+							[ "Arrow", { width:10, length:15, location:1, id:"arrow" } ], 
+							[ "Label", { label: "", id:"label" } ]
+						]	,
+						container:$('#' + container_id)			
+						}
+		jsplumb.addEndpoint(self.element.parent().attr('id'), startpointOptions);
 	}
 
 	this.makeTarget = function(){
@@ -108,7 +125,24 @@ Port = function (params){
 
 		// console.log('Adding Target endpoint at ' + self.element.attr('id'));
 		var endpointOptions = { isTarget:true,container:$('#' + container_id)};
-		jsplumb.addEndpoint(self.element.attr('id'), endpointOptions);
+		var endpointOptions = {	
+						anchors: ["Continuous", { faces:[ "top", "left" ] } ],
+						maxConnections:-1, 
+						// isSource:true, 
+						isTarget:true, 
+						endpoint:["Dot", {radius:5}], 
+						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						paintStyle:{fillStyle:"green"},
+						connectorStyle : {  lineWidth: 3, strokeStyle:"#5b9ada" },
+						connector : ["Straight"],
+						setDragAllowedWhenFull:true,
+						connectorOverlays:[ 
+							[ "Arrow", { width:20, length:30, location:1, id:"arrow" } ], 
+							[ "Label", { label:"", id:"label" } ]
+						]	,
+						container:$('#' + container_id)			
+						}
+		jsplumb.addEndpoint(self.element.parent().attr('id'), endpointOptions);
 	}
 
 
