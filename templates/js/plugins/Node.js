@@ -125,7 +125,8 @@ Node = function (params){
 			jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 
 			this.element.resizable({
-
+				handles: "se",
+				containment: self.parent
 			})
 			.droppable({
 				accept: ".port",
