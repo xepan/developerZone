@@ -57,7 +57,7 @@
 	display: none;
 }
 
-.port.In {
+.port.In, .port.DATA-IN {
 	border-left: 20px solid #00cc66; 
 	left:0;
 	top:0;
@@ -65,7 +65,7 @@
 	margin-left:-10px;
 }
 
-.port.Out {
+.port.Out, .port.DATA-OUT {
 	clear: right;
 	border-left: 20px solid #1c2933;
 	float: right;

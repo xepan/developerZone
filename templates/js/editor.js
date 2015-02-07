@@ -19,7 +19,7 @@ jQuery.widget("ui.editor",{
 		self.loadPlugins();
 		$.atk4(function(){
 			self.setupEditor();
-			// self.loadDesign();
+			self.loadDesign();
 			self.render();
 		});
 		// console.log(self.options);
@@ -65,7 +65,7 @@ jQuery.widget("ui.editor",{
 			var new_node = new CodeBlock();
 			new_node.createNew(undefined,self.element,self,method_options);
 			// load its nodes
-			self.loadNodes(new_node,method_options.Nodes);
+			// self.loadNodes(new_node,method_options.Nodes);
 			// create connections
 		});
 	},
@@ -74,8 +74,8 @@ jQuery.widget("ui.editor",{
 		var self=this;
 		$.each(node_array,function(index,node){
 			var new_node = new window[node.js_widget]();						
-			new_node.createNew(undefined,parent.element,parent.editor);
-			// self.loadNodes(new_node,node.Nodes);
+			new_node.createNew(undefined,parent.element,parent.editor,node.options);
+			self.loadNodes(new_node,node.Nodes);
 		});
 	},
 

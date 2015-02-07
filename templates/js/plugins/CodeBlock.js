@@ -70,7 +70,7 @@ CodeBlock = function (params){
 		self.render();
 
 		if(self.options.type == 'Method'){
-			self.editor.options.entity.Method[self.options.uuid] = self.options ;
+			self.editor.options.entity.Method.push(self.options) ;
 			self.element.find('.name').text(self.options.name);
 		}
 		

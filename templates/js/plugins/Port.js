@@ -37,7 +37,7 @@ Port = function (params){
 		
 		self.render();
 
-		if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN")
+		if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
 			self.makeTarget();
 		else
 			self.makeSource();
@@ -51,7 +51,6 @@ Port = function (params){
 			
 			this.element = $('<div data-type="'+self.options.type+'" class="port '+self.options.type+' '+ $(self.parent).closest('.entity-container').attr('id')+'">');
 			
-			var handler = $('<div class="move-handler">x</div>').appendTo(this.element);
 			var name = $('<div class="name" >'+self.options.name+'</div>').appendTo(this.element);
 			// var caption = $('<div class="caption" >'+self.options.caption+'</div>').appendTo(this.element);
 					
@@ -75,10 +74,10 @@ Port = function (params){
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 
-			this.element.draggable({
-	            containment: 'parent',
-	            handle: '> .move-handler'
-				});
+			// this.element.draggable({
+	  //           containment: 'parent',
+	  //           handle: '> .move-handler'
+			// 	});
 		}
 	}
 

@@ -79,10 +79,19 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$code_structure = $this->add('developerZone/Model_Entity')->load($_GET['entity_id'])->get('code_structure');
 		$code_structure = json_decode($code_structure,true);
 
-		// if(!count($code_structure)) 
-		// 	$code_structure=null;
-		// else
-			$code_structure = array('entity'=>$code_structure);
+		
+		$code_structure = array('entity'=>$code_structure);
+		// entity:{
+		// 	"name":"entity_name",
+		// 	"class":"Default_name",
+		// 	attributes:[],
+		// 	Method: []
+		// },
+
+		if(!isset($code_structure['name'])) $code_structure['name']="init";
+		if(!isset($code_structure['class'])) $code_structure['class']="View";
+		if(!isset($code_structure['attributes'])) $code_structure['attributes']=array();
+		if(!isset($code_structure['Method'])) $code_structure['Method']=array();
 
 		$this->api->layout->add('View')
 			->addClass('editor-document')

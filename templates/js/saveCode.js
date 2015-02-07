@@ -1,8 +1,6 @@
 $.each({
 	saveCode : function(){
 		editor = $('.editor-document').data('uiEditor');
-		console.log(editor.options.entity);
-		console.log(JSON.stringify(editor.options.entity));
 		$.ajax({
 					url: 'index.php?page=developerZone_page_owner_saveentity',
 					type: 'POST',
