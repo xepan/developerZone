@@ -35,7 +35,7 @@ CodeBlock = function (params){
 			var flow_in = {
 							uuid:undefined,
 							type: 'in-out',
-							name:'Flow In',
+							name:'Flow',
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
@@ -191,22 +191,22 @@ CodeBlock = function (params){
 			// $(draggable_div).height($(draggable_div).children('.entity-container').height());
 			// $(draggable_div).width($(draggable_div).children('.entity-container').width());
 
-			this.element.dblclick(function(){
-				if(self.show_content){
-					self.show_content=false;
-					// console.log(self.jsplumb.getAllConnections());
-					$(this).find('.node').each(function(index,n){
-						self.jsplumb.hide(n);
-						$(n).hide();
-					});
-				}else{
-					self.show_content=true;
-					$(this).find('.node').each(function(index,n){
-						self.jsplumb.show(n);
-						$(n).show();
-					});
-				}
-			})
+			// this.element.dblclick(function(){
+			// 	if(self.show_content){
+			// 		self.show_content=false;
+			// 		// console.log(self.jsplumb.getAllConnections());
+			// 		$(this).find('.node').each(function(index,n){
+			// 			self.jsplumb.hide(n);
+			// 			$(n).hide();
+			// 		});
+			// 	}else{
+			// 		self.show_content=true;
+			// 		$(this).find('.node').each(function(index,n){
+			// 			self.jsplumb.show(n);
+			// 			$(n).show();
+			// 		});
+			// 	}
+			// })
 
 		}
 	}

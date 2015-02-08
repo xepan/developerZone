@@ -35,7 +35,7 @@ Node = function (params){
 			var flow_in = {
 							uuid:undefined,
 							type: 'in-out',
-							name:'Flow In',
+							name:'Flow',
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
