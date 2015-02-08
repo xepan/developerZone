@@ -70,6 +70,11 @@ $.each({
 			//Remove Detached Connection form the editor.options.connections
 		});
 
+		x.bind('dblclick', function (connection, e) {
+		    x.detach(connection);
+		    alert('remove from array as well');
+		});
+
 		return x;
 	},
 
