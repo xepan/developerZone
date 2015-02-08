@@ -53,7 +53,6 @@ class Model_Node extends \SQL_Model{
 					$previous_nodes_id[] = $p_in_pp['node_id'];
 				}
 			}
-		}
 
 		if($return_id_array) return $previous_nodes_id;
 
@@ -70,7 +69,6 @@ class Model_Node extends \SQL_Model{
 					$next_nodes_id[] = $p_out_pp['node_id'];
 				}
 			}
-		}
 
 		if($return_id_array) return $next_nodes_id;
 

@@ -177,7 +177,7 @@ Node = function (params){
 		
 		$.each($(self.element).closest('.node').data('options').Nodes, function(index,node){
 			if(self.options.uuid == node.uuid){
-				$(self.element).parent().data('options').Nodes.splice(index,1);
+				$(self.element).closest('.node').data('options').Nodes.splice(index,1);
 				return;
 			}
 		});
