@@ -10,9 +10,8 @@ Port = function (params){
 		// caption: undefined,
 		mandatory: undefined,
 		is_singlaton: undefined,
-		creates_block: false,
-		x:0,
-		y:0
+		left:0,
+		top:0
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -30,9 +29,9 @@ Port = function (params){
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
+							left:0,
+							top:0
 							creates_block: false,
-							x:0,
-							y:0
 						};
 			$(self.parent).data('options').Ports.push(self.options);
 		}
