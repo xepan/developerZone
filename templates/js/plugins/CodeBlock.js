@@ -12,8 +12,10 @@ CodeBlock = function (params){
 		Ports: [],
 		Nodes: [],
 		Connections: [],
-		x:0,
-		y:0
+		left:0,
+		top:0,
+		width:0,
+		height:0
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -35,8 +37,10 @@ CodeBlock = function (params){
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
-							x:0,
-							y:0
+							left:0,
+							top:0,
+							width:0,
+							height:0
 						};
 			self.options.Ports.push(flow_in);
 
@@ -115,20 +119,27 @@ CodeBlock = function (params){
 				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
-
 			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
-			
+			$(draggable_div).height($(draggable_div).children('.entity-container').height());
+			$(draggable_div).width($(draggable_div).children('.entity-container').width());
+
 			draggable_div
 			.draggable(
 			{
 				containment: 'parent',
 				drag: function(event,ui){
 					self.jsplumb.repaintEverything();
+					self.options.top = ui.position.top; 
+					self.options.left = ui.position.left; 
 				}
 			}).resizable({
+					handles: "se",
+					containment: self.parent,
 					resize: function(event, ui){
 						$(this).children('.entity-container').width($(this).width());
 						$(this).children('.entity-container').height($(this).height());
+						self.options.width = $(this).width();
+						self.options.height = $(this).height();
 					}
 				});
 

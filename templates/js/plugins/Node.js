@@ -11,8 +11,10 @@ Node = function (params){
 		Ports: [],
 		Nodes: [],
 		Connections: [],
-		x:0,
-		y:0
+		top:0,
+		left:0,
+		width:0,
+		height:0
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -28,26 +30,25 @@ Node = function (params){
 							name: dropped.data('name'),
 							type: dropped.data('type'),
 							js_widget: dropped.data('js_widget'),
-							Ports: {
-								In: [],
-								Out: []
-							},
+							Ports: [],
 							Nodes: [],
 							Connections: [],
-							x:0,
-							y:0
+							top:0,
+							left:0,
+							width:0,
+							height:0
 						};
 
 			// default flow in port
 			var flow_in = {
 							uuid:undefined,
-							type: 'FLOW-IN',
+							type: 'in-out',
 							name:'Flow In',
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
-							x:0,
-							y:0
+							left:0,
+							top:0
 						};
 			self.options.Ports.push(flow_in);
 
@@ -114,11 +115,17 @@ Node = function (params){
 				containment: 'parent',
 				drag: function(event,ui){
 					self.jsplumb.repaintEverything();
+					self.options.top = ui.position.top; 
+					self.options.left = ui.position.left;
 				}
 			})
 			.resizable({
 				handles: "se",
-				containment: self.parent
+				containment: self.parent,
+				resize: function(event, ui){
+						self.options.width = $(this).width();
+						self.options.height = $(this).height();
+					}
 			})
 			.droppable({
 				accept: ".port",
@@ -131,8 +138,8 @@ Node = function (params){
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
-							x:0,
-							y:0
+							left:0,
+							top:0
 						};
 					self.options.Ports[ui.draggable.data('type')].push(new_port);
 					self.jsplumb.repaintEverything();

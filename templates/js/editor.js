@@ -40,7 +40,7 @@ jQuery.widget("ui.editor",{
 				dropped = ui.draggable;
 				var new_node = new window[dropped.data('js_widget')]();
 				new_node.createNew(dropped,self.element,self);
-
+				
 				// self.options.entity[dropped.data('type')] = new_node.options;
 			}
 

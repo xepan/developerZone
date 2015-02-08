@@ -17,6 +17,7 @@
 }
 
 .entity-method{
+	display: inline-block;
 	width: 100%;
 	height: 500px;
 	-webkit-box-sizing: content-box;
@@ -37,11 +38,6 @@
 	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
 }
 
-.entity-method .entity-container-draggable:parent {
-	width: 100%;
-	height: 500px;
-}
-
 .port{
 	position: relative;
 	margin:0 0 5px 0;
@@ -59,7 +55,7 @@
 
 .node .name{
 	text-align: center;
-	margin-top: 40px;
+	margin-top: 20%;
 }
 
 .port .move-handler,.caption{
@@ -88,7 +84,7 @@
 
 .node {
 	width:300px;
-	min-height:200px;
+	height:200px;
 	background-color:#fff8dc;
 	position: absolute !important;
 }
@@ -122,6 +118,20 @@
 	border-width: 0 0 20px 20px;
 	border-color: transparent transparent #007bff transparent;
 }
+
+.entity-container-draggable:hover .ui-resizable-se{
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 0 20px 20px;
+	border-color: transparent transparent #007bff transparent;
+}
+
+.entity-container-draggable{
+	display: block;
+	height: auto;
+}
+
 .editortool{
 	z-index: 1000;
 }
