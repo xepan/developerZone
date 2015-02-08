@@ -1,11 +1,27 @@
 $.each({
+	
+	unsetPortObj: function(options){
+		options.ports_obj= [];
+		$.each(options.Nodes, function (index,node_options){
+			$.univ().unsetPortObj(node_options);
+		});
+	},
+
 	saveCode : function(){
 		editor = $('.editor-document').data('uiEditor');
+		sentized_json = jQuery.extend(true, {}, editor.options.entity);
+
+		$.each(sentized_json.Method,function(index,m){
+			$.univ().unsetPortObj(m);
+		})
+
+		console.log(sentized_json);
+
 		$.ajax({
 					url: 'index.php?page=developerZone_page_owner_saveentity',
 					type: 'POST',
 					datatype: "json",
-					data: { entity_code : JSON.stringify(editor.options.entity)},
+					data: { entity_code : JSON.stringify(sentized_json)},
 				})
 				.done(function(ret) {
 					if(ret==='true'){

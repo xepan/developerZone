@@ -97,8 +97,9 @@ Port = function (params){
 		}
 
 
-		jsplumb.addEndpoint(self.element.parent().attr('id'), selected_endpoint_options);
+		ep=jsplumb.addEndpoint(self.element.parent().attr('id'), selected_endpoint_options);
 
+		$(parent_element).data('options').ports_obj.push(ep);
 		// if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
 		// 	self.makeTarget();
 		// else

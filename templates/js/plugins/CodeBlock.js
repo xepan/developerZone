@@ -15,7 +15,9 @@ CodeBlock = function (params){
 		left:0,
 		top:0,
 		width:0,
-		height:0
+		height:0,
+		ports_obj:[],
+		js_widget:"CodeBlock"
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -127,6 +129,7 @@ CodeBlock = function (params){
 			//Remove BTN
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(draggable_div);
 			$(remove_btn).click(function(){
+
 				//Check if Method
 				if(self.options.type == "Method"){
 					$.each(self.editor.options.entity.Method, function(index,method_obj){
@@ -137,9 +140,23 @@ CodeBlock = function (params){
 					});
 				}else{
 					//First remove it's all connection as source or target
-					
+					// get all uuids of child
+					$(self.element).find('.remove-btn:first-of-type').click();
+					self.remove();
 				}
 			});
+
+
+			$(this.draggable_div).css("top",self.options.top + "px");
+			$(this.draggable_div).css("left",self.options.left + "px");
+			$(this.draggable_div).css("width",self.options.width + "px");
+			$(this.draggable_div).css("height",self.options.height + "px");
+
+			$(this.element).css("top",self.options.top + "px");
+			$(this.element).css("left",self.options.left + "px");
+			$(this.element).css("width",self.options.width + "px");
+			$(this.element).css("height",self.options.height + "px");
+
 
 			draggable_div
 			.draggable(
@@ -193,5 +210,21 @@ CodeBlock = function (params){
 			})
 
 		}
+	}
+
+	this.remove= function(){
+		var self=this;
+
+		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+		self.jsplumb = jsPlumbs[container_id];
+		
+		self.jsplumb.detachAllConnections($(self.element));
+
+		$.each(self.options.ports_obj, function(index,ep){
+			self.jsplumb.deleteEndpoint(ep);
+		});
+
+		$(self.element).parent().remove();
+
 	}
 }

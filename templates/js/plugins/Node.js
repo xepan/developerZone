@@ -14,7 +14,8 @@ Node = function (params){
 		top:0,
 		left:0,
 		width:0,
-		height:0
+		height:0,
+		ports_obj:[]
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -36,7 +37,8 @@ Node = function (params){
 							top:0,
 							left:0,
 							width:0,
-							height:0
+							height:0,
+							ports_obj:[]
 						};
 
 			// default flow in port
@@ -147,6 +149,39 @@ Node = function (params){
 				}
 			})
 			;
+
+			$(this.element).css("top",self.options.top + "px");
+			$(this.element).css("left",self.options.left +"px");
+			$(this.element).css("width",self.options.width +"px");
+			$(this.element).css("height",self.options.height + "px");
+
+			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
+			$(remove_btn).click(function(){
+				self.remove();
+			});
 		}
+	},
+
+	this.remove= function(){
+		var self=this;
+
+		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+		self.jsplumb = jsPlumbs[container_id];
+		
+		self.jsplumb.detachAllConnections($(self.element));
+
+		$.each(self.options.ports_obj, function(index,ep){
+			self.jsplumb.deleteEndpoint(ep);
+		});
+
+		
+		$.each($(self.element).closest('.node').data('options').Nodes, function(index,node){
+			if(self.options.uuid == node.uuid){
+				$(self.element).parent().data('options').Nodes.splice(index,1);
+				return;
+			}
+		});
+
+		$(self.element).remove();
 	}
 }
