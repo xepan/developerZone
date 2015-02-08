@@ -1,5 +1,4 @@
 	jsPlumbs = [];
-
 	// jsPlumb.Defaults.PaintStyle = { strokeStyle:"#F09E30", lineWidth:2, dashstyle: '3 3', };
 	// jsPlumb.Defaults.EndpointStyle = { radius:7, fillStyle:"#F09E30" };
 	// jsPlumb.importDefaults({Connector : [ "Bezier", { curviness:50 } ]});
@@ -35,16 +34,17 @@ $.each({
 
 			from_index = undefined;
 			to_index = undefined;
-			source_id = $('#'+info.sourceId).parent().attr('id');
-			target_id = $('#'+info.targetId).parent().attr('id');
-			parent_obj_options = $('#'+info.sourceId).closest('.entity-container').data("options");
+			source_id = $('#'+info.sourceId).attr('id');
+			target_id = $('#'+info.targetId).attr('id');
+			parent_obj_options = $('#'+info.sourceId).parent().closest('.entity-container').data("options");
 			var node_array = parent_obj_options.Nodes;
 			$.each(node_array, function(index, obj){
-				if('dd_'+obj.uuid === source_id)
+				if(obj.uuid === source_id)
 					from_index = index;
-				if('dd_'+obj.uuid === target_id)
+				if(obj.uuid === target_id)
 					to_index = index
 			});
+
 
 			if(from_index > to_index){
 				editor.moveNode(node_array,from_index,to_index);

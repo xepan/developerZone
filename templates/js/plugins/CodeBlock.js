@@ -14,8 +14,8 @@ CodeBlock = function (params){
 		Connections: [],
 		left:0,
 		top:0,
-		width:0,
-		height:0,
+		width:200,
+		height:100,
 		ports_obj:[],
 		js_widget:"CodeBlock"
 	};
@@ -55,6 +55,7 @@ CodeBlock = function (params){
 				var dropped_name = prompt("Please enter name");
 					if(dropped_name == null) return;
 				self.options.name = dropped_name;
+				self.editor.options.entity.Method.push(self.options) ;
 			}else{
 				$(parent_element).data('options').Nodes.push(self.options);
 			}
@@ -64,7 +65,6 @@ CodeBlock = function (params){
 		self.render();
 
 		if(self.options.type == 'Method'){
-			self.editor.options.entity.Method.push(self.options) ;
 			self.element.find('.name').text(self.options.name);
 		}
 		
@@ -144,12 +144,6 @@ CodeBlock = function (params){
 			});
 
 
-			$(this.draggable_div).css("top",self.options.top + "px");
-			$(this.draggable_div).css("left",self.options.left + "px");
-			$(this.draggable_div).css("width",self.options.width + "px");
-			$(this.draggable_div).css("height",self.options.height + "px");
-			$(draggable_div).height($(draggable_div).children('.entity-container').height());
-			$(draggable_div).width($(draggable_div).children('.entity-container').width());
 
 
 			draggable_div
@@ -185,6 +179,17 @@ CodeBlock = function (params){
 						if(!self.show_content) self.element.dblclick();
 					}
 				});
+
+			// $(this.element).css("top",self.options.top + "px");
+			// $(this.element).css("left",self.options.left + "px");
+			$(this.element).width(self.options.width);
+			$(this.element).height(self.options.height);
+			$(draggable_div).css("top",self.options.top + "px");
+			$(draggable_div).css("left",self.options.left + "px");
+			$(draggable_div).width(self.options.width);
+			$(draggable_div).height(self.options.height);
+			// $(draggable_div).height($(draggable_div).children('.entity-container').height());
+			// $(draggable_div).width($(draggable_div).children('.entity-container').width());
 
 			this.element.dblclick(function(){
 				if(self.show_content){

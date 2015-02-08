@@ -128,8 +128,7 @@
 }
 
 .entity-container-draggable{
-	display: block;
-	height: auto;
+	position: absolute !important; /* overiding draggable*/
 }
 
 .editortool{

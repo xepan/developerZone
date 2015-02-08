@@ -13,8 +13,8 @@ Node = function (params){
 		Connections: [],
 		top:0,
 		left:0,
-		width:0,
-		height:0,
+		width:100,
+		height:50,
 		ports_obj:[]
 	};
 
@@ -26,20 +26,10 @@ Node = function (params){
 		if(options != undefined){
 			self.options=options;
 		}else{
-			self.options = {
-							uuid:undefined,
-							name: dropped.data('name'),
-							type: dropped.data('type'),
-							js_widget: dropped.data('js_widget'),
-							Ports: [],
-							Nodes: [],
-							Connections: [],
-							top:0,
-							left:0,
-							width:0,
-							height:0,
-							ports_obj:[]
-						};
+			self.options.uuid = undefined;
+			self.options.name = dropped.data('name');
+			self.options.type = dropped.data('type');
+			self.options.js_widget = dropped.data('js_widget');
 
 			// default flow in port
 			var flow_in = {
@@ -60,9 +50,9 @@ Node = function (params){
 			$.each(prts, function (index, port){
 				self.options.Ports.push(port);
 			});
+			$(parent_element).data('options').Nodes.push(self.options);
 		}
 
-		$(parent_element).data('options').Nodes.push(self.options);
 
 		self.render();
 	}
@@ -73,6 +63,7 @@ Node = function (params){
 		if(this.element == undefined){
 			
 			this.element = $('<div data-type="'+self.options.type+'" class="node">');
+			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
@@ -155,7 +146,6 @@ Node = function (params){
 			$(this.element).css("width",self.options.width +"px");
 			$(this.element).css("height",self.options.height + "px");
 
-			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
 			$(remove_btn).click(function(){
 				self.remove();
 			});

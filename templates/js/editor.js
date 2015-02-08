@@ -77,7 +77,7 @@ jQuery.widget("ui.editor",{
 		var self=this;
 		$.each(node_array,function(index,node){
 			// console.log(node);
-			var new_node = new window[node.js_widget]();						
+			var new_node = new window[node.js_widget]();
 			new_node.createNew(undefined,parent.element,parent.editor,node);
 			$(this).xunique(new_node.uuid);
 			self.loadNodes(new_node,node.Nodes);

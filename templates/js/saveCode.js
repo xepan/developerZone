@@ -15,8 +15,6 @@ $.each({
 			$.univ().unsetPortObj(m);
 		})
 
-		console.log(sentized_json);
-
 		$.ajax({
 					url: 'index.php?page=developerZone_page_owner_saveentity',
 					type: 'POST',
