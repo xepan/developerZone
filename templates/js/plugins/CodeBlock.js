@@ -124,6 +124,23 @@ CodeBlock = function (params){
 			$(draggable_div).height($(draggable_div).children('.entity-container').height());
 			$(draggable_div).width($(draggable_div).children('.entity-container').width());
 
+			//Remove BTN
+			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(draggable_div);
+			$(remove_btn).click(function(){
+				//Check if Method
+				if(self.options.type == "Method"){
+					$.each(self.editor.options.entity.Method, function(index,method_obj){
+						if(method_obj.uuid == self.options.uuid){
+							self.editor.options.entity.Method.splice(index,1);
+							$(self.element).parent().remove();
+						}
+					});
+				}else{
+					//First remove it's all connection as source or target
+					
+				}
+			});
+
 			draggable_div
 			.draggable(
 			{

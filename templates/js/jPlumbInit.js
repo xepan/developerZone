@@ -20,10 +20,12 @@ $.each({
 			//Find parent of sourceId which is codeblock or method
 			parent_id = $('#'+info.sourceId).closest('.entity-method').attr('id');
 			connection ={
-						sourceId: info.sourceId,
-						targetId: info.targetId
+						sourceID: info.sourceEndpoint.anchor.id,
+						sourceParentId: info.sourceId,
+						targetId: info.targetEndpoint.anchor.id,
+						taggetParentId: info.targetId
 					};
-
+			// console.log(info);
 			$.each(editor.options.entity.Method,function(index,obj){
 				if(obj.uuid === parent_id){
 					editor.options.entity.Method[index].Connections.push(connection);
