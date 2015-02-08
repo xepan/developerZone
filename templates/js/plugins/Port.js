@@ -7,9 +7,10 @@ Port = function (params){
 		type:'in-out',
 		name: undefined,
 		uuid:undefined,
-		caption: undefined,
+		// caption: undefined,
 		mandatory: undefined,
 		is_singlaton: undefined,
+		creates_block: false,
 		x:0,
 		y:0
 	};
@@ -29,6 +30,7 @@ Port = function (params){
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
+							creates_block: false,
 							x:0,
 							y:0
 						};
@@ -87,10 +89,10 @@ Port = function (params){
 		}else{// else
 			if(type.indexOf("in") !=-1){
 			// if in
-				selected_endpoint_options = startpointOptions;
+				selected_endpoint_options = endpointOptions;
 			}else{
 			// else
-				selected_endpoint_options = endpointOptions;
+				selected_endpoint_options = startpointOptions;
 			}
 		}
 

@@ -28,10 +28,7 @@ Node = function (params){
 							name: dropped.data('name'),
 							type: dropped.data('type'),
 							js_widget: dropped.data('js_widget'),
-							Ports: {
-								In: [],
-								Out: []
-							},
+							Ports:[],
 							Nodes: [],
 							Connections: [],
 							x:0,
@@ -46,6 +43,7 @@ Node = function (params){
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
+							creates_block: false,
 							x:0,
 							y:0
 						};

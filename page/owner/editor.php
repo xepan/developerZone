@@ -33,8 +33,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			$en = $add_to->add('View')->set($ent['name']);
 			$en->setAttr(
 					array(
-						'data-inports'=>$ent['instance_inports'],
-						'data-outports'=>$ent['instance_outports'],
+						'data-ports'=>$ent['instance_ports'],
 						'data-name'=>$ent['name'],
 						'data-type'=>$ent['type'],
 						'data-js_widget'=>$ent['js_widget'],
@@ -61,8 +60,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			$tool_view = $add_to->add('View')
 				->setAttr(
 					array(
-						'data-inports'=>$tool['instance_inports'],
-						'data-outports'=>$tool['instance_outports'],
+						'data-ports'=>$tool['instance_ports'],
 						'data-name'=>$tool['name'],
 						'data-type'=>$tool['type'],
 						'data-js_widget'=>$tool['js_widget'],

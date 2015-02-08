@@ -12,8 +12,7 @@ class Model_Tools extends \SQL_Model{
 		$this->addField('name');
 		$this->addField('type');
 		$this->addField('template');
-		$this->addField('instance_inports');
-		$this->addField('instance_outports');
+		$this->addField('instance_ports')->type('text');
 		$this->addField('is_output_multibranch')->type('boolean');
 		$this->addField('is_for_editor')->type('boolean')->defaultValue(false);
 		$this->addField('can_add_ports')->type('boolean')->defaultValue(false);

@@ -35,6 +35,7 @@ CodeBlock = function (params){
 							// caption: undefined,
 							mandatory: undefined,
 							is_singlaton: undefined,
+							creates_block: false,
 							x:0,
 							y:0
 						};
