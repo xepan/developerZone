@@ -48,8 +48,8 @@ Node = function (params){
 							mandatory: undefined,
 							is_singlaton: undefined,
 							left:0,
-							top:0
-							creates_block: false,
+							top:0,
+							creates_block: false
 						};
 			self.options.Ports.push(flow_in);
 

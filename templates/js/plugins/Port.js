@@ -11,7 +11,8 @@ Port = function (params){
 		mandatory: undefined,
 		is_singlaton: undefined,
 		left:0,
-		top:0
+		top:0,
+		creates_block: false
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -30,8 +31,8 @@ Port = function (params){
 							mandatory: undefined,
 							is_singlaton: undefined,
 							left:0,
-							top:0
-							creates_block: false,
+							top:0,
+							creates_block: false
 						};
 			$(self.parent).data('options').Ports.push(self.options);
 		}

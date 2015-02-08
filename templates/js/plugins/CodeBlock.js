@@ -40,8 +40,8 @@ CodeBlock = function (params){
 							left:0,
 							top:0,
 							width:0,
-							height:0
-							creates_block: false,
+							height:0,
+							creates_block: false
 						};
 			self.options.Ports.push(flow_in);
 
