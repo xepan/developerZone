@@ -8,10 +8,7 @@ Node = function (params){
 		uuid:undefined,
 		type:'Method',
 		js_widget:'Node',
-		Ports: {
-			In: [],
-			Out: []
-		},
+		Ports: [],
 		Nodes: [],
 		Connections: [],
 		x:0,
@@ -52,18 +49,12 @@ Node = function (params){
 							x:0,
 							y:0
 						};
-			self.options.Ports['In'].push(flow_in);
+			self.options.Ports.push(flow_in);
 
-			var inp = jQuery.extend(true, {}, dropped.data('inports'));
-			// console.log(inp);
-			var outp = jQuery.extend(true, {}, dropped.data('outports'));
+			var prts = jQuery.extend(true, {}, dropped.data('ports'));
 
-			$.each(inp, function (index, port){
-				self.options.Ports.In.push(port);
-			});
-
-			$.each(outp, function (index, port){
-				self.options.Ports.Out.push(port);
+			$.each(prts, function (index, port){
+				self.options.Ports.push(port);
 			});
 		}
 
@@ -106,18 +97,11 @@ Node = function (params){
 			this.element.appendTo(self.parent);
 			
 
-			$.each(self.options.Ports.In,function(index ,port_options){
+			$.each(self.options.Ports,function(index ,port_options){
 				// createNew Port by providing options
 				p = new Port();
 				p.createNew(undefined,self.element,self.editor,port_options);
 			})
-
-			$.each(self.options.Ports.Out,function(index ,port_options){
-				// createNew Port by providing options
-				p = new Port();
-				p.createNew(undefined,self.element,self.editor,port_options);
-			})
-
 
         	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
         	// console.log(container_id);

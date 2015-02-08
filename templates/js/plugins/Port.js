@@ -4,7 +4,7 @@ Port = function (params){
 	this.element=undefined;
 	
 	this.options = {
-		type:'Method',
+		type:'in-out',
 		name: undefined,
 		uuid:undefined,
 		caption: undefined,
@@ -32,16 +32,75 @@ Port = function (params){
 							x:0,
 							y:0
 						};
-			$(self.parent).data('options').Ports[self.options.type].push(self.options);
+			$(self.parent).data('options').Ports.push(self.options);
 		}
 		
 
 		self.render();
 
-		if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
-			self.makeTarget();
-		else
-			self.makeSource();
+		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+		jsplumb = jsPlumbs[container_id];
+
+		var startpointOptions = {	
+						anchors: ["Continuous", { faces:[ "right","bottom" ] } ],
+						maxConnections:-1, 
+						isSource:true, 
+						// isTarget:true, 
+						endpoint:["Dot", {radius:5, cssClass:"port DATA-IN"}], 
+						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						paintStyle:{fillStyle:"black"},
+						connectorStyle : {  lineWidth: 2, strokeStyle:"#222222" },
+						connector : ["Straight"],
+						setDragAllowedWhenFull:true,
+						connectorOverlays:[ 
+							[ "Arrow", { width:10, length:15, location:1, id:"arrow" } ], 
+							[ "Label", { label: "", id:"label" } ]
+						]	,
+						container:$('#' + container_id)			
+						};
+
+		var endpointOptions = {	
+						anchors: ["Continuous", { faces:["left","top" ] } ],
+						maxConnections:-1, 
+						// isSource:true, 
+						isTarget:true, 
+						endpoint:["Dot", {radius:5}], 
+						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						paintStyle:{fillStyle:"green"},
+						connectorStyle : {  lineWidth: 3, strokeStyle:"#5b9ada" },
+						connector : ["Straight"],
+						setDragAllowedWhenFull:true,
+						connectorOverlays:[ 
+							[ "Arrow", { width:20, length:30, location:1, id:"arrow" } ], 
+							[ "Label", { label:"", id:"label" } ]
+						]	,
+						container:$('#' + container_id)			
+						}
+
+		var type = self.options.type.toLowerCase();
+		// if both 
+		if(type.indexOf("in") !=-1 && type.indexOf("out")!=-1){
+			// selected_endpoint_options = endpoint + isSource:true
+			selected_endpoint_options = endpointOptions;
+			selected_endpoint_options.isSource = true;
+			selected_endpoint_options.anchors = ["Continuous",{ faces:["left","top","right","bottom" ] }];
+		}else{// else
+			if(type.indexOf("in") !=-1){
+			// if in
+				selected_endpoint_options = startpointOptions;
+			}else{
+			// else
+				selected_endpoint_options = endpointOptions;
+			}
+		}
+
+
+		jsplumb.addEndpoint(self.element.parent().attr('id'), selected_endpoint_options);
+
+		// if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
+		// 	self.makeTarget();
+		// else
+		// 	self.makeSource();
 
 	}
 
@@ -84,68 +143,68 @@ Port = function (params){
 		}
 	}
 
-	this.makeSource = function(){
-		var self=this;
+	// this.makeSource = function(){
+	// 	var self=this;
 
-		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+	// 	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
 
-		jsplumb = jsPlumbs[container_id];
+	// 	jsplumb = jsPlumbs[container_id];
 
-		// jsplumb = jsPlumbs[$(self.parent).closest('.entity-container').attr('id')];
+	// 	// jsplumb = jsPlumbs[$(self.parent).closest('.entity-container').attr('id')];
 		
-		// console.log(jsPlumbs);
-		// console.log($(self.parent).closest('.entity-container').attr('id'));
-		// console.log(jsplumb);
-		// console.log('Adding Source endpoint at ' + self.element.attr('id'));
-		var startpointOptions = { isSource:true, container:$('#'+container_id)};
-		var startpointOptions = {	
-						anchors: ["Continuous", { faces:[ "right","bottom" ] } ],
-						maxConnections:-1, 
-						isSource:true, 
-						// isTarget:true, 
-						endpoint:["Dot", {radius:5, cssClass:"port DATA-IN"}], 
-						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
-						paintStyle:{fillStyle:"black"},
-						connectorStyle : {  lineWidth: 2, strokeStyle:"#222222" },
-						connector : ["Straight"],
-						setDragAllowedWhenFull:true,
-						connectorOverlays:[ 
-							[ "Arrow", { width:10, length:15, location:1, id:"arrow" } ], 
-							[ "Label", { label: "", id:"label" } ]
-						]	,
-						container:$('#' + container_id)			
-						}
-		jsplumb.addEndpoint(self.element.parent().attr('id'), startpointOptions);
-	}
+	// 	// console.log(jsPlumbs);
+	// 	// console.log($(self.parent).closest('.entity-container').attr('id'));
+	// 	// console.log(jsplumb);
+	// 	// console.log('Adding Source endpoint at ' + self.element.attr('id'));
+	// 	var startpointOptions = { isSource:true, container:$('#'+container_id)};
+	// 	var startpointOptions = {	
+	// 					anchors: ["Continuous", { faces:[ "right","bottom" ] } ],
+	// 					maxConnections:-1, 
+	// 					isSource:true, 
+	// 					// isTarget:true, 
+	// 					endpoint:["Dot", {radius:5, cssClass:"port DATA-IN"}], 
+	// 					overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+	// 					paintStyle:{fillStyle:"black"},
+	// 					connectorStyle : {  lineWidth: 2, strokeStyle:"#222222" },
+	// 					connector : ["Straight"],
+	// 					setDragAllowedWhenFull:true,
+	// 					connectorOverlays:[ 
+	// 						[ "Arrow", { width:10, length:15, location:1, id:"arrow" } ], 
+	// 						[ "Label", { label: "", id:"label" } ]
+	// 					]	,
+	// 					container:$('#' + container_id)			
+	// 					}
+	// 	jsplumb.addEndpoint(self.element.parent().attr('id'), startpointOptions);
+	// }
 
-	this.makeTarget = function(){
-		var self=this;
+	// this.makeTarget = function(){
+	// 	var self=this;
 
-		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
-		// console.log(container_id);
-		jsplumb = jsPlumbs[container_id];
+	// 	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+	// 	// console.log(container_id);
+	// 	jsplumb = jsPlumbs[container_id];
 
-		// console.log('Adding Target endpoint at ' + self.element.attr('id'));
-		var endpointOptions = { isTarget:true,container:$('#' + container_id)};
-		var endpointOptions = {	
-						anchors: ["Continuous", { faces:["left","top" ] } ],
-						maxConnections:-1, 
-						// isSource:true, 
-						isTarget:true, 
-						endpoint:["Dot", {radius:5}], 
-						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
-						paintStyle:{fillStyle:"green"},
-						connectorStyle : {  lineWidth: 3, strokeStyle:"#5b9ada" },
-						connector : ["Straight"],
-						setDragAllowedWhenFull:true,
-						connectorOverlays:[ 
-							[ "Arrow", { width:20, length:30, location:1, id:"arrow" } ], 
-							[ "Label", { label:"", id:"label" } ]
-						]	,
-						container:$('#' + container_id)			
-						}
-		jsplumb.addEndpoint(self.element.parent().attr('id'), endpointOptions);
-	}
+	// 	// console.log('Adding Target endpoint at ' + self.element.attr('id'));
+	// 	var endpointOptions = { isTarget:true,container:$('#' + container_id)};
+	// 	var endpointOptions = {	
+	// 					anchors: ["Continuous", { faces:["left","top" ] } ],
+	// 					maxConnections:-1, 
+	// 					// isSource:true, 
+	// 					isTarget:true, 
+	// 					endpoint:["Dot", {radius:5}], 
+	// 					overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+	// 					paintStyle:{fillStyle:"green"},
+	// 					connectorStyle : {  lineWidth: 3, strokeStyle:"#5b9ada" },
+	// 					connector : ["Straight"],
+	// 					setDragAllowedWhenFull:true,
+	// 					connectorOverlays:[ 
+	// 						[ "Arrow", { width:20, length:30, location:1, id:"arrow" } ], 
+	// 						[ "Label", { label:"", id:"label" } ]
+	// 					]	,
+	// 					container:$('#' + container_id)			
+	// 					}
+	// 	jsplumb.addEndpoint(self.element.parent().attr('id'), endpointOptions);
+	// }
 
 
 

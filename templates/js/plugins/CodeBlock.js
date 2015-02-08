@@ -9,10 +9,7 @@ CodeBlock = function (params){
 		name: "Process",
 		uuid:undefined,
 		type:'Method',
-		Ports: {
-			In: [],
-			Out: []
-		},
+		Ports: [],
 		Nodes: [],
 		Connections: [],
 		x:0,
@@ -29,22 +26,11 @@ CodeBlock = function (params){
 			self.options=options;
 		}else{
 			// Dropped
-			self.options = {
-							uuid:undefined,
-							type: dropped.data('type'),
-							Ports: {
-								In: [],
-								Out: []
-							},
-							Nodes: [],
-							Connections: [],
-							x:0,
-							y:0
-						};
+			self.options.type= dropped.data('type');
 
 			var flow_in = {
 							uuid:undefined,
-							type: 'FLOW-IN',
+							type: 'in-out',
 							name:'Flow In',
 							// caption: undefined,
 							mandatory: undefined,
@@ -52,7 +38,7 @@ CodeBlock = function (params){
 							x:0,
 							y:0
 						};
-			self.options.Ports['In'].push(flow_in);
+			self.options.Ports.push(flow_in);
 
 			// Create dropped data ports from data('inports/outports')
 			if(self.parent.hasClass('editor-document'))
@@ -124,12 +110,7 @@ CodeBlock = function (params){
 				self.jsplumb = jsPlumbs[container_id];
 			}
 
-			$.each(self.options.Ports.In,function(index ,port_options){
-				p = new Port();
-				p.createNew(undefined,self.element,self.editor,port_options);
-			})
-
-			$.each(self.options.Ports.Out,function(index ,port_options){
+			$.each(self.options.Ports,function(index ,port_options){
 				p = new Port();
 				p.createNew(undefined,self.element,self.editor,port_options);
 			})
