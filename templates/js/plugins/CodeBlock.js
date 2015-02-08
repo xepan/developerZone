@@ -122,9 +122,6 @@ CodeBlock = function (params){
 				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
-			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
-			$(draggable_div).height($(draggable_div).children('.entity-container').height());
-			$(draggable_div).width($(draggable_div).children('.entity-container').width());
 
 			//Remove BTN
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(draggable_div);
@@ -151,11 +148,8 @@ CodeBlock = function (params){
 			$(this.draggable_div).css("left",self.options.left + "px");
 			$(this.draggable_div).css("width",self.options.width + "px");
 			$(this.draggable_div).css("height",self.options.height + "px");
-
-			$(this.element).css("top",self.options.top + "px");
-			$(this.element).css("left",self.options.left + "px");
-			$(this.element).css("width",self.options.width + "px");
-			$(this.element).css("height",self.options.height + "px");
+			$(draggable_div).height($(draggable_div).children('.entity-container').height());
+			$(draggable_div).width($(draggable_div).children('.entity-container').width());
 
 
 			draggable_div

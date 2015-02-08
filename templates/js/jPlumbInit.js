@@ -39,17 +39,15 @@ $.each({
 			target_id = $('#'+info.targetId).parent().attr('id');
 			parent_obj_options = $('#'+info.sourceId).closest('.entity-container').data("options");
 			var node_array = parent_obj_options.Nodes;
-
 			$.each(node_array, function(index, obj){
-				if(obj.uuid === source_id)
+				if('dd_'+obj.uuid === source_id)
 					from_index = index;
-				if(obj.uuid === target_id)
+				if('dd_'+obj.uuid === target_id)
 					to_index = index
 			});
 
 			if(from_index > to_index){
 				editor.moveNode(node_array,from_index,to_index);
-				// console.log(editor);
 			}
 
 		});
