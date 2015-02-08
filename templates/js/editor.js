@@ -66,11 +66,14 @@ jQuery.widget("ui.editor",{
 		$.each(self.options.entity.Method,function(id, method_options){
 			var new_node = new CodeBlock();
 			new_node.createNew(undefined,self.element,self,method_options);
+			// console.log('Methods uuid ' + new_node.options.uuid);
 			$(this).xunique(new_node.options.uuid);
 			// load its nodes
 			self.loadNodes(new_node,method_options.Nodes);
 			// create connections
+			self.loadConnections(method_options);
 		});
+
 	},
 
 	loadNodes: function (parent,node_array){
@@ -79,8 +82,22 @@ jQuery.widget("ui.editor",{
 			// console.log(node);
 			var new_node = new window[node.js_widget]();
 			new_node.createNew(undefined,parent.element,parent.editor,node);
-			$(this).xunique(new_node.uuid);
+			// console.log('Nodes uuid ' + new_node.options.uuid);
+			$(this).xunique(new_node.options.uuid);
 			self.loadNodes(new_node,node.Nodes);
+		});
+	},
+
+	loadConnections: function(method_options){
+		var self = this;
+
+		jsplumb = jsPlumbs['dd_'+method_options.uuid];
+
+		saved_connections = jQuery.extend(true, {}, method_options.Connections);
+		method_options.Connections = [];
+		
+		$.each(saved_connections, function (index,conn){
+			jsplumb.connect({ uuids:[conn.sourceId,conn.targetId] });
 		});
 	},
 
@@ -100,9 +117,15 @@ jQuery.widget("ui.editor",{
 
 xunique_given_max=1;
 jQuery.fn.xunique = function(given_value) {
+		// console.log("already given " + given_value);
         if(given_value != undefined){
-        	if(given_value > xunique_given_max) xunique_given_max = given_value+1;
+        	if(given_value > xunique_given_max){
+        		// console.log("greater then " + xunique_given_max);
+        		xunique_given_max = given_value+1;	
+        	} 
         }else{
-        	return xunique_given_max++;
+        	var x = xunique_given_max++;
+        	// console.log("returning " + x);
+        	return x;
         }
 };

@@ -42,14 +42,16 @@ Port = function (params){
 
 		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
 		jsplumb = jsPlumbs[container_id];
+		// console.log('port uuid given');
 
-		var startpointOptions = {	
+		var startpointOptions = {
+						uuid: 'xxep_'+self.options.uuid,
 						anchors: ["Continuous", { faces:[ "right","bottom" ] } ],
 						maxConnections:-1, 
 						isSource:true, 
 						// isTarget:true, 
 						endpoint:["Dot", {radius:5, cssClass:"port DATA-IN"}], 
-						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						overlays:[ ["Label", { label: self.options.name + ' ' + self.options.uuid, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
 						paintStyle:{fillStyle:"black"},
 						connectorStyle : {  lineWidth: 2, strokeStyle:"#222222" },
 						connector : ["Straight"],
@@ -62,12 +64,13 @@ Port = function (params){
 						};
 
 		var endpointOptions = {	
+						uuid: 'xxep_'+self.options.uuid,
 						anchors: ["Continuous", { faces:["left","top" ] } ],
 						maxConnections:-1, 
 						// isSource:true, 
 						isTarget:true, 
 						endpoint:["Dot", {radius:5}], 
-						overlays:[ ["Label", { label: self.options.name, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						overlays:[ ["Label", { label: self.options.name + ' ' + self.options.uuid, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
 						paintStyle:{fillStyle:"green"},
 						connectorStyle : {  lineWidth: 3, strokeStyle:"#5b9ada" },
 						connector : ["Straight"],
@@ -98,7 +101,7 @@ Port = function (params){
 
 
 		ep=jsplumb.addEndpoint(self.element.parent().attr('id'), selected_endpoint_options);
-
+		// self.options.uuid = ep.getUuid();
 		$(parent_element).data('options').ports_obj.push(ep);
 		// if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
 		// 	self.makeTarget();
@@ -138,7 +141,7 @@ Port = function (params){
 
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
-
+			// this.element.html(self.options.uuid);
 			// this.element.draggable({
 	  //           containment: 'parent',
 	  //           handle: '> .move-handler'

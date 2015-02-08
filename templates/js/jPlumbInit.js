@@ -19,12 +19,13 @@ $.each({
 			//Find parent of sourceId which is codeblock or method
 			parent_id = $('#'+info.sourceId).closest('.entity-method').attr('id');
 			connection ={
-						sourceID: info.sourceEndpoint.anchor.id,
+						sourceId: info.connection.endpoints[0].getUuid(),
 						sourceParentId: info.sourceId,
-						targetId: info.targetEndpoint.anchor.id,
+						targetId: info.connection.endpoints[1].getUuid(),
 						taggetParentId: info.targetId
 					};
-			// console.log(info);
+
+
 			$.each(editor.options.entity.Method,function(index,obj){
 				if(obj.uuid === parent_id){
 					editor.options.entity.Method[index].Connections.push(connection);
@@ -56,12 +57,12 @@ $.each({
 		x.bind("connectionDetached",function(info,originalEvent){
 			editor = $('.editor-document').data('uiEditor');
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
-			$.each(editor.options.entity.Method,function(index,obj){
-				if(obj.uuid === method_uuid){
+			$.each(editor.options.entity.Method,function(index,methods){
+				if(methods.uuid === method_uuid){
 					connections = editor.options.entity.Method[index].Connections;
-					$.each(connections, function(key, obj) {
-						if(obj.sourceId === info.sourceId && obj.targetId === info.targetId)
-							editor.options.entity.Method[key].Connections.splice(key,1);
+					$.each(connections, function(key, conn_obj) {
+						if(conn_obj.sourceId === info.connection.endpoints[0].getUuid() && conn_obj.targetId === info.connection.endpoints[1].getUuid())
+							editor.options.entity.Method[index].Connections.splice(key,1);
 					});
 				}
 
