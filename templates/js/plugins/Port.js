@@ -90,7 +90,7 @@ Port = function (params){
 						]	,
 						container:$('#' + container_id)			
 						}
-
+		
 		var type = self.options.type.toLowerCase();
 		// if both 
 		if(type.indexOf("in") !=-1 && type.indexOf("out")!=-1){
