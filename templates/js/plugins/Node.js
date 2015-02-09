@@ -15,6 +15,9 @@ Node = function (params){
 		left:0,
 		width:100,
 		height:50,
+		entity_id:undefined,
+		tool_id:undefined,
+		is_framework_class:'1',
 		ports_obj:[]
 	};
 
@@ -30,6 +33,9 @@ Node = function (params){
 			self.options.name = dropped.data('name');
 			self.options.type = dropped.data('type');
 			self.options.js_widget = dropped.data('js_widget');
+			self.options.entity_id = dropped.data('entity_id');
+			self.options.is_framework_class = dropped.data('is_framework_class');
+			self.options.tool_id = dropped.data('tool_id');
 
 			// default flow in port
 			var flow_in = {
@@ -149,6 +155,14 @@ Node = function (params){
 			$(remove_btn).click(function(){
 				self.remove();
 			});
+
+
+			if(self.options.is_framework_class=='0'){
+				$(this.element).dblclick(function(e){
+					alert(self.options.is_framework_class);
+				});
+			}
+
 		}
 	},
 
