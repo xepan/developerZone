@@ -18,6 +18,7 @@ Node = function (params){
 		entity_id:undefined,
 		tool_id:undefined,
 		is_framework_class:'1',
+		css_class: undefined,
 		ports_obj:[]
 	};
 
@@ -36,6 +37,7 @@ Node = function (params){
 			self.options.entity_id = dropped.data('entity_id');
 			self.options.is_framework_class = dropped.data('is_framework_class');
 			self.options.tool_id = dropped.data('tool_id');
+			self.options.css_class = dropped.data('css_class');
 
 			// default flow in port
 			var flow_in = {
@@ -67,7 +69,7 @@ Node = function (params){
 		var self = this;
 		if(this.element == undefined){
 			
-			this.element = $('<div data-type="'+self.options.type+'" class="node">');
+			this.element = $('<div data-type="'+self.options.type+'" class="node '+ self.options.css_class +'">');
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
@@ -126,24 +128,24 @@ Node = function (params){
 						self.options.height = $(this).height();
 					}
 			})
-			.droppable({
-				accept: ".port",
-				greedy: true,
-				drop: function(event,ui){
-					var new_port = {
-							uuid:undefined,
-							type: ui.draggable.data('type'),
-							name:'New Port',
-							// caption: undefined,
-							mandatory: undefined,
-							is_singlaton: undefined,
-							left:0,
-							top:0
-						};
-					self.options.Ports[ui.draggable.data('type')].push(new_port);
-					self.jsplumb.repaintEverything();
-				}
-			})
+			// .droppable({
+			// 	accept: ".port",
+			// 	greedy: true,
+			// 	drop: function(event,ui){
+			// 		var new_port = {
+			// 				uuid:undefined,
+			// 				type: ui.draggable.data('type'),
+			// 				name:'New Port',
+			// 				// caption: undefined,
+			// 				mandatory: undefined,
+			// 				is_singlaton: undefined,
+			// 				left:0,
+			// 				top:0
+			// 			};
+			// 		self.options.Ports[ui.draggable.data('type')].push(new_port);
+			// 		self.jsplumb.repaintEverything();
+			// 	}
+			// })
 			;
 
 			$(this.element).css("top",self.options.top + "px");

@@ -17,7 +17,22 @@ class page_developerZone_page_owner_saveentity extends Page {
 			$method->addCondition('name',$value['name']);
 			$method->tryLoadAny();
 			$method['method_type'] = $e['method_type']?$this['method_type']:'public';
+
+			$i=0;
+			$port_jsons=array();
+			foreach ($value['Ports'] as &$p) {
+				unset($p['uuid']);
+				if($p['type']=='in-out') unset($value['Ports'][$i]);
+				$ports_jsons[] = json_encode($p);
+				$i++;
+			}
+			$ports_json_str="[";
+			$ports_json_str .= implode(",", $ports_jsons);
+			$ports_json_str.="]";
+			$method['default_ports'] = $ports_json_str;
+
 			$method->saveAndUnload();
+
 		}
 
 		echo $this->js(true)->univ()->successMessage("Done");

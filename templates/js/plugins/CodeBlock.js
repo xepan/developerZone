@@ -128,11 +128,14 @@ CodeBlock = function (params){
 			$(remove_btn).click(function(){
 
 				//Check if Method
+				var delete_done=0;
 				if(self.options.type == "Method"){
 					$.each(self.editor.options.entity.Method, function(index,method_obj){
+						if(delete_done) return;
 						if(method_obj.uuid == self.options.uuid){
 							self.editor.options.entity.Method.splice(index,1);
 							$(self.element).parent().remove();
+							delete_done = 1;
 						}
 					});
 				}else{

@@ -22,6 +22,7 @@ Port = function (params){
 
 		if(options != undefined){
 			self.options=options;
+			self.proceed();
 		}else{
 			self.options = {
 							uuid:undefined,
@@ -32,20 +33,61 @@ Port = function (params){
 							is_singlaton: undefined,
 							left:0,
 							top:0,
-							creates_block: false
+							creates_block: false,
+							default_value: ""
 						};
-			if(self.options.type.indexOf("in") !=-1 && self.options.type.indexOf("out")!=-1){
-				var new_name = prompt('Name For Port');
-				if(new_name!="" || new_name != undefined){
-					ep.setLabel(new_name);
-					self.options.name = new_name;
-				}else{
-					// self.options.name = new_name;
-				}
-			}
-			$(self.parent).data('options').Ports.push(self.options);
+			
+			// Ask about ports by jQuery Dialog
+
+			xx = $('<div class=""> \
+					Name : <input id="port_name" type="text"/> <br/> \
+					Mandatory : <select id ="port_mandatory"><option value="true">true</option><option value="false">false</option></select> <br/> \
+					Single Input Allowed :<select id="port_singlaton"><option value="true">true</option><option value="false">false</option></select> <br/> \
+					Type :<select id="port_type"><option value="In">Argument/In</option><option value="Out">Return/Out</option></select> <br/> \
+					Default Value : <input id="port_default" type="text"/> <br/> \
+				</div>').appendTo(self.parent);
+			xx.dialog({
+					minWidth: 800,
+					modal:true,
+
+					 buttons: [
+								{
+								text: "Ok",
+								icons: {
+								primary: "ui-icon-heart"
+								},
+								click: function() {
+									self.options.name = $('#port_name').val();
+									self.options.mandatory = $('#port_mandatory').val()=="true"?true:false;
+									self.options.is_singlaton = $('#port_singlaton').val()=="true"?true:false;
+									self.options.type = $('#port_type').val();
+									self.options.default_value = $('#port_default').val();
+
+									$('#port_name').remove();
+									$('#port_mandatory').remove();
+									$('#port_singlaton').remove();
+									$('#port_type').remove();
+									$('#port_default').remove();
+
+									$(self.parent).data('options').Ports.push(self.options);
+									self.proceed();
+								$( this ).dialog( "close" );
+								}
+								// Uncommenting the following line would hide the text,
+								// resulting in the label being used as a tooltip
+								//showText: false
+								}
+							]
+			});
+			// on OK 
+				// self.proceed();
+
 		}
 		
+	}
+
+	this.proceed= function(){
+		var self =this;
 
 		self.render();
 
@@ -111,13 +153,11 @@ Port = function (params){
 
 		ep=jsplumb.addEndpoint(self.element.parent().attr('id'), selected_endpoint_options);
 		// self.options.uuid = ep.getUuid();
-		$(parent_element).data('options').ports_obj.push(ep);
+		$(self.parent).data('options').ports_obj.push(ep);
 		// if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
 		// 	self.makeTarget();
 		// else
 		// 	self.makeSource();
-		
-
 	}
 
 	

@@ -13,7 +13,7 @@ class Model_Method extends \SQL_Model{
 		$this->addField('method_type')->enum(array('Public','Private','Protected'));
 		
 		$this->addField('name');
-		$this->addField('default_ports'); // [[label,type,mandatory]]
+		$this->addField('default_ports')->type('text'); // [[label,type,mandatory]]
 		$this->addField('properties');
 
 		$this->hasMany('developerZone/Node');

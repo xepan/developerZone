@@ -23,6 +23,7 @@ class Model_Entity extends \SQL_Model{
 		$this->addField('is_framework_class')->type('boolean');
 		$this->addField('instance_ports')->type('text');
 		$this->addField('js_widget')->defaultValue('Node');
+		$this->addField('css_class')->defaultValue('Node');
 
 		$this->addField('code_structure')->type('text');
 

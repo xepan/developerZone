@@ -49,7 +49,8 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 						'data-js_widget'=>$ent['js_widget'],
 						'data-can_add_ports'=>false,
 						'data-entity_id'=>$ent->id,
-						'data-is_framework_class'=>$ent['is_framework_class']
+						'data-is_framework_class'=>$ent['is_framework_class'],
+						'data-css_class'=>$ent['css_class']
 						)
 				);
 			$en->addClass('entity')->addClass('createNew');
