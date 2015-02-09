@@ -12,10 +12,20 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$btn = $this->app->layout->add('Button')->set('SAVE');
 		$btn->js('click')->univ()->saveCode();
 
+		
+		$page_btn = $this->app->layout->add('Button')->set(' Add New Page');
+		$page_btn->js('click')->univ()->frameURL('Create New Page',$this->api->url('./new_page'));
+
+		$page_btn=$this->add('Form');
+		
+
+
 		$cols = $this->app->layout->add('Columns');
 		$entities_col = $cols->addColumn(2);
 		$editor_col = $cols->addColumn(8);
 		$tools_col = $cols->addColumn(2);
+
+		$entities_col->js('reload')->reload();
 
 		$entities_model = $this->add('developerZone/Model_Entity');
 		
@@ -103,7 +113,9 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 
 
 
-		$this->js(true)->univ()->makeTree();
+		$entities_col->js(true)->univ()->makeTree();
+		$entities_col->js(true)->_selector('.entity')->entity();
+		$tools_col->js(true)->univ()->makeTree();
 	}
 
 	function defaultTemplate(){
@@ -128,9 +140,26 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 
 	function render(){
 		$this->api->jquery->addStaticStyleSheet('editor');
-		$this->js(true)->_selector('.entity')->entity();
+		
 		$this->js(true)->_selector('.editortool')->editortool();
 
 		parent::render();
 	}
+
+	function page_new_page(){
+		$page_model = $this->add('developerZone/Model_Entity')->addCondition('type','page');
+		$form = $this->add('Form');
+		$form->addField('line','page_name');
+		$form->addField('DropDown','parent_page')->setModel($page_model);
+		$form->addSubmit('Create');
+
+		if($form->isSubmitted()){
+			$page_model['name'] = $form['page_name'];
+			//$page_model['                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               _id'] = $form['page_name'];
+			$page_model->save(); 
+			$form->js(null,$this->js()->_selector('.entities')->trigger('reload'))->univ()->closeDialog()->execute();
+		}
+
+	}
+
 }
