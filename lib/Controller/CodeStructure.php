@@ -13,11 +13,19 @@ class Method {
 		// flood($data);
 	}
 
+	function setIncomingConnectionsCount(){
+		foreach ($this->data->Nodes as &$n) {
+			$nc= new Node($n,$this);
+			$nc->setIncomingConnectionsCount();
+		}
+	}
+
 	function setBranches(){
 		foreach ($this->data->Nodes as &$n) {
 			// echo "starting from ". $n->name ." ";
 			$nc = new Node($n, $this);
-			$nc->setBranch(1);
+			if($nc->data->total_in_connections == 0)
+				$nc->setBranch(1);
 		}
 	}
 
@@ -52,10 +60,18 @@ class Node {
 		// $this->branch_id = isset($data->Branch)? $data->Branch: false;
 		// flood($this->data);
 		// echo $this->data->uuid;
-		foreach ($this->method->data->Connections as $c) {
-			if($c->taggetParentId == $this->data->uuid){
-				$this->total_in_connections++;
-			}
+		// foreach ($this->method->data->Connections as $c) {
+		// 	if($c->taggetParentId == $this->data->uuid){
+		// 		$this->data->total_in_connections++;
+		// 	}
+		// }
+	}
+
+	function setIncomingConnectionsCount(){
+		$this->data->total_in_connections = count($this->previousConnectedNodes());
+		foreach ($this->data->Nodes as &$n) {
+			$nc= new Node($n,$this);
+			$nc->setIncomingConnectionsCount();
 		}
 	}
 
@@ -99,10 +115,11 @@ class Node {
 		foreach ($this->method->data->Connections as $c) {
 			// echo "\$c->sourceId (".$c->sourceId.") == 'exp_'\$port_id (".'exp_'.$port_id.") <br>";//" AND \$c->taggetParentId (".$c->taggetParentId.") == \$this->data->uuid (".$this->data->uuid.") <br/>";
 			if($c->taggetParentId == $this->data->uuid ){
-				if($found = $this->method->searchNode($c->sourceId))
+				if($found = $this->method->searchNode($c->sourceParentId))
 					$connected_nodes[] = $found;
 			}
 		}
+		echo $this->data->uuid. " (".$this->data->name.") has ".count($connected_nodes)."<br/>";
 		return $connected_nodes;
 	}
 
@@ -122,7 +139,7 @@ class Node {
 		foreach ($this->data->Nodes as &$n) {
 			if($n->uuid == $node_id) return $n;
 			$nc = new Node($n,$this->method);
-			if($found == $nc->searchNode($node_id)) return $found;
+			if($found = $nc->searchNode($node_id)) return $found;
 		}
 	}
 
@@ -168,6 +185,7 @@ class Controller_CodeStructure extends \AbstractController{
 		// methods
 		foreach ($structure->Method as &$m) {
 			$mc = new Method($m);
+			$mc->setIncomingConnectionsCount();
 			$mc->setBranches();
 		}
 			// set branches
