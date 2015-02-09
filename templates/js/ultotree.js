@@ -1,6 +1,6 @@
 $.each({
     makeTree : function(){
-         $('.maketree li > ul').each(function(i) {
+         $('#'+this.jquery.attr('id') +' li > ul').each(function(i) {
             // Find this list's parent list item.
             var parent_li = $(this).parent('li');
 
@@ -18,6 +18,6 @@ $.each({
             parent_li.append(sub_ul);
         });
         // Hide all lists except the outermost.
-        $('.maketree ul ul').hide();
+        $('#'+this.jquery.attr('id') +' ul ul').hide();
     }
 }, $.univ._import);
