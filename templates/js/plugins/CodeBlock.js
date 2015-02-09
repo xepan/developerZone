@@ -173,7 +173,6 @@ CodeBlock = function (params){
 						if(!ui.draggable.hasClass('createNew')) return; 
 						
 						dropped = ui.draggable;
-
 						var new_node = new window[dropped.data('js_widget')]();						
 						new_node.createNew(dropped,self.element,self.editor);
 						if(!self.show_content) self.element.dblclick();

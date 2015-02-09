@@ -118,6 +118,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$this->js(true)
 			->_load('entity')
 			->_load('jquery.jsPlumb-1.7.2-min')
+			->_load('jquery.ui-contextmenu')
 			->_load('editortool')
 			->_load('jPlumbInit')
 			->_load('saveCode')

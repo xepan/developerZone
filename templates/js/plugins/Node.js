@@ -52,7 +52,6 @@ Node = function (params){
 			self.options.Ports.push(flow_in);
 
 			var prts = jQuery.extend(true, {}, dropped.data('ports'));
-
 			$.each(prts, function (index, port){
 				self.options.Ports.push(port);
 			});
@@ -162,6 +161,70 @@ Node = function (params){
 					alert(self.options.is_framework_class);
 				});
 			}
+
+			//Context Menu
+			$("#"+self.options.uuid).contextmenu({
+				preventContextMenuForPopup: true,
+				preventSelect: true,
+				taphold: true,
+				menu: [
+					{title: "Extend", cmd: "Extend", uiIcon: "ui-icon-scissors"},
+					{title: "Edit", cmd: "Edit", uiIcon: "fa fa-pencil"},
+					// {title: "More", children: [
+					// 	{title: "Sub 1 (using callback)", action: function(event, ui) { alert("action callback sub1");} },
+					// 	{title: "Sub 2", cmd: "sub2"}
+						// ]}
+					],
+				// Handle menu selection to implement a fake-clipboard
+				select: function(event, ui) {
+					var $target = ui.target;
+					switch(ui.cmd){
+
+					case "Extend":
+						var extend_class_name = prompt("Please enter name");
+						if(extend_class_name == null) return;
+						
+						$.ajax({
+								url: 'index.php?page=developerZone_page_owner_extend',
+								type: 'POST',
+								data: {
+										class_name : extend_class_name,
+										entity_id : self.options.entity_id
+									},
+							})
+							.done(function(ret) {
+								if(ret!='undefined'){
+									self.options.entity_id = ret;
+									self.options.name = extend_class_name;
+									self.options.is_framework_class = '0';
+									self.element.children('.name').text(extend_class_name);
+									$.univ().successMessage('Extend Successfully');
+								}
+							})
+							.fail(function() {
+								console.log("error");
+							});
+							// alert("select " + ui.cmd + " on " + $target.text());
+							break
+						
+						//Edit 
+						case "Edit":
+							var url = ""+$(location).attr('pathname')+"?page=developerZone_page_owner_editor&entity_id="+self.options.entity_id;
+							window.open(url,"entity_"+self.options.entity_id);
+						break
+						}
+					},
+					
+					beforeOpen: function(event, ui) {
+						console.log(ui);
+						if(self.options.is_framework_class =='1'){
+							$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", false);
+						}else{
+							$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", true);	
+						}
+					}
+			});
+
 
 		}
 	},

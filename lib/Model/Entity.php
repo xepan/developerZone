@@ -114,4 +114,24 @@ class Model_Entity extends \SQL_Model{
 	function addToCode($code){
 		$this->compiled_code .= $code;
 	}
+
+	function extend($from_entity_id,$new_name){
+
+		if($this->loaded())
+			$this->unLoad();
+
+		$this->load($from_entity_id);
+		$extend_model = $this->add('developerZone/Model_Entity');
+		$extend_model['name'] = $new_name;
+		$extend_model['component_id'] = $this['component_id'];
+		$extend_model['type'] = $this['type'];
+		$extend_model['owner_id'] = $this['id'];
+		$extend_model['is_class'] = $this['is_class'];
+		$extend_model['js_widget'] = $this['js_widget'];
+		$extend_model['is_framework_class'] = 0;
+		$extend_model['instance_ports'] = $this['instance_ports'];
+		$extend_model->save();
+		return $extend_model;
+	}
+
 }
