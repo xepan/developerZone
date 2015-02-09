@@ -34,6 +34,15 @@ Port = function (params){
 							top:0,
 							creates_block: false
 						};
+			if(self.options.type.indexOf("in") !=-1 && self.options.type.indexOf("out")!=-1){
+				var new_name = prompt('Name For Port');
+				if(new_name!="" || new_name != undefined){
+					ep.setLabel(new_name);
+					self.options.name = new_name;
+				}else{
+					// self.options.name = new_name;
+				}
+			}
 			$(self.parent).data('options').Ports.push(self.options);
 		}
 		
@@ -51,7 +60,7 @@ Port = function (params){
 						isSource:true, 
 						// isTarget:true, 
 						endpoint:["Dot", {radius:5, cssClass:"port DATA-IN"}], 
-						overlays:[ ["Label", { label: self.options.name + ' ' + self.options.uuid, id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
+						overlays:[ ["Label", { label: self.options.name + ' ' + self.options.uuid , id:"label_"+self.options.uuid, cssClass:"port-label" } ]],
 						paintStyle:{fillStyle:"black"},
 						connectorStyle : {  lineWidth: 2, strokeStyle:"#222222" },
 						connector : ["Straight"],
@@ -107,6 +116,7 @@ Port = function (params){
 		// 	self.makeTarget();
 		// else
 		// 	self.makeSource();
+		
 
 	}
 
@@ -141,6 +151,8 @@ Port = function (params){
 
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
+
+
 			// this.element.html(self.options.uuid);
 			// this.element.draggable({
 	  //           containment: 'parent',
