@@ -223,7 +223,19 @@ CodeBlock = function (params){
 			self.jsplumb.deleteEndpoint(ep);
 		});
 
+		editor = $('.editor-document').data('uiEditor');
+		var method_id = $('#'+self.options.uuid).closest('.entity-method').attr('id');
+		$.each(editor.options.entity.Method, function(index,method_obj){
+			if(method_obj.uuid == method_id){
+				var nodes = editor.options.entity.Method[index].Nodes;
+				$.each(nodes,function(key,node){
+					if(node.uuid == self.options.uuid){
+						editor.options.entity.Method[index].Nodes.splice(key,1);
+						return;
+					}
+				});
+			}
+		});	
 		$(self.element).parent().remove();
-
 	}
 }

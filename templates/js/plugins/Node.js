@@ -34,7 +34,7 @@ Node = function (params){
 			// default flow in port
 			var flow_in = {
 							uuid:undefined,
-							type: 'in-out',
+							type:'in-out',
 							name:'Flow In',
 							// caption: undefined,
 							mandatory: undefined,
