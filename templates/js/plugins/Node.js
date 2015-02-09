@@ -216,9 +216,13 @@ Node = function (params){
 					},
 					
 					beforeOpen: function(event, ui) {
-						console.log(ui);
-						if(self.options.is_framework_class =='1'){
+						// console.log(ui);
+						if(self.options.is_framework_class =='1' || self.options.tool_id != undefined){
 							$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", false);
+							
+							if(self.options.tool_id != undefined)
+								$('#'+self.options.uuid).contextmenu("enableEntry", "Extend", false);
+
 						}else{
 							$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", true);	
 						}
