@@ -16,7 +16,7 @@ class page_developerZone_page_owner_saveentity extends Page {
 			$method->addCondition('developerZone_entities_id',$e['id']);
 			$method->addCondition('name',$value['name']);
 			$method->tryLoadAny();
-			$method['method_type'] = $this['method_type']?$this['method_type']:'public';
+			$method['method_type'] = $e['method_type']?$this['method_type']:'public';
 			$method->saveAndUnload();
 		}
 
