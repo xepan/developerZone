@@ -15,6 +15,7 @@ class Method {
 
 	function setBranches(){
 		foreach ($this->data->Nodes as &$n) {
+			// echo "starting from ". $n->name ." ";
 			$nc = new Node($n, $this);
 			$nc->setBranch(1);
 		}
@@ -24,7 +25,7 @@ class Method {
 		foreach ($this->data->Nodes as &$n) {
 			if($n->uuid == $node_id) return $n;
 			$nc = new Node($n,$this);
-			if($found == $nc->searchNode($node_id)) return $found;
+			if($found = $nc->searchNode($node_id)) return $found;
 		}
 	}
 
@@ -48,6 +49,7 @@ class Node {
 	function __construct (&$data, &$method){
 		$this->data = $data;
 		$this->method = $method;
+		// $this->branch_id = isset($data->Branch)? $data->Branch: false;
 		// flood($this->data);
 		// echo $this->data->uuid;
 		foreach ($this->method->data->Connections as $c) {
@@ -59,20 +61,28 @@ class Node {
 
 	function setBranch($branch_id){
 		
-		if($this->branch_id){
-			$branch_id = min($this->branch_id,$branch_id);
+
+		if(isset($this->data->Branch)){
+			if($branch_id <= $this->data->Branch) return;
+			// echo $this->data->name. " is already having branch ". $this->data->Branch. " now <br/>";
+			$branch_id = min($this->data->Branch,$branch_id)-1;
+		}else{
+			// echo $this->data->name. " first time <br/>";
 		}
 
-		$this->Branch = $branch_id;
+		$this->data->Branch = $branch_id;
+		// echo $this->data->name. " changed to ". $this->data->Branch. " now <br/>";
 		$i=1;
-		foreach ($this->ports() as &$p) {
+		$ports = $this->ports();
+		foreach ($ports as &$p) {
 			// flood($p);
 			$to_set = $branch_id;
 			if(isset($p->creates_block) and $p->creates_block ==='YES'){
 				$to_set = $branch_id + $i;
 				$i++;
 			}
-			foreach ($this->nextConnectedNodes($p->uuid) as &$n) {
+			$ncn = $this->nextConnectedNodes($p->uuid);
+			foreach ($ncn as &$n) {
 				$nc = new Node($n,$this->method);
 				$nc->setBranch($to_set);
 			}
@@ -84,12 +94,25 @@ class Node {
 		return $this->data->Ports;
 	}
 
+	function previousConnectedNodes(){
+		$connected_nodes = array();
+		foreach ($this->method->data->Connections as $c) {
+			// echo "\$c->sourceId (".$c->sourceId.") == 'exp_'\$port_id (".'exp_'.$port_id.") <br>";//" AND \$c->taggetParentId (".$c->taggetParentId.") == \$this->data->uuid (".$this->data->uuid.") <br/>";
+			if($c->taggetParentId == $this->data->uuid ){
+				if($found = $this->method->searchNode($c->sourceId))
+					$connected_nodes[] = $found;
+			}
+		}
+		return $connected_nodes;
+	}
+
 	function nextConnectedNodes($port_id){
 		$connected_nodes = array();
 		foreach ($this->method->data->Connections as $c) {
 			// echo "\$c->sourceId (".$c->sourceId.") == 'exp_'\$port_id (".'exp_'.$port_id.") <br>";//" AND \$c->taggetParentId (".$c->taggetParentId.") == \$this->data->uuid (".$this->data->uuid.") <br/>";
 			if($c->sourceId == "xxep_".$port_id){
-				$connected_nodes[] = $this->searchNode($c->taggetParentId);
+				if($found = $this->method->searchNode($c->taggetParentId))
+					$connected_nodes[] = $found;
 			}
 		}
 		return $connected_nodes;
@@ -150,7 +173,6 @@ class Controller_CodeStructure extends \AbstractController{
 			// set branches
 
 			// fetch to array // ??? variable names set 
-
 
 		return $structure;
 	}
