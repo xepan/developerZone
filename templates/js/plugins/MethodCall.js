@@ -103,16 +103,22 @@ MethodCall = function (params){
 
 			method_dropdown.on('change',function(event){
 				// remove all connections with me
+
+				var old_connection =undefined;
+
+
 				$.each(self.options.ports_obj, function(index,ep){
-					if(ep.getOverlays()[0].getLabel() != 'obj/this'){
-						self.jsplumb.deleteEndpoint(ep);
-						delete (self.options.ports_obj[index]);
+					var label = ep.getOverlays()[0].getLabel();
+					if(label == 'obj/this'){
+						// save source endpoint or whatever id
 					}
+					self.jsplumb.deleteEndpoint(ep);					
 				});
 
-				self.options.Ports=[];
+				self.options.ports_obj=[];
+				self.options.Ports=[{/*create obj/this port*/}];
 
-
+				
 				var prts = self.options.method_list[$(this).val()];
 				// console.log(self.options.method_list);
 				// console.log($(this).val());
@@ -127,7 +133,15 @@ MethodCall = function (params){
 					p.createNew(undefined,self.element,self.editor,port_options);
 				});
 
+				// if(old_connection != undefined){
+						// create new connection again
+				// }
+
 				self.options.name = $(this).val();
+				
+				console.log(self.options.Ports);
+				console.log(self.options.ports_obj);
+				return;
 				// remove all entpoints
 				// add Ports as per selected (from emthodlist)
 				// console.log(event);
