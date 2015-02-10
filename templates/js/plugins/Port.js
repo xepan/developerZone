@@ -180,6 +180,7 @@ Port = function (params){
 
 
 		ep=jsplumb.addEndpoint(self.element.parent().attr('id'), selected_endpoint_options);
+		// ep.setLabel(self.options.name);
 		// self.options.uuid = ep.getUuid();
 		$(self.parent).data('options').ports_obj.push(ep);
 		// if(self.options.type=="DATA-IN" || self.options.type == "FLOW-IN" || self.options.type=='In')
