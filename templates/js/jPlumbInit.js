@@ -55,6 +55,7 @@ $.each({
 
 		//connections detached
 		x.bind("connectionDetached",function(info,originalEvent){
+			console.log('why i m called');
 			editor = $('.editor-document').data('uiEditor');
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
 			$.each(editor.options.entity.Method,function(index,methods){
@@ -67,8 +68,27 @@ $.each({
 				}
 
 			});
-
 			//Remove Detached Connection form the editor.options.connections
+
+			// If Method Call type detached then populate with current entities values ($this-> ...)
+			var target_obj = $('#'+info.connection.targetId);
+			if(target_obj.data('options').js_widget == 'MethodCall'){
+				editor = $('.editor-document').data('uiEditor');
+				entity_id= editor.options.entity.id;
+				target_obj.data('object').populateMethodListAndDropDown(entity_id);
+				// target_obj.data('object').populatePorts();
+			}
+
+		});
+
+		x.bind('beforeDrop',function(info){
+			var source_obj = $('#'+info.targetId);
+			if(source_obj.data('options').js_widget == 'MethodCall'){
+				var entity_id = $('#'+info.sourceId).data('options').entity_id;
+				source_obj.data('object').populateMethodListAndDropDown(entity_id);
+				source_obj.data('object').populatePorts();
+			}
+			return true;
 		});
 
 		x.bind('dblclick', function (connection, e) {
