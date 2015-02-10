@@ -20,7 +20,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		
 
 
-		$cols = $this->app->layout->add('Columns');
+		$cols = $this->app->layout->add('Columns')->addClass('editor_top_bar');
 		$entities_col = $cols->addColumn(2);
 		$editor_col = $cols->addColumn(8);
 		$tools_col = $cols->addColumn(2);

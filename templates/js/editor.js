@@ -129,3 +129,21 @@ jQuery.fn.xunique = function(given_value) {
         	return x;
         }
 };
+
+jQuery(function($) {
+  function fixDiv() {
+    var $cache = $('.editor_top_bar');
+    if ($(window).scrollTop() > 100)
+      $cache.css({
+        'position': 'fixed',
+        'top': '10px',
+        'z-index':10,
+      });
+    else
+      $cache.css({
+        'position': 'relative',
+        'top': 'auto'
+      });
+  }
+  $(window).scroll(fixDiv);
+});

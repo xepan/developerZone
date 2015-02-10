@@ -1,8 +1,9 @@
 .editor-document{
-	width: 96%;
-	margin: 0 auto 0 auto;
+	/*width: 96%;*/
+	/*margin: 0 auto 0 auto;*/
 	padding: 20px;
 	height:1000px;
+	overflow-x: scroll;
 }
 
 
@@ -137,4 +138,24 @@
 
 .remove-btn:hover{
 	
+}
+
+.editor_top_bar{
+	border: 1px solid #c00;
+	color: #c00;
+  	font: bold 15px arial;
+  	padding: 10px;
+  	margin: 10px;
+    width: 100%;
+}
+
+.editor_top_bar_fixed{
+	z-index: 10;
+	padding: 0 5px;
+	border: 1px solid #c00;
+	background-color:#c3c3c3; 
+	color:#222;
+	position:fixed;
+    top:10px;
+    width: 100%;
 }
