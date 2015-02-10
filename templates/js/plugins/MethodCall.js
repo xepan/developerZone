@@ -103,7 +103,7 @@ MethodCall = function (params){
 
 			method_dropdown.on('change',function(event){
 				// remove all connections with me
-				self.jsplumb.detachAllConnections(self.element);
+				// self.jsplumb.detachAllConnections(self.element);
 				
 				$.each(self.options.ports_obj, function(index,ep){
 					self.jsplumb.deleteEndpoint(ep);
