@@ -112,8 +112,8 @@ MethodCall = function (params){
 
 
 				var prts = self.options.method_list[$(this).val()];
-				console.log(self.options.method_list);
-				console.log($(this).val());
+				// console.log(self.options.method_list);
+				// console.log($(this).val());
 
 				$.each(prts, function (index, port){
 					self.options.Ports.push(port);
@@ -126,7 +126,7 @@ MethodCall = function (params){
 				})
 				// remove all entpoints
 				// add Ports as per selected (from emthodlist)
-				console.log(event);
+				// console.log(event);
 			});
 			// populate entities methods in self.options.method_list
 			editor = $('.editor-document').data('uiEditor');

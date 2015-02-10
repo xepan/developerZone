@@ -27,10 +27,12 @@ class page_developerZone_page_owner_saveentity extends Page {
 			foreach ($value['Ports'] as &$p) {
 				unset($p['uuid']);
 				
-				if($p['type']=='in-out') unset($value['Ports'][$i]);
-				
-				if($p['type']=="In") $p['type']="Out";
-				if($p['type']=="Out") $p['type']="In";
+				if($p['type']=='in-out') {
+					unset($value['Ports'][$i]);
+				}elseif($p['type']=="In")
+					$p['type']="Out";
+				else
+					$p['type']="In";
 
 				$ports_jsons[] = json_encode($p);
 				$i++;
