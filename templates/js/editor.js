@@ -119,10 +119,10 @@ xunique_given_max=1;
 jQuery.fn.xunique = function(given_value) {
 		// console.log("already given " + given_value);
         if(given_value != undefined){
-        	if(given_value > xunique_given_max){
+        	if(given_value >= xunique_given_max){
         		// console.log("greater then " + xunique_given_max);
         		xunique_given_max = given_value+1;	
-        	} 
+        	}
         }else{
         	var x = xunique_given_max++;
         	// console.log("returning " + x);
@@ -133,12 +133,14 @@ jQuery.fn.xunique = function(given_value) {
 jQuery(function($) {
   function fixDiv() {
     var $cache = $('.editor_top_bar');
-    if ($(window).scrollTop() > 100)
+    if ($(window).scrollTop() > 100){
       $cache.css({
         'position': 'fixed',
         'top': '10px',
         'z-index':10,
+        'right':0
       });
+    }
     else
       $cache.css({
         'position': 'relative',

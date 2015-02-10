@@ -247,10 +247,23 @@ Node = function (params){
 			self.jsplumb.deleteEndpoint(ep);
 		});
 
-		
-		$.each($(self.element).closest('.node').data('options').Nodes, function(index,node){
+		// editor = $('.editor-document').data('uiEditor');
+		// var method_id = $('#'+self.options.uuid).closest('.entity-method').attr('id');
+		// $.each(editor.options.entity.Method, function(index,method_obj){
+		// 	if(method_obj.uuid == method_id){
+		// 		var nodes = editor.options.entity.Method[index].Nodes;
+		// 		$.each(nodes,function(key,node){
+		// 			if(node.uuid == self.options.uuid){
+		// 				editor.options.entity.Method[index].Nodes.splice(key,1);
+		// 				return;
+		// 			}
+		// 		});
+		// 	}
+		// });
+
+		$.each($(self.element).closest('.entity-container').data('options').Nodes, function(index,node){
 			if(self.options.uuid == node.uuid){
-				$(self.element).closest('.node').data('options').Nodes.splice(index,1);
+				$(self.element).closest('.entity-container').data('options').Nodes.splice(index,1);
 				return;
 			}
 		});

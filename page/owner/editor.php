@@ -20,9 +20,9 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		
 
 
-		$cols = $this->app->layout->add('Columns')->addClass('editor_top_bar');
-		$entities_col = $cols->addColumn(2);
+		$cols = $this->app->layout->add('Columns');
 		$editor_col = $cols->addColumn(8);
+		$entities_col = $cols->addColumn(2)->addClass('editor_top_bar');
 		$tools_col = $cols->addColumn(2);
 
 		$entities_col->js('reload')->reload();
@@ -106,7 +106,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		// },
 
 
-		$this->api->layout->add('View')
+		$editor_col->add('View')
 			->addClass('editor-document')
 			->js(true)
 			->_load('editor')
