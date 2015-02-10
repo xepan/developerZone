@@ -59,11 +59,6 @@ MethodCall = function (params){
 				self.options.Ports.push(port);
 			});
 			$(parent_element).data('options').Nodes.push(self.options);
-
-			// populate entities methods in self.options.method_list
-			editor = $('.editor-document').data('uiEditor');
-			entity_id= editor.options.entity.id;
-			this.populateMethodListAndDropDown(entity_id);
 		}
 
 
@@ -82,12 +77,14 @@ MethodCall = function (params){
 		.done(function(ret) {
 			// set in options
 			self.options.method_list=JSON.parse(ret);
-			console.log(self.options.method_list);
-
-			$.each(ret,function(method_name,ports){
-
+			
+			select = $(self.element).find('select');
+			select.html();
+			
+			$.each(self.options.method_list,function(method_name,ports){
+					$('<option value="'+method_name+'">'+method_name+'</option>').appendTo(select);
 			});
-			console.log(ret);
+
 		});
 
 	}
@@ -95,6 +92,10 @@ MethodCall = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
+
+			var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+        	// console.log(container_id);
+			self.jsplumb = jsPlumbs[container_id];
 			
 			this.element = $('<div data-type="'+self.options.type+'" class="node '+ self.options.css_class +'">');
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
@@ -102,10 +103,36 @@ MethodCall = function (params){
 
 			method_dropdown.on('change',function(event){
 				// remove all connections with me
+				self.jsplumb.detachAllConnections(self.element);
+				
+				$.each(self.options.ports_obj, function(index,ep){
+					self.jsplumb.deleteEndpoint(ep);
+				});
+				self.options.Ports=[];
+
+
+				var prts = self.options.method_list[$(this).val()];
+				console.log(self.options.method_list);
+				console.log($(this).val());
+
+				$.each(prts, function (index, port){
+					self.options.Ports.push(port);
+				});
+
+				$.each(self.options.Ports,function(index ,port_options){
+					// createNew Port by providing options
+					p = new Port();
+					p.createNew(undefined,self.element,self.editor,port_options);
+				})
 				// remove all entpoints
 				// add Ports as per selected (from emthodlist)
 				console.log(event);
 			});
+			// populate entities methods in self.options.method_list
+			editor = $('.editor-document').data('uiEditor');
+			entity_id= editor.options.entity.id;
+			self.populateMethodListAndDropDown(entity_id);
+
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
@@ -140,9 +167,7 @@ MethodCall = function (params){
 				p.createNew(undefined,self.element,self.editor,port_options);
 			})
 
-        	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
-        	// console.log(container_id);
-			self.jsplumb = jsPlumbs[container_id];
+        	
 
 			self.jsplumb.bind('beforeDrop',function(info){
 				console.log(info);

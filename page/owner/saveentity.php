@@ -22,7 +22,7 @@ class page_developerZone_page_owner_saveentity extends Page {
 			$method['method_type'] = $e['method_type']?$this['method_type']:'public';
 
 			$i=0;
-			$port_jsons=array();
+			$ports_jsons=array();
 			$ports_json_str="[";
 			foreach ($value['Ports'] as &$p) {
 				unset($p['uuid']);

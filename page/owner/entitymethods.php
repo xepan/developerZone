@@ -10,9 +10,7 @@ class page_developerZone_page_owner_entitymethods extends Page {
 		$methods_array = array();
 
 		foreach ($e->ref('developerZone/Method') as $methods) {
-			$methods_array[]=array(
-					$methods['name']=>json_decode($methods['default_ports'],true)
-				);
+			$methods_array[$methods['name']]=json_decode($methods['default_ports'],true);
 		}
 
 		echo json_encode($methods_array);
