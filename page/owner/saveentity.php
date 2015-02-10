@@ -29,6 +29,7 @@ class page_developerZone_page_owner_saveentity extends Page {
 				
 				if($p['type']=='in-out') {
 					unset($value['Ports'][$i]);
+					continue;
 				}elseif($p['type']=="In")
 					$p['type']="Out";
 				else
