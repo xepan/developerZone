@@ -19,7 +19,8 @@ MethodCall = function (params){
 		tool_id:undefined,
 		is_framework_class:'1',
 		css_class: undefined,
-		ports_obj:[]
+		ports_obj:[],
+		method_list:[]
 	};
 
 	this.createNew = function(dropped,parent_element,editor, options){
@@ -40,30 +41,38 @@ MethodCall = function (params){
 			self.options.css_class = dropped.data('css_class');
 
 			// default flow in port
-			var flow_in = {
-							uuid:undefined,
-							type: 'in-out',
-							name:'Flow',
-							// caption: undefined,
-							mandatory: undefined,
-							is_singlaton: undefined,
-							left:0,
-							top:0,
-							creates_block: false
-						};
-			self.options.Ports.push(flow_in);
+			// var flow_in = {
+			// 				uuid:undefined,
+			// 				type: 'in-out',
+			// 				name:'Flow',
+			// 				// caption: undefined,
+			// 				mandatory: undefined,
+			// 				is_singlaton: undefined,
+			// 				left:0,
+			// 				top:0,
+			// 				creates_block: false
+			// 			};
+			// self.options.Ports.push(flow_in);
 
 			var prts = jQuery.extend(true, {}, dropped.data('ports'));
 			$.each(prts, function (index, port){
 				self.options.Ports.push(port);
 			});
 			$(parent_element).data('options').Nodes.push(self.options);
+
+			// populate entities methods in self.options.method_list
+			editor = $('.editor-document').data('uiEditor');
+			entity_id= editor.options.entity.id;
+
 		}
 
 
 		self.render();
 	}
 
+	this.populateMethodListAndDropDown = function(){
+		
+	}
 	
 	this.render = function(){
 		var self = this;
@@ -71,6 +80,11 @@ MethodCall = function (params){
 			
 			this.element = $('<div data-type="'+self.options.type+'" class="node '+ self.options.css_class +'">');
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
+			var method_dropdown  = $('<select/>').appendTo(this.element);
+
+			method_dropdown.on('change',function(event){
+				console.log(event);
+			});
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
@@ -98,29 +112,30 @@ MethodCall = function (params){
 			this.element.data('options',self.options);
 			this.element.appendTo(self.parent);
 			
-			var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
-        	// console.log(container_id);
-			self.jsplumb = jsPlumbs[container_id];
 
 			$.each(self.options.Ports,function(index ,port_options){
 				// createNew Port by providing options
 				p = new Port();
 				p.createNew(undefined,self.element,self.editor,port_options);
-
-				
-				self.jsplumb.bind('beforeDrop',function(info){
-					// last_port = self.Ports[self.Ports.length -1];
-					console.log(info.connection.endpoints[1].getLabel());
-					console.log(info);
-					return true;
-				});
-
 			})
 
         	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
         	// console.log(container_id);
 			self.jsplumb = jsPlumbs[container_id];
-			
+
+			self.jsplumb.bind('beforeDrop',function(info){
+				console.log(info);
+
+				// if my port is obj/this
+					// other node's enitityid
+					// send to a agile page to get json boject (available methods and their ports)
+					// detechall connections with me
+					// remove all nodes
+					// pupolate my dropdown
+
+				return true;
+			});
+
 			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 
 			this.element
@@ -177,71 +192,71 @@ MethodCall = function (params){
 			}
 
 			//Context Menu
-			$("#"+self.options.uuid).contextmenu({
-				preventContextMenuForPopup: true,
-				preventSelect: true,
-				taphold: true,
-				menu: [
-					{title: "Extend", cmd: "Extend", uiIcon: "ui-icon-scissors"},
-					{title: "Edit", cmd: "Edit", uiIcon: "fa fa-pencil"},
-					// {title: "More", children: [
-					// 	{title: "Sub 1 (using callback)", action: function(event, ui) { alert("action callback sub1");} },
-					// 	{title: "Sub 2", cmd: "sub2"}
-						// ]}
-					],
-				// Handle menu selection to implement a fake-clipboard
-				select: function(event, ui) {
-					var $target = ui.target;
-					switch(ui.cmd){
+			// $("#"+self.options.uuid).contextmenu({
+			// 	preventContextMenuForPopup: true,
+			// 	preventSelect: true,
+			// 	taphold: true,
+			// 	menu: [
+			// 		{title: "Extend", cmd: "Extend", uiIcon: "ui-icon-scissors"},
+			// 		{title: "Edit", cmd: "Edit", uiIcon: "fa fa-pencil"},
+			// 		// {title: "More", children: [
+			// 		// 	{title: "Sub 1 (using callback)", action: function(event, ui) { alert("action callback sub1");} },
+			// 		// 	{title: "Sub 2", cmd: "sub2"}
+			// 			// ]}
+			// 		],
+			// 	// Handle menu selection to implement a fake-clipboard
+			// 	select: function(event, ui) {
+			// 		var $target = ui.target;
+			// 		switch(ui.cmd){
 
-					case "Extend":
-						var extend_class_name = prompt("Please enter name");
-						if(extend_class_name == null) return;
+			// 		case "Extend":
+			// 			var extend_class_name = prompt("Please enter name");
+			// 			if(extend_class_name == null) return;
 						
-						$.ajax({
-								url: 'index.php?page=developerZone_page_owner_extend',
-								type: 'POST',
-								data: {
-										class_name : extend_class_name,
-										entity_id : self.options.entity_id
-									},
-							})
-							.done(function(ret) {
-								if(ret!='undefined'){
-									self.options.entity_id = ret;
-									self.options.name = extend_class_name;
-									self.options.is_framework_class = '0';
-									self.element.children('.name').text(extend_class_name);
-									$.univ().successMessage('Extend Successfully');
-								}
-							})
-							.fail(function() {
-								console.log("error");
-							});
-							// alert("select " + ui.cmd + " on " + $target.text());
-							break
+			// 			$.ajax({
+			// 					url: 'index.php?page=developerZone_page_owner_extend',
+			// 					type: 'POST',
+			// 					data: {
+			// 							class_name : extend_class_name,
+			// 							entity_id : self.options.entity_id
+			// 						},
+			// 				})
+			// 				.done(function(ret) {
+			// 					if(ret!='undefined'){
+			// 						self.options.entity_id = ret;
+			// 						self.options.name = extend_class_name;
+			// 						self.options.is_framework_class = '0';
+			// 						self.element.children('.name').text(extend_class_name);
+			// 						$.univ().successMessage('Extend Successfully');
+			// 					}
+			// 				})
+			// 				.fail(function() {
+			// 					console.log("error");
+			// 				});
+			// 				// alert("select " + ui.cmd + " on " + $target.text());
+			// 				break
 						
-						//Edit 
-						case "Edit":
-							var url = ""+$(location).attr('pathname')+"?page=developerZone_page_owner_editor&entity_id="+self.options.entity_id;
-							window.open(url,"entity_"+self.options.entity_id);
-						break
-						}
-					},
+			// 			//Edit 
+			// 			case "Edit":
+			// 				var url = ""+$(location).attr('pathname')+"?page=developerZone_page_owner_editor&entity_id="+self.options.entity_id;
+			// 				window.open(url,"entity_"+self.options.entity_id);
+			// 			break
+			// 			}
+			// 		},
 					
-					beforeOpen: function(event, ui) {
-						// console.log(ui);
-						if(self.options.is_framework_class =='1' || self.options.tool_id != undefined){
-							$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", false);
+			// 		beforeOpen: function(event, ui) {
+			// 			// console.log(ui);
+			// 			if(self.options.is_framework_class =='1' || self.options.tool_id != undefined){
+			// 				$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", false);
 							
-							if(self.options.tool_id != undefined)
-								$('#'+self.options.uuid).contextmenu("enableEntry", "Extend", false);
+			// 				if(self.options.tool_id != undefined)
+			// 					$('#'+self.options.uuid).contextmenu("enableEntry", "Extend", false);
 
-						}else{
-							$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", true);	
-						}
-					}
-			});
+			// 			}else{
+			// 				$('#'+self.options.uuid).contextmenu("enableEntry", "Edit", true);	
+			// 			}
+			// 		}
+			// });
 
 
 		}
@@ -259,10 +274,25 @@ MethodCall = function (params){
 			self.jsplumb.deleteEndpoint(ep);
 		});
 
-		
-		$.each($(self.element).closest('.node').data('options').Nodes, function(index,node){
+		// editor = $('.editor-document').data('uiEditor');
+		// var method_id = $('#'+self.options.uuid).closest('.entity-method').attr('id');
+		// $.each(editor.options.entity.Method, function(index,method_obj){
+		// 	if(method_obj.uuid == method_id){
+		// 		var nodes = editor.options.entity.Method[index].Nodes;
+		// 		$.each(nodes,function(key,node){
+		// 			if(node.uuid == self.options.uuid){
+		// 				editor.options.entity.Method[index].Nodes.splice(key,1);
+		// 				return;
+		// 			}
+		// 		});
+		// 	}
+		// });
+		var node_deleted=0;
+		$.each($(self.element).closest('.entity-container').data('options').Nodes, function(index,node){
+			if(node_deleted) return;
 			if(self.options.uuid == node.uuid){
-				$(self.element).closest('.node').data('options').Nodes.splice(index,1);
+				$(self.element).closest('.entity-container').data('options').Nodes.splice(index,1);
+				node_deleted = 1;
 				return;
 			}
 		});

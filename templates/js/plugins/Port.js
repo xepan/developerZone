@@ -38,15 +38,30 @@ Port = function (params){
 						};
 			
 			// Ask about ports by jQuery Dialog
-
-			xx = $('<div class=""> \
+			
+				port_add_form = $('<div class=""> \
 					Name : <input id="port_name" type="text"/> <br/> \
 					Mandatory : <select id ="port_mandatory"><option value="true">true</option><option value="false">false</option></select> <br/> \
 					Single Input Allowed :<select id="port_singlaton"><option value="true">true</option><option value="false">false</option></select> <br/> \
-					Type :<select id="port_type"><option value="In">Argument/In</option><option value="Out">Return/Out</option></select> <br/> \
+					Type :<select id="port_type"><option value="In">Argument/In</option><option value="Out">Return/Out</option><option value="in-out" style="display:none">In/Out</option></select> <br/> \
 					Default Value : <input id="port_default" type="text"/> <br/> \
-				</div>').appendTo(self.parent);
-			xx.dialog({
+				</div>');
+				xx = $(port_add_form).appendTo(self.parent);
+				
+				console.log(self.parent.data('options'));
+				if(self.parent.data('options').type !='Method'){
+					$('#port_mandatory').val('false');
+					$('#port_singlaton').val('false');
+					$('#port_type').val('in-out');
+					$('#default_value').val('');
+
+					$('#port_mandatory').hide();
+					$('#port_singlaton').hide();
+					$('#port_type').hide();
+					$('#port_default').hide();
+				}
+				
+				xx.dialog({
 					minWidth: 800,
 					modal:true,
 
@@ -62,6 +77,7 @@ Port = function (params){
 									self.options.is_singlaton = $('#port_singlaton').val()=="true"?true:false;
 									self.options.type = $('#port_type').val();
 									self.options.default_value = $('#port_default').val();
+								
 
 									$('#port_name').remove();
 									$('#port_mandatory').remove();
@@ -78,7 +94,9 @@ Port = function (params){
 								//showText: false
 								}
 							]
-			});
+				});
+			
+			
 			// on OK 
 				// self.proceed();
 
@@ -132,6 +150,15 @@ Port = function (params){
 						]	,
 						container:$('#' + container_id)			
 						}
+
+		if(self.parent.data('options').type == 'Method' && self.options.type != "in-out"){
+			if(self.options.type == 'In')
+				self.options.type = 'Out';
+			else
+				self.options.type = "In";
+			startpointOptions.anchors= ["Continuous", { faces:["left","top" ] } ];
+			endpointOptions.anchors= ["Continuous", { faces:[ "right","bottom" ] } ];
+		}
 		
 		var type = self.options.type.toLowerCase();
 		// if both 
@@ -158,6 +185,7 @@ Port = function (params){
 		// 	self.makeTarget();
 		// else
 		// 	self.makeSource();
+
 	}
 
 	

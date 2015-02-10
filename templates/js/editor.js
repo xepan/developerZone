@@ -5,6 +5,7 @@ jQuery.widget("ui.editor",{
 	options:{
 		jsplumb: undefined,
 		entity:{
+			"id":undefined,
 			"name":"entity_name",
 			"class":"Default_name",
 			attributes:[],

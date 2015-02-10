@@ -92,6 +92,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$code_structure = json_decode($code_structure,true);
 
 		
+		if(!isset($code_structure['id'])) $code_structure['id']=$_GET['entity_id'];
 		if(!isset($code_structure['name'])) $code_structure['name']="init";
 		if(!isset($code_structure['class'])) $code_structure['class']="View";
 		if(!isset($code_structure['attributes'])) $code_structure['attributes']=array();
