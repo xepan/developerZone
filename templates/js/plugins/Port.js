@@ -152,10 +152,11 @@ Port = function (params){
 						}
 
 		if(self.parent.data('options').type == 'Method' && self.options.type != "in-out"){
-			if(self.options.type == 'In')
+			if(self.options.type == 'In'){
 				self.options.type = 'Out';
-			else
+			}else{
 				self.options.type = "In";
+			}
 			startpointOptions.anchors= ["Continuous", { faces:["left","top" ] } ];
 			endpointOptions.anchors= ["Continuous", { faces:[ "right","bottom" ] } ];
 		}

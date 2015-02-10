@@ -120,7 +120,7 @@ CodeBlock = function (params){
 			$.each(self.options.Ports,function(index ,port_options){
 				p = new Port();
 				p.createNew(undefined,self.element,self.editor,port_options);
-			})
+			});
 
 
 			//Remove BTN
