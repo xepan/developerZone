@@ -12,7 +12,7 @@ jQuery.widget("ui.editor",{
 		},
 
 
-		includePlugins:['CodeBlock','Node','Port']
+		includePlugins:['CodeBlock','Node','Port','MethodCall']
 	},
 
 	_create: function(){

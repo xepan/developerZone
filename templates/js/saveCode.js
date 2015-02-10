@@ -2,6 +2,7 @@ $.each({
 	
 	unsetPortObj: function(options){
 		options.ports_obj= [];
+		if(options.parent != undefined) delete options.parent;
 		$.each(options.Nodes, function (index,node_options){
 			$.univ().unsetPortObj(node_options);
 		});
