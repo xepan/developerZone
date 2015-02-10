@@ -63,15 +63,33 @@ MethodCall = function (params){
 			// populate entities methods in self.options.method_list
 			editor = $('.editor-document').data('uiEditor');
 			entity_id= editor.options.entity.id;
-
+			this.populateMethodListAndDropDown(entity_id);
 		}
 
 
 		self.render();
 	}
 
-	this.populateMethodListAndDropDown = function(){
-		
+	this.populateMethodListAndDropDown = function(entity_id_to_get){
+		var self = this;
+		// get Ajax
+		$.ajax({
+			url: 'index.php?page=developerZone_page_owner_entitymethods',
+			type: 'GET',
+			datatype: "json",
+			data: { entity_id : entity_id_to_get},
+		})
+		.done(function(ret) {
+			// set in options
+			self.options.method_list=JSON.parse(ret);
+			console.log(self.options.method_list);
+
+			$.each(ret,function(method_name,ports){
+
+			});
+			console.log(ret);
+		});
+
 	}
 	
 	this.render = function(){
@@ -83,6 +101,9 @@ MethodCall = function (params){
 			var method_dropdown  = $('<select/>').appendTo(this.element);
 
 			method_dropdown.on('change',function(event){
+				// remove all connections with me
+				// remove all entpoints
+				// add Ports as per selected (from emthodlist)
 				console.log(event);
 			});
 
