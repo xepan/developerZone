@@ -110,13 +110,13 @@ MethodCall = function (params){
 				$.each(self.options.ports_obj, function(index,ep){
 					var label = ep.getOverlays()[0].getLabel();
 					if(label == 'obj/this'){
-						// save source endpoint or whatever id
+						old_connection = ep.connections[0].endpoints[0].getUuid();
 					}
 					self.jsplumb.deleteEndpoint(ep);					
 				});
 
 				self.options.ports_obj=[];
-				self.options.Ports=[{/*create obj/this port*/}];
+				self.options.Ports=[{"type":"DATA-IN","name":"obj/this","mandatory":"NO","caption":"","is_singlaton":"NO"}];
 
 				
 				var prts = self.options.method_list[$(this).val()];
@@ -133,9 +133,9 @@ MethodCall = function (params){
 					p.createNew(undefined,self.element,self.editor,port_options);
 				});
 
-				// if(old_connection != undefined){
-						// create new connection again
-				// }
+				if(old_connection != undefined){
+					self.jsplumb.connect({ uuids:[old_connection, self.options.ports_obj[0].getUuid()] });
+				}
 
 				self.options.name = $(this).val();
 				
