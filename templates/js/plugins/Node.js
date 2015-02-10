@@ -109,27 +109,9 @@ Node = function (params){
         	// console.log(container_id);
 			self.jsplumb = jsPlumbs[container_id];
 			
-			jsplumb.draggable(this.element.attr('id'),{
-				containment: 'parent',
-				stop: function(event,ui){
-					// self.jsplumb.repaintEverything();
-					// $.each(self.options.ports_obj, function (index,p){
-					// 	console.log(p);
-					// 	self.jsplumb.repaint(p.id);
-					// });
-					
-					// self.jsplumb.repaint(self.element.attr('id'));
-
-					// self.jsplumb.repaint(self.element.attr('id'));
-					self.options.top = ui.position.top; 
-					self.options.left = ui.position.left;
-				}
-			});
-
-			this.element
-			// .draggable({
+			// jsplumb.draggable(this.element.attr('id'),{
 			// 	containment: 'parent',
-			// 	drag: function(event,ui){
+			// 	stop: function(event,ui){
 			// 		// self.jsplumb.repaintEverything();
 			// 		// $.each(self.options.ports_obj, function (index,p){
 			// 		// 	console.log(p);
@@ -138,11 +120,29 @@ Node = function (params){
 					
 			// 		// self.jsplumb.repaint(self.element.attr('id'));
 
-			// 		self.jsplumb.repaint(self.element.attr('id'));
+			// 		// self.jsplumb.repaint(self.element.attr('id'));
 			// 		self.options.top = ui.position.top; 
 			// 		self.options.left = ui.position.left;
 			// 	}
-			// })
+			// });
+
+			this.element
+			.draggable({
+				containment: 'parent',
+				drag: function(event,ui){
+					self.jsplumb.repaintEverything();
+					// $.each(self.options.ports_obj, function (index,p){
+					// 	console.log(p);
+					// 	self.jsplumb.repaint(p.id);
+					// });
+					
+					// self.jsplumb.repaint(self.element.attr('id'));
+
+					self.jsplumb.repaint(self.element.attr('id'));
+					self.options.top = ui.position.top; 
+					self.options.left = ui.position.left;
+				}
+			})
 			.resizable({
 				handles: "se",
 				containment: self.parent,
@@ -283,10 +283,12 @@ Node = function (params){
 		// 		});
 		// 	}
 		// });
-
+		var delete_done=false;
 		$.each($(self.element).closest('.entity-container').data('options').Nodes, function(index,node){
+			if(delete_done==true) return;
 			if(self.options.uuid == node.uuid){
 				$(self.element).closest('.entity-container').data('options').Nodes.splice(index,1);
+				delete_done=true;
 				return;
 			}
 		});

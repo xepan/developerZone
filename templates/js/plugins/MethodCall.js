@@ -103,11 +103,13 @@ MethodCall = function (params){
 
 			method_dropdown.on('change',function(event){
 				// remove all connections with me
-				// self.jsplumb.detachAllConnections(self.element);
-				
 				$.each(self.options.ports_obj, function(index,ep){
-					self.jsplumb.deleteEndpoint(ep);
+					if(ep.getOverlays()[0].getLabel() != 'obj/this'){
+						self.jsplumb.deleteEndpoint(ep);
+						delete (self.options.ports_obj[index]);
+					}
 				});
+
 				self.options.Ports=[];
 
 
@@ -123,7 +125,9 @@ MethodCall = function (params){
 					// createNew Port by providing options
 					p = new Port();
 					p.createNew(undefined,self.element,self.editor,port_options);
-				})
+				});
+
+				self.options.name = $(this).val();
 				// remove all entpoints
 				// add Ports as per selected (from emthodlist)
 				// console.log(event);
