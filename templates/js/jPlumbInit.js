@@ -65,6 +65,7 @@ $.each({
 
 		//connections detached
 		x.bind("connectionDetached",function(info,originalEvent){
+			method_call_bind_event = true;
 			editor = $('.editor-document').data('uiEditor');
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
 			$.each(editor.options.entity.Method,function(index,methods){
@@ -89,6 +90,11 @@ $.each({
 				// target_obj.data('object').populatePorts();
 			}
 
+		});
+
+		x.bind('beforeDrop',function(info){
+			method_call_bind_event = true;
+			return true;
 		});
 
 		x.bind('dblclick', function (connection, e) {

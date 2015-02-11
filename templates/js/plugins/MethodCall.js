@@ -124,6 +124,7 @@ MethodCall = function (params){
 		});
 
 		$(select).val(self.options.name);
+		$(self.element).find('.name').text(self.options.name);
 	}
 
 	this.getMethodList = function(entity_id_to_get){
