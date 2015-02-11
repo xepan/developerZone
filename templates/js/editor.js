@@ -32,7 +32,7 @@ jQuery.widget("ui.editor",{
 		var self = this;
 		// Setup Plugins
 		//Make Editor droppable
-		$(self.element).css('border','2px solid blue');
+		// $(self.element).css('border','2px solid blue');
 		$(self.element).css('position','relative');
 		self.options.jsplumb = $.univ().newjsPlumb($(this.element).attr('id'));
 		$(self.element).droppable({
@@ -140,7 +140,7 @@ jQuery(function($) {
         'position': 'fixed',
         'top': '10px',
         'z-index':10,
-        'right':0
+        'left':0
       });
     }
     else

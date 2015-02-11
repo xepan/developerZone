@@ -11,19 +11,19 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 
 		$btn = $this->app->layout->add('Button')->set('SAVE');
 		$btn->js('click')->univ()->saveCode();
-
 		
 		$page_btn = $this->app->layout->add('Button')->set(' Add New Page');
 		$page_btn->js('click')->univ()->frameURL('Create New Page',$this->api->url('./new_page'));
-
+		
 		$page_btn=$this->add('Form');
 		
 
 
-		$cols = $this->app->layout->add('Columns');
-		$editor_col = $cols->addColumn(8);
-		$entities_col = $cols->addColumn(2)->addClass('editor_top_bar');
-		$tools_col = $cols->addColumn(2);
+		$cols = $this->app->layout->add('Columns')->addClass('editor-page');
+		$entities_col = $cols->addColumn(2)->addClass('editor_top_bar')->addStyle(array('padding'=>0,'margin'=>0));
+		$editor_col = $cols->addColumn(10)->addClass('editor-paper')->addStyle(array('padding'=>0,'margin'=>0));
+		// $tools_col = $entities_col->add('View');
+		$entities_col->add('View_Box')->set('Tools')->setStyle('background-color','#1c2933');
 
 		$entities_col->js('reload')->reload();
 
@@ -33,13 +33,13 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$uls=array();
 		foreach ($entities_model as $id => $ent) {
 			if(!isset($uls[$ent['type']])) {
-				$li= $ul->add('View')->setElement('li');
+				$li= $ul->add('View')->setElement('li')->addClass('entity-header');
 				$li->add('Text')->set($ent['type']);
-				$uls[$ent['type']] = $li->add('View')->setElement('ul');
+				$uls[$ent['type']] = $li->add('View')->setElement('ul')->addClass('maketree-innner-ul');
 			}
 			
 			$add_to = $uls[$ent['type']];
-			$add_to = $add_to->add('View')->setElement('li');
+			$add_to = $add_to->add('View')->setElement('li')->addClass('entities');
 			$en = $add_to->add('View')->set($ent['name']);
 			$en->setAttr(
 					array(
@@ -59,7 +59,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 		$entities_col->addClass('maketree entities');
 
 
-		$ul=$tools_col->add('View')->setElement('ul');
+		$ul=$entities_col->add('View')->setElement('ul');
 		$categories =array();
 		foreach ($this->add('developerZone/Model_Tools') as $tool) {
 			if(!isset($categories[$tool['category']])){
@@ -86,7 +86,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 			if(!$tool['icon']) $tool_view->set($tool['name']);
 			if($tool['is_for_editor']) $tool_view->addClass('for-editor');
 		}
-		$tools_col->addClass('maketree tools');
+		$entities_col->addClass('maketree tools');
 
 		$code_structure = $this->add('developerZone/Model_Entity')->load($_GET['entity_id'])->get('code_structure');
 		$code_structure = json_decode($code_structure,true);
@@ -117,7 +117,7 @@ class page_developerZone_page_owner_editor extends page_developerZone_page_owner
 
 		$entities_col->js(true)->univ()->makeTree();
 		$entities_col->js(true)->_selector('.entity')->entity();
-		$tools_col->js(true)->univ()->makeTree();
+		// $tools_col->js(true)->univ()->makeTree();
 	}
 
 	function defaultTemplate(){

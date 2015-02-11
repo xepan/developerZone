@@ -152,7 +152,7 @@ CodeBlock = function (params){
 					new_div = $('<div class="min-max">'+self.options.name).appendTo(self.element);
 					new_div.height(self.options.height);
 					new_div.width(self.options.width);
-					$(new_div).css('background-color','red');
+					$(new_div).addClass('entity-method-cover');
 					$(new_div).css('z-index','100');
 					$(new_div).css('position','relative');
 				
