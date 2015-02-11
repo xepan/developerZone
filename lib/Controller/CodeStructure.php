@@ -77,6 +77,8 @@ class Node {
 	public $name;
 	public $type;
 	public $js_widget;
+	public $tool_id;
+	public $entity_id;
 	public $nodes=array();
 	public $ports=array();
 	public $owner=null;
@@ -87,6 +89,8 @@ class Node {
 		$this->uuid = $node_data->uuid;
 		$this->type = $node_data->type;
 		$this->js_widget = $node_data->js_widget;
+		$this->tool_id = isset($node_data->tool_id)?$node_data->tool_id:null;
+		$this->entity_id = isset($node_data->entity_id)?$node_data->entity_id:null;
 	}
 
 	function addNode($node_data){
@@ -183,17 +187,23 @@ class Connection{
 class Branch {
 	public $nodes =array();
 	public $branches=array();
+	public $owner = null;
 
-	function addNode($n){
-
+	function addNode(&$n){
+		$n->branch->removeNode($n->uuid);
+		$this->nodes[$n->uuid] = $n;
 	}
 
 	function addBranch($name){
-
+		$new_branch = new Branch();
+		$new_branch->owner = $this;
+		$this->branches[$name] = $new_branch;
 	}
 
 	function removeNode($uuid){
-
+		$n = $this->node[$uuid];
+		$n->branch = null;
+		unset($this->nodes[$uuid]);
 	}
 }
 
