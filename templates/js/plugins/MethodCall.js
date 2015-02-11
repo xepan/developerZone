@@ -1,3 +1,5 @@
+method_call_bind_event = false;
+
 MethodCall = function (params){
 	this.editor= undefined;
 	this.parent= undefined;
@@ -65,7 +67,66 @@ MethodCall = function (params){
 		self.render();
 	}
 
-	this.populateMethodListAndDropDown = function(entity_id_to_get){
+	this.clearPorts = function(){
+		var self=this;
+		// remove all ports other than obj/this
+		var removing_indexes=[];
+		$.each (self.options.ports_obj, function(index,ep){
+			var label = ep.getOverlays()[0].getLabel();
+			if(label == 'obj/this'){
+			}else{
+				self.jsplumb.deleteEndpoint(ep);
+				removing_indexes.push(index);
+			}
+		});
+
+		for (var i = removing_indexes.length -1; i >= 0; i--){
+		   self.options.ports_obj.splice(removing_indexes[i],1);
+		   self.options.Ports.splice(removing_indexes[i],1);
+		}
+	}
+
+	this.createObjThisPort = function(){
+		var self = this;
+		self.options.Ports.push({"type":"DATA-IN","name":"obj/this","mandatory":"NO","caption":"","is_singlaton":"NO"});
+	}
+
+	this.createPortsFromMethodList = function(method_name,skip_obj_this){
+		var self= this;
+		self.clearPorts();
+
+		$.each(self.options.method_list[method_name], function(index,port){
+			self.options.Ports.push(port);
+		});
+		self.renderPorts(skip_obj_this);
+	}
+
+	this.renderPorts = function(skip_obj_this){
+		var self=this;
+		$.each(self.options.Ports,function(index ,port_options){
+			// createNew Port by providing options
+			if(index == 0 && skip_obj_this !=undefined) return // leave obj/this port
+			p = new Port();
+			p.createNew(undefined,self.element,self.editor,port_options);
+		})
+	}
+
+	this.fillSelect = function(){
+		var self = this;
+		// clear select
+			// set options
+			// val -> name
+		select = $(self.element).find('select');
+		select.html('<option>Select Method To Call</option>');
+		
+		$.each(self.options.method_list,function(method_name,ports){
+			$('<option value="'+method_name+'">'+method_name+'</option>').appendTo(select);
+		});
+
+		$(select).val(self.options.name);
+	}
+
+	this.getMethodList = function(entity_id_to_get){
 		var self = this;
 		// get Ajax
 		$.ajax({
@@ -77,66 +138,54 @@ MethodCall = function (params){
 		.done(function(ret) {
 			// set in options
 			self.options.method_list=JSON.parse(ret);
-			
-			select = $(self.element).find('select');
-			select.html('<option>Select Method To Call</option>');
-			
-			$.each(self.options.method_list,function(method_name,ports){
-				$('<option value="'+method_name+'">'+method_name+'</option>').appendTo(select);
-			});
-
+			self.fillSelect();
 		});
 
 	}
 
-	this.populatePorts = function(){
-		var self = this;
+	// this.populatePorts = function(){
+	// 	var self = this;
 
-		var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
-    	// console.log(container_id);
-		self.jsplumb = jsPlumbs[container_id];
+	// 	var container_id = $(self.parent).closest('.entity-method').parent().attr('id');
+ //    	// console.log(container_id);
+	// 	self.jsplumb = jsPlumbs[container_id];
 		
-		var old_connection =undefined;
+	// 	var old_connection =undefined;
 
-		console.log('saving connections');
-		$.each(self.options.ports_obj, function(index,ep){
-			var label = ep.getOverlays()[0].getLabel();
-			if(label == 'obj/this'){
-				if(ep.connections[0] != undefined)
-					old_connection = ep.connections[0].endpoints[0].getUuid();
-			}
-			console.log('deleting');
-			console.log(ep);
-			self.jsplumb.deleteEndpoint(ep);					
-		});
+	// 	$.each(self.options.ports_obj, function(index,ep){
+	// 		var label = ep.getOverlays()[0].getLabel();
+	// 		if(label == 'obj/this'){
+	// 			old_connection = ep;
+	// 		}else{
+	// 			self.jsplumb.deleteEndpoint(ep);
+	// 		}
+	// 	});
 
-		self.options.ports_obj=[];
-		self.options.Ports=[{"type":"DATA-IN","name":"obj/this","mandatory":"NO","caption":"","is_singlaton":"NO"}];
+	// 	self.options.ports_obj=[old_connection];
+	// 	self.options.Ports=[{"type":"DATA-IN","name":"obj/this","mandatory":"NO","caption":"","is_singlaton":"NO"}];
 
-		var prts = self.options.method_list[$(self.element).find('select').val()];
-		// console.log(self.options.method_list);
-		// console.log($(this).val());
-		if(prts == undefined) prts=[];
+	// 	var prts = self.options.method_list[$(self.element).find('select').val()];
+	// 	// console.log(self.options.method_list);
+	// 	// console.log($(this).val());
+	// 	if(prts == undefined) prts=[];
 
-		console.log(prts);
-		$.each(prts, function (index, port){
-			self.options.Ports.push(port);
-		});
-		console.log('3');
+	// 	$.each(prts, function (index, port){
+	// 		self.options.Ports.push(port);
+	// 	});
 
-		$.each(self.options.Ports,function(index ,port_options){
-			// createNew Port by providing options
-			p = new Port();
-			p.createNew(undefined,self.element,self.editor,port_options);
-		});
-		console.log('2');
+	// 	$.each(self.options.Ports,function(index ,port_options){
+	// 		// createNew Port by providing options
+	// 		if(index !=0){ // THis is obj/this port already there .. don't create
+	// 			p = new Port();
+	// 			p.createNew(undefined,self.element,self.editor,port_options);
+	// 		}
+	// 	});
 
-		if(old_connection != undefined){
-			self.jsplumb.connect({ uuids:[old_connection, self.options.ports_obj[0].getUuid()] });
-		}
+	// 	// if(old_connection != undefined){
+	// 	// 	self.jsplumb.connect({ uuids:[old_connection, self.options.ports_obj[0].getUuid()] });
+	// 	// }
 
-		console.log('1');
-	}
+	// }
 	
 	this.render = function(){
 		var self = this;
@@ -149,25 +198,23 @@ MethodCall = function (params){
 			this.element = $('<div data-type="'+self.options.type+'" class="node '+ self.options.css_class +'">');
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(this.element);
 			var method_dropdown  = $('<select/>').appendTo(this.element);
+			this.element.data('options',self.options);
+			this.element.data('object',self);
+			this.element.appendTo(self.parent);
 
 			method_dropdown.on('change',function(event){
 				// remove all connections with me
-				self.populatePorts();
-
 				self.options.name = $(this).val();
+				self.createPortsFromMethodList(self.options.name,true);
+
 				
-				console.log(self.options.Ports);
-				console.log(self.options.ports_obj);
-				return;
+				// console.log(self.options.Ports);
+				// console.log(self.options.ports_obj);
 				// remove all entpoints
 				// add Ports as per selected (from emthodlist)
 				// console.log(event);
 			});
 			// populate entities methods in self.options.method_list
-			editor = $('.editor-document').data('uiEditor');
-			entity_id= editor.options.entity.id;
-			self.populateMethodListAndDropDown(entity_id);
-
 
 			if(self.options.type == 'Method') this.element.addClass('entity-method');
 			
@@ -187,24 +234,21 @@ MethodCall = function (params){
 				// console.log('UUID not found');
 				$(this.element).attr('id',$(this).xunique());
 				self.options.uuid = $(this.element).attr('id');
+
+				self.createObjThisPort();
+
+				editor = $('.editor-document').data('uiEditor');
+				entity_id= editor.options.entity.id;
+
+				self.getMethodList(entity_id);
+				self.renderPorts();
+
 			}else{
 				// console.log('UUID found');
 				$(this.element).attr('id',self.options.uuid);
+				self.fillSelect();
+				self.renderPorts();
 			}
-
-			this.element.data('options',self.options);
-			this.element.data('object',self);
-			this.element.appendTo(self.parent);
-			
-
-			$.each(self.options.Ports,function(index ,port_options){
-				// createNew Port by providing options
-				p = new Port();
-				p.createNew(undefined,self.element,self.editor,port_options);
-			})
-
-        	
-
 
 			// jsplumb.draggable(this.element.attr('id'),{containment: 'parent'});
 

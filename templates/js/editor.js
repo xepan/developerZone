@@ -120,6 +120,7 @@ xunique_given_max=1;
 jQuery.fn.xunique = function(given_value) {
 		// console.log("already given " + given_value);
         if(given_value != undefined){
+        	given_value = parseInt(given_value);
         	if(given_value >= xunique_given_max){
         		// console.log("greater then " + xunique_given_max);
         		xunique_given_max = given_value+1;	
