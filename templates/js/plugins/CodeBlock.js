@@ -122,7 +122,6 @@ CodeBlock = function (params){
 				p.createNew(undefined,self.element,self.editor,port_options);
 			});
 
-
 			//Remove BTN
 			var remove_btn  = $('<div class="glyphicon glyphicon-remove-circle pull-right remove-btn">').appendTo(draggable_div);
 			$(remove_btn).click(function(){
@@ -147,6 +146,23 @@ CodeBlock = function (params){
 			});
 
 
+			//Minimize Button
+			var min_max_btn  = $('<div class="glyphicon glyphicon-plus pull-right min-max-btn">').appendTo(draggable_div);
+			$(min_max_btn).click(function(){
+					new_div = $('<div class="min-max">'+self.options.name).appendTo(self.element);
+					new_div.height(self.options.height);
+					new_div.width(self.options.width);
+					$(new_div).css('background-color','red');
+					$(new_div).css('z-index','100');
+					$(new_div).css('position','relative');
+				
+				if($(this).hasClass('glyphicon glyphicon-minus')){
+					$(this).removeClass('glyphicon glyphicon-minus').addClass('glyphicon glyphicon-plus');
+					$(self.element).children('.min-max').remove();
+				}else{
+					$(this).removeClass('glyphicon glyphicon-plus').addClass('glyphicon glyphicon-minus');
+				}	
+			});
 
 
 			draggable_div
