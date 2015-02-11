@@ -67,13 +67,18 @@ $.each({
 		x.bind("connectionDetached",function(info,originalEvent){
 			editor = $('.editor-document').data('uiEditor');
 			method_uuid = $('#'+info.sourceId).closest('.entity-method').attr('id');
+			var removing_indexes=[];
 			$.each(editor.options.entity.Method,function(index,methods){
 				if(methods.uuid === method_uuid){
 					connections = editor.options.entity.Method[index].Connections;
 					$.each(connections, function(key, conn_obj) {
 						if(conn_obj.sourceId === info.connection.endpoints[0].getUuid() && conn_obj.targetId === info.connection.endpoints[1].getUuid())
-							editor.options.entity.Method[index].Connections.splice(key,1);
+							removing_indexes.push(key);							
 					});
+				}
+				
+				for (var i = removing_indexes.length -1; i >= 0; i--){
+					editor.options.entity.Method[index].Connections.splice(removing_indexes[i],1);
 				}
 
 			});
