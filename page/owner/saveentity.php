@@ -6,7 +6,7 @@ class page_developerZone_page_owner_saveentity extends Page {
 		parent::init();
 
 
-		$e = $this->add('developerZone/Model_Entity')->load($this->api->recall('entity_id'));
+		$e = $this->add('developerZone/Model_Entity')->load($_POST['entity_id']);
 		$e['code_structure'] = $_POST['entity_code'];
 		$e->save();
 		$code = json_decode($_POST['entity_code'],true);
@@ -14,7 +14,7 @@ class page_developerZone_page_owner_saveentity extends Page {
 
 		$e->ref('developerZone/Method')->deleteAll();
 		
-		foreach ($code['Method'] as $key => $value) {
+		foreach ($code['Method'] as $key => &$value) {
 			$method = $this->add('developerZone/Model_Method');
 			$method->addCondition('developerZone_entities_id',$e['id']);
 			$method->addCondition('name',$value['name']);
@@ -30,10 +30,12 @@ class page_developerZone_page_owner_saveentity extends Page {
 				if($p['type']=='in-out') {
 					unset($value['Ports'][$i]);
 					continue;
-				}elseif($p['type']=="In")
+				}elseif($p['type']=="In"){
 					$p['type']="Out";
-				else
+				}
+				else{
 					$p['type']="In";
+				}
 
 				$ports_jsons[] = json_encode($p);
 				$i++;
@@ -45,8 +47,9 @@ class page_developerZone_page_owner_saveentity extends Page {
 
 		}
 
-
-		echo $this->js(true)->univ()->successMessage("Done");
+		$e['code_structure']= json_encode($code);
+		$e->save();
+		echo $this->js(true)->univ()->successMessage("Done" . $e->id. ' :: ' . $this->api->recall('entity_id'));
 		exit;
 
 	}

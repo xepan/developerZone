@@ -20,7 +20,7 @@ $.each({
 					url: 'index.php?page=developerZone_page_owner_saveentity',
 					type: 'POST',
 					datatype: "json",
-					data: { entity_code : JSON.stringify(sentized_json)},
+					data: { entity_code : JSON.stringify(sentized_json), entity_id: editor.options.entity.id},
 				})
 				.done(function(ret) {
 					if(ret==='true'){

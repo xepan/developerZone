@@ -150,6 +150,7 @@ Port = function (params){
 						]	,
 						container:$('#' + container_id)			
 						}
+		
 
 		if(self.parent.data('options').type == 'Method' && self.options.type != "in-out"){
 			if(self.options.type == 'In'){
